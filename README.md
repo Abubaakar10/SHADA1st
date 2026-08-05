@@ -29,22 +29,8 @@ The project follows a small, well-organized structure;
 
 ## How WhatsApp Ordering Works
 
-When a customer taps an item, the site opens a WhatsApp link that routes the customer to the admin's WhatsApp number with a pre-filled message. The link format is:
+When a customer taps an item, the site opens a WhatsApp link that routes the customer to the admin's WhatsApp number with a pre-filled message. 
 
-https://wa.me/<ADMIN_PHONE>?text=<URL_ENCODED_MESSAGE>
-
-Guidelines:
-
-- Use the full international phone number without symbols or leading `+` (for example: `15551234567`).
-- URL-encode spaces and special characters in the message (e.g., use `%20` for spaces).
-
-Example HTML link:
-
-```html
-<a href="https://wa.me/15551234567?text=I'm%20interested%20in%20Product%20X" target="_blank" rel="noopener">Order on WhatsApp</a>
-```
-
-In this repo, update the admin phone number in the JavaScript that creates the WhatsApp link (search the `js/` folder for `wa.me` or an `ADMIN_PHONE` variable and set it to your number).
 
 ## Local Development
 
@@ -61,22 +47,13 @@ or use any static server you prefer.
 
 ## Deployment
 
-- Deploy the repository root to a static host (GitHub Pages, Netlify, Vercel, etc.).
-- Ensure `images/`, `css/`, and `js/` are included in the published bundle.
-
-## Configuration
-
-- Add or update products in `products.json` (if used by the app).
-- If you use Firebase, configure `js/firebase-config.js` with your Firebase project settings.
-- Set the admin WhatsApp number in the JS file that generates the `wa.me` links.
+Hosted on Vercel.
 
 ## Contributing
 
 Pull requests are welcome for bug fixes, improved responsiveness, or accessibility enhancements. For small sites like this, keep changes minimal and test on both desktop and mobile sizes.
 
-## License
 
-This project is provided as-is. Add a license file if you want to choose a specific open-source license.
 
 
 
