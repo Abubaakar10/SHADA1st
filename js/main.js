@@ -8,14 +8,20 @@ let allProducts = [];
 let allCollections = [];
 let storeSettings = {};
 let activeCollectionFilter = 'all';
-let currentSortMode = 'custom';
+let currentSortMode = 'date-desc';
 let currentSearchQuery = '';
-let currentSelectedProduct = null;
+
+// Modal Selection State
+let modalProduct = null;
+let selectedSize = '';
+let selectedColor = '';
+let selectedQuantity = 1;
 
 document.addEventListener('DOMContentLoaded', async () => {
   await initStoreDatabase();
   await loadStoreData();
   setupEventListeners();
+  setupQuantityControls();
 });
 
 async function loadStoreData() {
@@ -25,8 +31,10 @@ async function loadStoreData() {
     allCollections = await getCollections();
     allProducts = await getProducts();
     
+    renderStoreStatusBadge();
     renderCollectionPills();
     applyFiltersAndSort();
+    setupFooterSupportLink();
   } catch (error) {
     console.error("Failed to load storefront data:", error);
   }
@@ -42,6 +50,45 @@ function showLoadingState() {
       </div>
     `;
   }
+}
+
+function renderStoreStatusBadge() {
+  const container = document.getElementById('storeStatusBadgeContainer');
+  if (!container) return;
+
+  const isOpen = checkIsStoreOpen();
+  const openTime = storeSettings.openingTime || '08:00';
+  const closeTime = storeSettings.closingTime || '20:00';
+
+  if (isOpen) {
+    container.innerHTML = `
+      <div class="store-status-badge open">
+        <i class="fa-solid fa-circle" style="font-size: 0.6rem;"></i> We are Currently OPEN (${openTime} - ${closeTime})
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="store-status-badge closed">
+        <i class="fa-solid fa-moon"></i> Store Closed — Leave a message and we'll reply shortly!
+      </div>
+    `;
+  }
+}
+
+function checkIsStoreOpen() {
+  if (storeSettings.manualStatus === 'open') return true;
+  if (storeSettings.manualStatus === 'closed') return false;
+
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const [openH, openM] = (storeSettings.openingTime || '08:00').split(':').map(Number);
+  const [closeH, closeM] = (storeSettings.closingTime || '20:00').split(':').map(Number);
+
+  const openMinutes = openH * 60 + openM;
+  const closeMinutes = closeH * 60 + closeM;
+
+  return currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
 }
 
 function renderCollectionPills() {
@@ -64,7 +111,6 @@ function renderCollectionPills() {
 
   container.innerHTML = html;
 
-  // Add click handlers for pills
   container.querySelectorAll('.pill-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       container.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
@@ -77,7 +123,6 @@ function renderCollectionPills() {
 }
 
 function setupEventListeners() {
-  // Search Bar Input
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -86,7 +131,6 @@ function setupEventListeners() {
     });
   }
 
-  // Sort Dropdown
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
@@ -95,7 +139,6 @@ function setupEventListeners() {
     });
   }
 
-  // Modal Close Trigger
   const modalClose = document.getElementById('modalClose');
   const modalBackdrop = document.getElementById('productModal');
   if (modalClose && modalBackdrop) {
@@ -105,21 +148,43 @@ function setupEventListeners() {
     });
   }
 
-  // Keyboard ESC to close modal
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+      closeModal();
+      window.closeHowToOrderModal();
+    }
   });
+}
+
+function setupQuantityControls() {
+  const minusBtn = document.getElementById('qtyMinusBtn');
+  const plusBtn = document.getElementById('qtyPlusBtn');
+  const qtyDisplay = document.getElementById('qtyDisplay');
+
+  if (minusBtn) {
+    minusBtn.addEventListener('click', () => {
+      if (selectedQuantity > 1) {
+        selectedQuantity--;
+        if (qtyDisplay) qtyDisplay.textContent = selectedQuantity;
+      }
+    });
+  }
+
+  if (plusBtn) {
+    plusBtn.addEventListener('click', () => {
+      selectedQuantity++;
+      if (qtyDisplay) qtyDisplay.textContent = selectedQuantity;
+    });
+  }
 }
 
 function applyFiltersAndSort() {
   let filtered = [...allProducts];
 
-  // 1. Collection Filter
   if (activeCollectionFilter !== 'all') {
-    filtered = filtered.filter(p => p.collectionId === activeCollectionFilter || p.collectionName?.toLowerCase() === activeCollectionFilter.toLowerCase());
+    filtered = filtered.filter(p => p.collectionId === activeCollectionFilter || (p.collectionName && p.collectionName.toLowerCase() === activeCollectionFilter.toLowerCase()));
   }
 
-  // 2. Search Filter
   if (currentSearchQuery) {
     filtered = filtered.filter(p => 
       p.name.toLowerCase().includes(currentSearchQuery) ||
@@ -128,30 +193,20 @@ function applyFiltersAndSort() {
     );
   }
 
-  // 3. Multi-Criteria Sorting Logic
   switch (currentSortMode) {
-    case 'custom':
-      // Admin Drag Position Order (Display Order asc)
-      filtered.sort((a, b) => (a.displayOrder || 999) - (b.displayOrder || 999));
-      break;
     case 'date-desc':
-      // Newest Added First
       filtered.sort((a, b) => new Date(b.dateAdded || 0) - new Date(a.dateAdded || 0));
       break;
     case 'date-asc':
-      // Oldest Added First
       filtered.sort((a, b) => new Date(a.dateAdded || 0) - new Date(b.dateAdded || 0));
       break;
     case 'price-asc':
-      // Price: Low to High
       filtered.sort((a, b) => a.price - b.price);
       break;
     case 'price-desc':
-      // Price: High to Low
       filtered.sort((a, b) => b.price - a.price);
       break;
     case 'name-asc':
-      // Name A - Z
       filtered.sort((a, b) => a.name.localeCompare(b.name));
       break;
     default:
@@ -182,9 +237,10 @@ function renderProductGrid(products) {
     return;
   }
 
+  const symbol = storeSettings.currencySymbol || 'GH₵';
   let html = '';
   products.forEach(p => {
-    const formattedPrice = (p.currency || '₦') + Number(p.price).toLocaleString();
+    const formattedPrice = symbol + Number(p.price).toLocaleString();
     const mainImg = (p.images && p.images.length > 0) ? p.images[0] : 'images/placeholders/apparel-1.svg';
     
     html += `
@@ -214,12 +270,16 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
-// Global modal launcher
+// Product detail modal with interactive selection
 window.openProductModal = (productId) => {
   const product = allProducts.find(p => p.id === productId);
   if (!product) return;
 
-  currentSelectedProduct = product;
+  modalProduct = product;
+  selectedQuantity = 1;
+  const qtyDisplay = document.getElementById('qtyDisplay');
+  if (qtyDisplay) qtyDisplay.textContent = '1';
+
   const modal = document.getElementById('productModal');
   const mainImage = document.getElementById('modalMainImage');
   const thumbsContainer = document.getElementById('modalThumbs');
@@ -232,14 +292,14 @@ window.openProductModal = (productId) => {
   const whatsappBtn = document.getElementById('modalWhatsAppBtn');
   const autoReplyMsg = document.getElementById('modalAutoReplyText');
 
-  const formattedPrice = (product.currency || '₦') + Number(product.price).toLocaleString();
+  const symbol = storeSettings.currencySymbol || 'GH₵';
+  const formattedPrice = symbol + Number(product.price).toLocaleString();
   
   if (tag) tag.textContent = product.collectionName || 'Exclusive Item';
   if (title) title.textContent = product.name;
   if (price) price.textContent = formattedPrice;
   if (desc) desc.textContent = product.description || 'High-end tailored apparel designed by SHADA1st.';
 
-  // Render main image & thumbnails
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
 
@@ -249,25 +309,28 @@ window.openProductModal = (productId) => {
     `).join('');
   }
 
-  // Render Sizes & Colors
+  // Interactive Sizes Selection
   if (sizesList) {
     const sizes = product.sizes && product.sizes.length ? product.sizes : ['Standard'];
-    sizesList.innerHTML = sizes.map(s => `<span class="chip selected">${s}</span>`).join('');
+    selectedSize = sizes[0];
+    sizesList.innerHTML = sizes.map((s, idx) => `
+      <span class="chip ${idx === 0 ? 'selected' : ''}" data-size="${s}" onclick="window.selectModalSize('${s}', this)">${s}</span>
+    `).join('');
   }
 
+  // Interactive Colors Selection
   if (colorsList) {
     const colors = product.colors && product.colors.length ? product.colors : ['Default'];
-    colorsList.innerHTML = colors.map(c => `<span class="chip">${c}</span>`).join('');
+    selectedColor = colors[0];
+    colorsList.innerHTML = colors.map((c, idx) => `
+      <span class="chip ${idx === 0 ? 'selected' : ''}" data-color="${c}" onclick="window.selectModalColor('${c}', this)">${c}</span>
+    `).join('');
   }
 
-  // Build WhatsApp Action
   if (whatsappBtn) {
-    whatsappBtn.onclick = () => {
-      window.triggerWhatsAppOrder(product.id);
-    };
+    whatsappBtn.onclick = () => window.triggerWhatsAppOrder(product.id);
   }
 
-  // Set configured auto-reply message note
   if (autoReplyMsg) {
     autoReplyMsg.textContent = storeSettings.whatsappUnavailableMsg || "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.";
   }
@@ -276,6 +339,20 @@ window.openProductModal = (productId) => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
+};
+
+window.selectModalSize = (size, element) => {
+  selectedSize = size;
+  const chips = document.querySelectorAll('#modalSizes .chip');
+  chips.forEach(c => c.classList.remove('selected'));
+  element.classList.add('selected');
+};
+
+window.selectModalColor = (color, element) => {
+  selectedColor = color;
+  const chips = document.querySelectorAll('#modalColors .chip');
+  chips.forEach(c => c.classList.remove('selected'));
+  element.classList.add('selected');
 };
 
 window.switchModalImage = (imgSrc, element) => {
@@ -294,21 +371,61 @@ function closeModal() {
   }
 }
 
-// WhatsApp Link Generator with exact user request greeting & formatting
+window.openHowToOrderModal = () => {
+  const modal = document.getElementById('howToOrderModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeHowToOrderModal = () => {
+  const modal = document.getElementById('howToOrderModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+function setupFooterSupportLink() {
+  const btn = document.getElementById('footerWhatsAppSupport');
+  if (btn) {
+    btn.onclick = () => {
+      const phone = storeSettings.whatsappPhone || '233200000000';
+      const customerInquiry = "Hello 👋! I have a question about SHADA1st Apparel Shop products and would like to chat with support.";
+      const encodedMsg = encodeURIComponent(customerInquiry);
+      window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodedMsg}`, '_blank');
+    };
+  }
+}
+
+// WhatsApp Order Direct Link Generator (Includes Item Name, Price, Quantity, Size, Color)
 window.triggerWhatsAppOrder = (productId, event) => {
   if (event) event.stopPropagation();
 
-  const product = allProducts.find(p => p.id === productId);
+  const product = allProducts.find(p => p.id === productId) || modalProduct;
   if (!product) return;
 
-  const phone = storeSettings.whatsappPhone || '2348100000000';
-  const greeting = storeSettings.whatsappGreeting || "Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?";
-  const formattedPrice = (product.currency || '₦') + Number(product.price).toLocaleString();
+  const phone = storeSettings.whatsappPhone || '233200000000';
+  const symbol = storeSettings.currencySymbol || 'GH₵';
+  const unitPrice = Number(product.price);
+  const formattedUnitPrice = symbol + unitPrice.toLocaleString();
+  const totalPrice = unitPrice * selectedQuantity;
+  const formattedTotalPrice = symbol + totalPrice.toLocaleString();
 
-  // Custom order message string
-  const customMessage = `${greeting}\n\n🛒 *ORDER INQUIRY*\nItem: *${product.name}*\nPrice: *${formattedPrice}*\nCollection: ${product.collectionName || 'General'}\nItem Ref: ${product.id}\n\nI would like to discuss payment, delivery, and place my order for this item.`;
+  const chosenSize = selectedSize || (product.sizes && product.sizes[0]) || 'Standard';
+  const chosenColor = selectedColor || (product.colors && product.colors[0]) || 'Default';
 
-  const encodedMsg = encodeURIComponent(customMessage);
+  // Format exact message requested by user
+  let customerOrderInquiry = `Hello 👋! I would like to order: *${product.name}* (Price: ${formattedUnitPrice})\nQuantity: *${selectedQuantity}*\nSize: *${chosenSize}*\nColor: *${chosenColor}*`;
+
+  if (selectedQuantity > 1) {
+    customerOrderInquiry += `\nTotal Amount: *${formattedTotalPrice}*`;
+  }
+
+  customerOrderInquiry += `\n\nPlease let me know how to proceed with payment and delivery.`;
+
+  const encodedMsg = encodeURIComponent(customerOrderInquiry);
   const waUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodedMsg}`;
   
   window.open(waUrl, '_blank');

@@ -33,8 +33,8 @@
     {
       "id": "shada-001",
       "name": "Obsidian Graphic Heavyweight Tee",
-      "price": 28500,
-      "currency": "₦",
+      "price": 350,
+      "currency": "GH₵",
       "collectionId": "streetwear",
       "collectionName": "Streetwear",
       "images": [
@@ -52,8 +52,8 @@
     {
       "id": "shada-002",
       "name": "Velvet Midnight Oversized Hoodie",
-      "price": 45000,
-      "currency": "₦",
+      "price": 550,
+      "currency": "GH₵",
       "collectionId": "urban-casual",
       "collectionName": "Urban Casual",
       "images": [
@@ -71,8 +71,8 @@
     {
       "id": "shada-003",
       "name": "Champagne Silk Gala Evening Dress",
-      "price": 89000,
-      "currency": "₦",
+      "price": 1200,
+      "currency": "GH₵",
       "collectionId": "luxury-evening",
       "collectionName": "Luxury Evening",
       "images": [
@@ -89,8 +89,8 @@
     {
       "id": "shada-004",
       "name": "Tactical Multi-Pocket Cargo Trousers",
-      "price": 38000,
-      "currency": "₦",
+      "price": 420,
+      "currency": "GH₵",
       "collectionId": "streetwear",
       "collectionName": "Streetwear",
       "images": [
@@ -107,8 +107,8 @@
     {
       "id": "shada-005",
       "name": "Monogram Silk Bomber Jacket",
-      "price": 65000,
-      "currency": "₦",
+      "price": 850,
+      "currency": "GH₵",
       "collectionId": "streetwear",
       "collectionName": "Streetwear",
       "images": [
@@ -125,8 +125,8 @@
     {
       "id": "shada-006",
       "name": "SHADA Signature Canvas Tote Bag",
-      "price": 18500,
-      "currency": "₦",
+      "price": 220,
+      "currency": "GH₵",
       "collectionId": "accessories",
       "collectionName": "Accessories",
       "images": [
@@ -143,10 +143,13 @@
   ],
   "settings": {
     "storeName": "SHADA1st Apparel Shop",
-    "whatsappPhone": "2348100000000",
+    "whatsappPhone": "233200000000",
     "whatsappGreeting": "Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?",
     "whatsappUnavailableMsg": "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.",
-    "currencySymbol": "₦",
+    "currencySymbol": "GH₵",
+    "openingTime": "08:00",
+    "closingTime": "20:00",
+    "manualStatus": "auto",
     "adminPin": "1234"
   }
 }

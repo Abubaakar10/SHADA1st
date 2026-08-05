@@ -3,23 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHADA1st Apparel Shop — Modern Apparel & Luxury Collections</title>
-  <meta name="description" content="Explore SHADA1st Apparel Shop collections. High-end streetwear, luxury evening dresses, and urban casual apparel with instant WhatsApp ordering.">
+  <title>SHADA1st Apparel Shop — Ghana Luxury & Streetwear Apparel</title>
+  <meta name="description" content="Explore SHADA1st Apparel Shop collections in Ghana. High-end streetwear, luxury evening dresses, and urban casual apparel with direct WhatsApp ordering.">
   
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
-  
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- ==========================================================================
-       SITE HEADER & STICKY NAVIGATION
-       ========================================================================== -->
+  <!-- SITE HEADER & NAVIGATION -->
   <header class="site-header">
     <div class="container nav-wrapper">
       <a href="index.html" class="brand-logo" title="SHADA1st Apparel Shop">
@@ -29,20 +22,12 @@
       <ul class="nav-links">
         <li><a href="#catalog" class="nav-link active"><i class="fa-solid fa-store"></i> Storefront</a></li>
         <li><a href="#collections" class="nav-link"><i class="fa-solid fa-tags"></i> Collections</a></li>
-        <li><a href="admin.html" class="nav-link"><i class="fa-solid fa-lock"></i> Admin Portal</a></li>
+        <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()" class="nav-link"><i class="fa-solid fa-circle-question"></i> How to Order</a></li>
       </ul>
-
-      <div class="nav-actions">
-        <a href="admin.html" class="btn-admin-login">
-          <i class="fa-solid fa-user-shield"></i> Admin Panel
-        </a>
-      </div>
     </div>
   </header>
 
-  <!-- ==========================================================================
-       HERO BANNER SECTION
-       ========================================================================== -->
+  <!-- HERO BANNER SECTION -->
   <section class="hero-section">
     <div class="container hero-content">
       <div class="hero-badge">
@@ -52,29 +37,28 @@
         Elegance Meets <span class="gold-gradient-text">Urban Prestige</span>
       </h1>
       <p class="hero-subtitle">
-        Browse exclusive SHADA1st apparel, select your favorite outfit, and place your order directly via WhatsApp with custom negotiations and fast delivery.
+        Browse exclusive SHADA1st apparel, select your favorite outfit, size & quantity, and place your order directly via WhatsApp.
       </p>
       
+      <div id="storeStatusBadgeContainer"></div>
+
       <div class="hero-features">
         <div class="hero-feature-item">
-          <i class="fa-brands fa-whatsapp"></i> Direct WhatsApp Negotiation
+          <i class="fa-brands fa-whatsapp"></i> Direct WhatsApp Order
         </div>
         <div class="hero-feature-item">
-          <i class="fa-solid fa-truck-fast"></i> Nationwide Delivery
+          <i class="fa-solid fa-truck-fast"></i> Fast Delivery across Ghana
         </div>
         <div class="hero-feature-item">
-          <i class="fa-solid fa-shield-halved"></i> 100% Authentic Quality
+          <i class="fa-solid fa-shield-halved"></i> Premium Fabric Quality
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================================================
-       CONTROLS BAR (SEARCH, SORT, COLLECTION PILLS)
-       ========================================================================== -->
+  <!-- CONTROLS BAR (SEARCH, SORT, COLLECTION PILLS) -->
   <section class="controls-section" id="collections">
     <div class="container controls-bar">
-      <!-- Search & Sorting Controls -->
       <div class="search-and-sort">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -84,7 +68,6 @@
         <div class="sort-box">
           <label for="sortSelect"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
           <select id="sortSelect" class="sort-select">
-            <option value="custom">Featured / Admin Position</option>
             <option value="date-desc">Date Added: Newest First</option>
             <option value="date-asc">Date Added: Oldest First</option>
             <option value="price-asc">Price: Low to High</option>
@@ -94,16 +77,11 @@
         </div>
       </div>
 
-      <!-- Collection Category Filters -->
-      <div class="collections-pills" id="collectionPills">
-        <!-- Rendered dynamically by main.js -->
-      </div>
+      <div class="collections-pills" id="collectionPills"></div>
     </div>
   </section>
 
-  <!-- ==========================================================================
-       PRODUCT CATALOG GRID
-       ========================================================================== -->
+  <!-- PRODUCT CATALOG GRID -->
   <main class="catalog-section" id="catalog">
     <div class="container">
       <div class="section-header">
@@ -111,16 +89,11 @@
         <span class="results-count" id="resultsCount">Loading products...</span>
       </div>
 
-      <!-- Main Dynamic Grid -->
-      <div class="product-grid" id="productGrid">
-        <!-- Rendered dynamically by main.js -->
-      </div>
+      <div class="product-grid" id="productGrid"></div>
     </div>
   </main>
 
-  <!-- ==========================================================================
-       PRODUCT DETAIL MODAL
-       ========================================================================== -->
+  <!-- PRODUCT DETAIL MODAL WITH INTERACTIVE SIZES, COLORS & QUANTITY COUNTER -->
   <div class="modal-backdrop" id="productModal">
     <div class="modal-card">
       <button class="btn-modal-close" id="modalClose" title="Close Modal">
@@ -134,24 +107,34 @@
           <div class="gallery-thumbs" id="modalThumbs"></div>
         </div>
 
-        <!-- Right: Item Details & WhatsApp Order -->
+        <!-- Right: Item Details, Size/Color Selection & Quantity Counter -->
         <div class="modal-details">
           <span class="modal-category-tag" id="modalTag">Collection</span>
           <h2 class="modal-title" id="modalTitle">Product Title</h2>
-          <div class="modal-price" id="modalPrice">₦0</div>
+          <div class="modal-price" id="modalPrice">GH₵0</div>
           
           <p class="modal-description" id="modalDescription"></p>
 
-          <!-- Size Options -->
+          <!-- Size Selection -->
           <div class="options-group">
-            <div class="options-label">Available Sizes</div>
+            <div class="options-label">Select Size (Tap to choose)</div>
             <div class="chips-list" id="modalSizes"></div>
           </div>
 
-          <!-- Color Options -->
+          <!-- Color Selection -->
           <div class="options-group">
-            <div class="options-label">Color Variations</div>
+            <div class="options-label">Select Color (Tap to choose)</div>
             <div class="chips-list" id="modalColors"></div>
+          </div>
+
+          <!-- Quantity Counter (+ / -) -->
+          <div class="options-group">
+            <div class="options-label">Select Quantity</div>
+            <div class="quantity-control-wrapper">
+              <button type="button" class="qty-btn" id="qtyMinusBtn">-</button>
+              <span class="qty-number" id="qtyDisplay">1</span>
+              <button type="button" class="qty-btn" id="qtyPlusBtn">+</button>
+            </div>
           </div>
 
           <!-- WhatsApp Order Action -->
@@ -160,11 +143,11 @@
               <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> Order on WhatsApp
             </button>
 
-            <!-- Auto-Reply Business Hours Notice -->
-            <div class="business-hours-notice">
+            <!-- Store Notice -->
+            <div class="business-hours-notice" id="modalAutoReplyCard">
               <i class="fa-solid fa-moon"></i>
               <div>
-                <strong>Off-Hours Auto-Response Notice:</strong>
+                <strong>Store Notice / Business Hours:</strong>
                 <p id="modalAutoReplyText" style="margin-top: 2px;">
                   Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.
                 </p>
@@ -176,16 +159,63 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       SITE FOOTER
-       ========================================================================== -->
+  <!-- HOW TO ORDER MODAL -->
+  <div class="modal-backdrop" id="howToOrderModal">
+    <div class="modal-card" style="max-width: 750px; padding: 2.5rem;">
+      <button class="btn-modal-close" onclick="window.closeHowToOrderModal()" title="Close Modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <i class="fa-brands fa-whatsapp" style="font-size: 3rem; color: var(--accent-whatsapp); margin-bottom: 0.75rem;"></i>
+        <h2 style="font-family: var(--font-brand); font-size: 1.8rem; margin-bottom: 0.5rem;">How Ordering Works on SHADA1st</h2>
+        <p style="color: var(--text-secondary); max-width: 540px; margin: 0 auto;">
+          We make placing an order simple, fast, and personalized directly through WhatsApp.
+        </p>
+      </div>
+
+      <div class="order-steps-grid">
+        <div class="order-step-card">
+          <div class="step-num">1</div>
+          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-gold-light);">Browse & Tap</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Explore our collections, find the piece you love, pick your size & quantity.
+          </p>
+        </div>
+
+        <div class="order-step-card">
+          <div class="step-num">2</div>
+          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-whatsapp);">Tap Order</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Click <strong>"Order on WhatsApp"</strong>. Your WhatsApp opens with item name, size, quantity, and price pre-filled.
+          </p>
+        </div>
+
+        <div class="order-step-card">
+          <div class="step-num">3</div>
+          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-gold-light);">Confirm & Receive</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Chat directly with our admin to confirm your delivery location in Ghana and payment details!
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; text-align: center;">
+        <button class="btn-gold" onclick="window.closeHowToOrderModal()">
+          Got It, Start Browsing
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 48px;">
           <p>
-            SHADA1st Apparel Shop delivers premium streetwear and bespoke luxury fashion straight to your doorstep. Order directly via WhatsApp for seamless negotiation and personalized service.
+            SHADA1st Apparel Shop delivers premium streetwear and bespoke luxury fashion straight to your doorstep across Ghana. Order directly via WhatsApp for seamless service.
           </p>
         </div>
 
@@ -193,28 +223,25 @@
           <h4>Navigation</h4>
           <ul>
             <li><a href="#catalog">Catalog</a></li>
-            <li><a href="#collections">Collections</a></li>
-            <li><a href="admin.html">Admin Dashboard</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">How to Order</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Customer Care</h4>
           <ul>
-            <li><a href="#catalog">How to Order</a></li>
-            <li><a href="#catalog">Delivery & Shipping</a></li>
-            <li><a href="#catalog">WhatsApp Support</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()"><i class="fa-solid fa-circle-info"></i> How to Order Guide</a></li>
+            <li><a href="javascript:void(0)" id="footerWhatsAppSupport"><i class="fa-brands fa-whatsapp"></i> Chat with Admin Support</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="footer-bottom">
+      <div class="footer-bottom" style="justify-content: center;">
         <p>&copy; 2026 SHADA1st Apparel Shop. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Application Logic Modules -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

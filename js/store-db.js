@@ -3,7 +3,7 @@
  * Abstracted layer supporting LocalStorage out-of-the-box and Firebase Firestore synchronization.
  */
 
-import { initFirebase, getStoredFirebaseConfig } from './firebase-config.js';
+import { initFirebase } from './firebase-config.js';
 
 const STORAGE_KEYS = {
   PRODUCTS: 'shada_products_v1',
@@ -40,7 +40,6 @@ export async function initStoreDatabase() {
 // --------------------------------------------------------------------------
 
 export async function getProducts() {
-  // If Firebase is active, attempt fetching from Firestore
   if (firebaseContext && firebaseContext.isFirebaseActive && firebaseContext.db) {
     try {
       const { collection, getDocs, query, orderBy } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
@@ -51,7 +50,6 @@ export async function getProducts() {
         items.push({ id: doc.id, ...doc.data() });
       });
       if (items.length > 0) {
-        // Cache to LocalStorage for offline speed
         localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(items));
         return items;
       }
@@ -60,11 +58,9 @@ export async function getProducts() {
     }
   }
 
-  // LocalStorage Fallback
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
     const items = raw ? JSON.parse(raw) : [];
-    // Ensure sorted by displayOrder
     items.sort((a, b) => (a.displayOrder || 999) - (b.displayOrder || 999));
     return items;
   } catch (e) {
@@ -74,29 +70,28 @@ export async function getProducts() {
 
 export async function saveProduct(productData) {
   let products = await getProducts();
+  const settings = await getStoreSettings();
   const now = new Date().toISOString();
   
   if (productData.id) {
-    // Update existing product
     const idx = products.findIndex(p => p.id === productData.id);
     if (idx !== -1) {
       products[idx] = { ...products[idx], ...productData, updatedAt: now };
     }
   } else {
-    // Create new product
     const newId = 'shada-' + Date.now();
     const maxOrder = products.reduce((max, item) => Math.max(max, item.displayOrder || 0), 0);
     const newProduct = {
       id: newId,
       name: productData.name || 'New Apparel Item',
       price: Number(productData.price) || 0,
-      currency: productData.currency || '₦',
+      currency: productData.currency || settings.currencySymbol || 'GH₵',
       collectionId: productData.collectionId || 'streetwear',
       collectionName: productData.collectionName || 'Streetwear',
       images: productData.images && productData.images.length ? productData.images : ['images/placeholders/apparel-1.svg'],
       description: productData.description || '',
       sizes: productData.sizes || ['S', 'M', 'L', 'XL'],
-      colors: productData.colors || ['Obsidian Black'],
+      colors: productData.colors || ['Black'],
       dateAdded: now,
       inStock: productData.inStock !== false,
       featured: productData.featured || false,
@@ -106,10 +101,8 @@ export async function saveProduct(productData) {
     productData = newProduct;
   }
 
-  // Save Local
   localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
 
-  // Sync to Firestore if active
   if (firebaseContext && firebaseContext.isFirebaseActive && firebaseContext.db) {
     try {
       const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
@@ -139,7 +132,6 @@ export async function deleteProduct(productId) {
   return true;
 }
 
-// Update items order after drag-and-drop
 export async function updateProductsOrder(orderedItems) {
   const updatedProducts = orderedItems.map((item, index) => ({
     ...item,
@@ -227,17 +219,59 @@ export async function saveCollection(collectionData) {
   return collectionData;
 }
 
+export async function deleteCollection(collectionId) {
+  let collections = await getCollections();
+  collections = collections.filter(c => c.id !== collectionId);
+  localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(collections));
+
+  // Re-assign products in this collection to 'general'
+  let products = await getProducts();
+  let updated = false;
+  products = products.map(p => {
+    if (p.collectionId === collectionId) {
+      updated = true;
+      return { ...p, collectionId: 'general', collectionName: 'General Apparel' };
+    }
+    return p;
+  });
+
+  if (updated) {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+  }
+
+  if (firebaseContext && firebaseContext.isFirebaseActive && firebaseContext.db) {
+    try {
+      const { doc, deleteDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+      await deleteDoc(doc(firebaseContext.db, "collections", collectionId));
+      if (updated) {
+        for (const p of products) {
+          if (p.collectionId === 'general') {
+            await setDoc(doc(firebaseContext.db, "products", p.id), p, { merge: true });
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Firestore collection delete error:", e);
+    }
+  }
+
+  return true;
+}
+
 // --------------------------------------------------------------------------
-// STORE SETTINGS API (WhatsApp Phone, Custom Greetings, Auto-Reply, Admin PIN)
+// STORE SETTINGS API (WhatsApp, Currency GH₵, Working Hours, Auto-Reply)
 // --------------------------------------------------------------------------
 
 export async function getStoreSettings() {
   const defaultSettings = {
     storeName: "SHADA1st Apparel Shop",
-    whatsappPhone: "2348100000000",
+    whatsappPhone: "233200000000",
     whatsappGreeting: "Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?",
     whatsappUnavailableMsg: "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.",
-    currencySymbol: "₦",
+    currencySymbol: "GH₵",
+    openingTime: "08:00",
+    closingTime: "20:00",
+    manualStatus: "auto", // 'auto', 'open', 'closed'
     adminPin: "1234"
   };
 
