@@ -519,8 +519,6 @@ function attachDragAndDropHandlers() {
 
 function populateSettingsForm() {
   const phone = document.getElementById('settingPhone');
-  const greeting = document.getElementById('settingGreeting');
-  const autoReply = document.getElementById('settingAutoReply');
   const pin = document.getElementById('settingAdminPin');
   const currency = document.getElementById('settingCurrency');
   const openT = document.getElementById('settingOpeningTime');
@@ -528,8 +526,6 @@ function populateSettingsForm() {
   const manual = document.getElementById('settingManualStatus');
 
   if (phone) phone.value = adminSettings.whatsappPhone || '233200000000';
-  if (greeting) greeting.value = adminSettings.whatsappGreeting || 'Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?';
-  if (autoReply) autoReply.value = adminSettings.whatsappUnavailableMsg || "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.";
   if (pin) pin.value = adminSettings.adminPin || '1234';
   if (currency) currency.value = adminSettings.currencySymbol || 'GH₵';
   if (openT) openT.value = adminSettings.openingTime || '08:00';
@@ -547,8 +543,6 @@ function setupSettingsForm() {
       const openingTime = document.getElementById('settingOpeningTime').value;
       const closingTime = document.getElementById('settingClosingTime').value;
       const manualStatus = document.getElementById('settingManualStatus').value;
-      const whatsappGreeting = document.getElementById('settingGreeting').value.trim();
-      const whatsappUnavailableMsg = document.getElementById('settingAutoReply').value.trim();
       const adminPin = document.getElementById('settingAdminPin').value.trim() || adminSettings.adminPin || '1234';
 
       await saveStoreSettings({
@@ -557,8 +551,6 @@ function setupSettingsForm() {
         openingTime,
         closingTime,
         manualStatus,
-        whatsappGreeting,
-        whatsappUnavailableMsg,
         adminPin
       });
 

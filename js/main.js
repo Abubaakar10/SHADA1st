@@ -11,7 +11,6 @@ let activeCollectionFilter = 'all';
 let currentSortMode = 'date-desc';
 let currentSearchQuery = '';
 
-// Modal Selection State
 let modalProduct = null;
 let selectedSize = '';
 let selectedColor = '';
@@ -270,7 +269,6 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
-// Product detail modal with interactive selection
 window.openProductModal = (productId) => {
   const product = allProducts.find(p => p.id === productId);
   if (!product) return;
@@ -290,7 +288,6 @@ window.openProductModal = (productId) => {
   const sizesList = document.getElementById('modalSizes');
   const colorsList = document.getElementById('modalColors');
   const whatsappBtn = document.getElementById('modalWhatsAppBtn');
-  const autoReplyMsg = document.getElementById('modalAutoReplyText');
 
   const symbol = storeSettings.currencySymbol || 'GH₵';
   const formattedPrice = symbol + Number(product.price).toLocaleString();
@@ -309,7 +306,6 @@ window.openProductModal = (productId) => {
     `).join('');
   }
 
-  // Interactive Sizes Selection
   if (sizesList) {
     const sizes = product.sizes && product.sizes.length ? product.sizes : ['Standard'];
     selectedSize = sizes[0];
@@ -318,7 +314,6 @@ window.openProductModal = (productId) => {
     `).join('');
   }
 
-  // Interactive Colors Selection
   if (colorsList) {
     const colors = product.colors && product.colors.length ? product.colors : ['Default'];
     selectedColor = colors[0];
@@ -329,10 +324,6 @@ window.openProductModal = (productId) => {
 
   if (whatsappBtn) {
     whatsappBtn.onclick = () => window.triggerWhatsAppOrder(product.id);
-  }
-
-  if (autoReplyMsg) {
-    autoReplyMsg.textContent = storeSettings.whatsappUnavailableMsg || "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.";
   }
 
   if (modal) {
@@ -399,7 +390,6 @@ function setupFooterSupportLink() {
   }
 }
 
-// WhatsApp Order Direct Link Generator (Includes Item Name, Price, Quantity, Size, Color)
 window.triggerWhatsAppOrder = (productId, event) => {
   if (event) event.stopPropagation();
 
@@ -416,7 +406,6 @@ window.triggerWhatsAppOrder = (productId, event) => {
   const chosenSize = selectedSize || (product.sizes && product.sizes[0]) || 'Standard';
   const chosenColor = selectedColor || (product.colors && product.colors[0]) || 'Default';
 
-  // Format exact message requested by user
   let customerOrderInquiry = `Hello 👋! I would like to order: *${product.name}* (Price: ${formattedUnitPrice})\nQuantity: *${selectedQuantity}*\nSize: *${chosenSize}*\nColor: *${chosenColor}*`;
 
   if (selectedQuantity > 1) {

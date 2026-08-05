@@ -249,22 +249,12 @@
         </div>
       </section>
 
-      <!-- TAB 4: WHATSAPP & STORE SETTINGS -->
+      <!-- TAB 4: WHATSAPP & STORE SETTINGS (STREAMLINED) -->
       <section class="admin-panel-section" id="tabSettings">
         <div class="admin-card">
           <h3 class="admin-card-title">
-            <i class="fa-brands fa-whatsapp" style="color: var(--accent-whatsapp);"></i> WhatsApp & Working Hours Settings
+            <i class="fa-brands fa-whatsapp" style="color: var(--accent-whatsapp);"></i> Store & Working Hours Settings
           </h3>
-
-          <div style="background: rgba(37, 211, 102, 0.08); border: 1px dashed var(--accent-whatsapp); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
-            <h4 style="color: var(--accent-whatsapp); font-size: 1rem; margin-bottom: 0.5rem;">
-              <i class="fa-brands fa-whatsapp"></i> How WhatsApp Auto-Greeting Works
-            </h4>
-            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
-              When a customer clicks <strong>"Order on WhatsApp"</strong> on your store, their phone opens WhatsApp with their order inquiry pre-filled.
-              <br>To send your automatic welcome greeting (<em>"Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?"</em>), enable <strong>Greeting Message</strong> in your free <strong>WhatsApp Business App</strong> under <em>Settings -> Business Tools -> Greeting Message</em>!
-            </p>
-          </div>
 
           <form id="settingsForm">
             <div class="form-grid">
@@ -298,18 +288,8 @@
                 <select id="settingManualStatus" class="form-control">
                   <option value="auto">Auto-Schedule (Use Opening & Closing Hours above)</option>
                   <option value="open">Force Open (Always show Open status)</option>
-                  <option value="closed">Force Closed (Always show Off-Hours message)</option>
+                  <option value="closed">Force Closed (Always show Off-Hours status)</option>
                 </select>
-              </div>
-
-              <div class="form-group full-width">
-                <label for="settingGreeting">Admin WhatsApp Welcome Greeting Template *</label>
-                <textarea id="settingGreeting" class="form-control" rows="2" required></textarea>
-              </div>
-
-              <div class="form-group full-width">
-                <label for="settingAutoReply">Off-Hours / Store Notice Message *</label>
-                <textarea id="settingAutoReply" class="form-control" rows="2" required></textarea>
               </div>
 
               <div class="form-group full-width">
