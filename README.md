@@ -13,7 +13,6 @@ The platform includes a dedicated **Admin Portal** featuring visual **Drag-and-D
 - **Customizable Color Scheme**: Clean CSS Custom Properties (`:root` variables in `css/style.css`) allowing background, card, text, and accent color modifications.
 - **Collection Filtering**: Category pills to filter items (Streetwear, Luxury Evening, Urban Casual, Accessories, etc.).
 - **Multi-Criteria Sorting**:
-  - **Featured / Admin Position**: Custom drag-and-drop order set by the admin.
   - **Date Added**: Newest first or Oldest first.
   - **Price**: Low to High or High to Low.
   - **Alphabetical**: A to Z.
@@ -25,17 +24,6 @@ The platform includes a dedicated **Admin Portal** featuring visual **Drag-and-D
   - Includes exact product name, price, reference code, and order inquiry request.
 - **Off-Hours Auto-Response Notice**: Displays business hours / auto-response text:
   `"Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night."`
-
-### Admin Portal (`admin.html`)
-- **Protected Access**: Admin PIN verification (Default PIN: `1234`).
-- **Product Management**: Add new apparel items, edit names, prices, descriptions, image URLs, sizes, colors, stock status, and collection assignments.
-- **Collection Management**: Create collections and re-assign items between collections.
-- **Visual Drag-and-Drop Reordering**: Drag items around the screen to instantly re-sequence their display position from 1st to last.
-- **WhatsApp & Store Settings**:
-  - Configure Admin WhatsApp phone number.
-  - Edit greeting message & unavailable night response template.
-  - Change Admin PIN.
-- **Firebase Connection Assistant**: Built-in JSON credentials reader to link Firebase Firestore.
 
 ---
 
@@ -81,34 +69,6 @@ Then open `http://localhost:8000` in your browser.
 
 ---
 
-## ⚙️ Customizing Theme Colors & Backgrounds
-
-Open [`css/style.css`](file:///c:/Desktop/SHADA1st/css/style.css) and edit the `:root` variables at the top of the file:
-
-```css
-:root {
-  /* Change Main Background Colors */
-  --bg-primary: #0A0C10;
-  --bg-secondary: #12151D;
-  --bg-tertiary: #191D28;
-  
-  /* Change Gold & Accent Highlights */
-  --accent-gold: #D4AF37;
-  --accent-gold-light: #F3E5AB;
-  
-  /* Change Typography */
-  --font-brand: 'Syne', sans-serif;
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
-}
-```
-
----
-
-## 🔐 Admin Access
-
-- **Admin URL**: `admin.html`
-- **Default PIN**: `1234` (Can be changed in Admin -> WhatsApp & Settings tab).
 
 ---
 
