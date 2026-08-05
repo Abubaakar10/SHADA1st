@@ -19,11 +19,8 @@ The platform includes a dedicated **Admin Portal** featuring visual **Drag-and-D
 - **Search Bar**: Instant real-time search across apparel titles, details, and collections.
 - **Interactive Product Modal**: Image viewer with thumbnail selector, sizes, colors, and price details.
 - **Direct WhatsApp Ordering**:
-  - Pre-fills WhatsApp message with custom greeting:
-    `"Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?"`
-  - Includes exact product name, price, reference code, and order inquiry request.
-- **Off-Hours Auto-Response Notice**: Displays business hours / auto-response text:
-  `"Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night."`
+  - Includes exact product name, price, quantity.
+
 
 ---
 
@@ -72,6 +69,4 @@ Then open `http://localhost:8000` in your browser.
 
 ---
 
-## 📦 Firebase Setup
 
-Refer to [`FIREBASE_SETUP.md`](file:///c:/Desktop/SHADA1st/FIREBASE_SETUP.md) for full instructions on setting up your free Firebase project and pasting your keys in the Admin Settings tab.
