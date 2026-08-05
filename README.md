@@ -1,59 +1,117 @@
-# SHADA1st Apparel — Responsive Static Store
+# SHADA1st Apparel Shop — Modern Online Storefront & Admin Dashboard
 
-A simple, responsive apparel storefront built with vanilla HTML, CSS, and JavaScript. Customers browse products on desktop or mobile and can tap an item to open a pre-filled WhatsApp chat with the store admin to place an order and negotiate details.
+An ultra-premium, responsive apparel store built for **SHADA1st Apparel Shop**. Customers can browse available collections, filter & multi-sort items, view product details in an interactive modal, and tap **"Order on WhatsApp"** to initiate orders directly with pre-filled greeting text and product specs.
 
-## Features
+The platform includes a dedicated **Admin Portal** featuring visual **Drag-and-Drop Item Reordering** across the screen, product & collection management, custom WhatsApp message template editors, and seamless **Firebase (Firestore)** synchronization with zero-setup LocalStorage fallback.
 
-- Mobile-first responsive design for phones and desktops
-- Static site using plain HTML/CSS/JS (no build step required)
-- Product touch/click opens WhatsApp chat pre-filled with product details
-- Easy to host on static hosting (GitHub Pages, Netlify, Vercel, S3, etc.)
+---
 
-## Repository Structure
+## 🌟 Key Features
 
-The project follows a small, well-organized structure;
+### Customer Storefront (`index.html`)
+- **Luxury Aesthetic**: Dark Obsidian & Champagne Gold theme with glassmorphism header, smooth micro-interactions, and custom typography (`Syne` + `Playfair Display` + `Inter`).
+- **Customizable Color Scheme**: Clean CSS Custom Properties (`:root` variables in `css/style.css`) allowing background, card, text, and accent color modifications.
+- **Collection Filtering**: Category pills to filter items (Streetwear, Luxury Evening, Urban Casual, Accessories, etc.).
+- **Multi-Criteria Sorting**:
+  - **Featured / Admin Position**: Custom drag-and-drop order set by the admin.
+  - **Date Added**: Newest first or Oldest first.
+  - **Price**: Low to High or High to Low.
+  - **Alphabetical**: A to Z.
+- **Search Bar**: Instant real-time search across apparel titles, details, and collections.
+- **Interactive Product Modal**: Image viewer with thumbnail selector, sizes, colors, and price details.
+- **Direct WhatsApp Ordering**:
+  - Pre-fills WhatsApp message with custom greeting:
+    `"Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?"`
+  - Includes exact product name, price, reference code, and order inquiry request.
+- **Off-Hours Auto-Response Notice**: Displays business hours / auto-response text:
+  `"Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night."`
 
-- css/
-	- style.css
-- images/
-	- logo.jpg
-- js/
-	- firebase-config.js
-	- main.js
-- admin.html
-- index.html
-- products.json
-- firestore-rules.txt
-- README.md
+### Admin Portal (`admin.html`)
+- **Protected Access**: Admin PIN verification (Default PIN: `1234`).
+- **Product Management**: Add new apparel items, edit names, prices, descriptions, image URLs, sizes, colors, stock status, and collection assignments.
+- **Collection Management**: Create collections and re-assign items between collections.
+- **Visual Drag-and-Drop Reordering**: Drag items around the screen to instantly re-sequence their display position from 1st to last.
+- **WhatsApp & Store Settings**:
+  - Configure Admin WhatsApp phone number.
+  - Edit greeting message & unavailable night response template.
+  - Change Admin PIN.
+- **Firebase Connection Assistant**: Built-in JSON credentials reader to link Firebase Firestore.
 
+---
 
-## How WhatsApp Ordering Works
+## 📁 Repository Structure
 
-When a customer taps an item, the site opens a WhatsApp link that routes the customer to the admin's WhatsApp number with a pre-filled message. 
-
-
-## Local Development
-
-To test locally, open `index.html` in a browser. For some browsers you may want to serve the folder over a simple HTTP server:
-
-Python 3:
-
-```bash
-python -m http.server 8000
-# then open http://localhost:8000
+```
+c:\Desktop\SHADA1st\
+├── index.html                 # Customer Storefront (Hero, Collections, Product Grid, Filters, WhatsApp Modal)
+├── admin.html                 # Admin Dashboard (Product Editor, Collections, Drag-and-Drop Reorder, Settings)
+├── css/
+│   └── style.css              # Core Design System, CSS Variables, Responsive Grid, Modals & Drag Styles
+├── js/
+│   ├── firebase-config.js     # Dynamic Firebase v10 SDK loader & credentials manager
+│   ├── store-db.js            # Dual Data Engine (Firestore + LocalStorage fallback)
+│   ├── main.js                # Customer UI controller (Search, Multi-sorting, Modal, WhatsApp link generator)
+│   └── admin.js               # Admin UI controller (CRUD, Drag-and-drop position sorting, Settings)
+├── images/
+│   ├── logo.svg               # Signature SHADA1st vector logo
+│   └── placeholders/          # High quality styled SVG apparel placeholders
+├── products.json              # Initial seed dataset (Products, Collections, Settings)
+├── firestore-rules.txt        # Firebase Security Rules snippet
+├── FIREBASE_SETUP.md          # Step-by-step setup guide for Firebase Firestore
+└── README.md                  # Documentation
 ```
 
-or use any static server you prefer.
+---
 
-## Deployment
+## 🚀 Running Locally
 
-Hosted on Vercel.
+To run the application locally, start a simple HTTP web server in the repository directory:
 
-## Contributing
+### Option 1: Node.js / npx (Recommended)
+```bash
+npx http-server ./ -p 8000
+```
+Then open `http://localhost:8000` in your browser.
 
-Pull requests are welcome for bug fixes, improved responsiveness, or accessibility enhancements. For small sites like this, keep changes minimal and test on both desktop and mobile sizes.
+### Option 2: Python 3
+```bash
+python -m http.server 8000
+```
+Then open `http://localhost:8000` in your browser.
 
+---
 
+## ⚙️ Customizing Theme Colors & Backgrounds
 
+Open [`css/style.css`](file:///c:/Desktop/SHADA1st/css/style.css) and edit the `:root` variables at the top of the file:
 
+```css
+:root {
+  /* Change Main Background Colors */
+  --bg-primary: #0A0C10;
+  --bg-secondary: #12151D;
+  --bg-tertiary: #191D28;
+  
+  /* Change Gold & Accent Highlights */
+  --accent-gold: #D4AF37;
+  --accent-gold-light: #F3E5AB;
+  
+  /* Change Typography */
+  --font-brand: 'Syne', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+}
+```
 
+---
+
+## 🔐 Admin Access
+
+- **Admin URL**: `admin.html`
+- **Default PIN**: `1234` (Can be changed in Admin -> WhatsApp & Settings tab).
+
+---
+
+## 📦 Firebase Setup
+
+Refer to [`FIREBASE_SETUP.md`](file:///c:/Desktop/SHADA1st/FIREBASE_SETUP.md) for full instructions on setting up your free Firebase project and pasting your keys in the Admin Settings tab.

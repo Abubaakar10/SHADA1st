@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal — SHADA1st Apparel Shop</title>
+  <meta name="robots" content="noindex, nofollow">
+  
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       ADMIN LOGIN VIEW
+       ========================================================================== -->
+  <div id="adminLoginView" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 70%);">
+    <div class="admin-card" style="max-width: 420px; width: 100%; text-align: center; border-color: var(--border-color); box-shadow: var(--shadow-lg);">
+      <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 54px; margin: 0 auto 1.5rem auto;">
+      <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-bottom: 0.5rem;">Store Admin Access</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem;">Enter your Security PIN code to manage SHADA1st products & WhatsApp settings.</p>
+
+      <form id="adminLoginForm">
+        <div class="form-group" style="margin-bottom: 1.25rem; text-align: left;">
+          <label for="adminPinInput">Admin PIN Code</label>
+          <input type="password" id="adminPinInput" class="form-control" placeholder="Default PIN: 1234" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
+        </div>
+        
+        <p id="authError" style="color: #FF6B6B; font-size: 0.85rem; display: none; margin-bottom: 1rem;"></p>
+
+        <button type="submit" class="btn-gold" style="width: 100%;">
+          <i class="fa-solid fa-lock-open"></i> Unlock Dashboard
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+        <a href="index.html" style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-arrow-left"></i> Return to Customer Storefront</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ADMIN DASHBOARD VIEW
+       ========================================================================== -->
+  <div id="adminDashboardView" style="display: none;">
+    
+    <!-- Admin Top Navigation Bar -->
+    <header class="admin-header-bar">
+      <div class="container">
+        <div class="admin-title-row">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 40px;">
+            <span class="admin-badge"><i class="fa-solid fa-shield-check"></i> Admin Portal</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <a href="index.html" target="_blank" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> View Storefront
+            </a>
+            <button id="adminLogoutBtn" class="btn-secondary btn-danger" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" data-tab="tabProducts">
+            <i class="fa-solid fa-shirt"></i> Apparel Items
+          </button>
+          <button class="admin-tab-btn" data-tab="tabCollections">
+            <i class="fa-solid fa-layer-group"></i> Collections
+          </button>
+          <button class="admin-tab-btn" data-tab="tabDragReorder">
+            <i class="fa-solid fa-up-down-left-right"></i> Visual Drag Reorder
+          </button>
+          <button class="admin-tab-btn" data-tab="tabSettings">
+            <i class="fa-solid fa-gear"></i> WhatsApp & Settings
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+
+      <!-- ====================================================================
+           TAB 1: PRODUCT MANAGEMENT
+           ==================================================================== -->
+      <section class="admin-panel-section active" id="tabProducts">
+        
+        <!-- Add / Edit Form -->
+        <div class="admin-card">
+          <h3 class="admin-card-title" id="productFormTitle">
+            <i class="fa-solid fa-plus-circle" style="color: var(--accent-gold);"></i> Add New Apparel Item
+          </h3>
+
+          <form id="productForm">
+            <input type="hidden" id="prodId">
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="prodName">Item Name *</label>
+                <input type="text" id="prodName" class="form-control" placeholder="e.g. Obsidian Graphic Oversized Tee" required>
+              </div>
+
+              <div class="form-group">
+                <label for="prodPrice">Price Amount (₦) *</label>
+                <input type="number" id="prodPrice" class="form-control" placeholder="28500" required>
+              </div>
+
+              <div class="form-group">
+                <label for="prodCollection">Assigned Collection *</label>
+                <select id="prodCollection" class="form-control" required></select>
+              </div>
+
+              <div class="form-group">
+                <label for="prodImages">Image URLs (comma separated)</label>
+                <input type="text" id="prodImages" class="form-control" placeholder="images/placeholders/apparel-1.svg, https://...">
+              </div>
+
+              <div class="form-group">
+                <label for="prodSizes">Available Sizes (comma separated)</label>
+                <input type="text" id="prodSizes" class="form-control" placeholder="S, M, L, XL, XXL">
+              </div>
+
+              <div class="form-group">
+                <label for="prodColors">Color Options (comma separated)</label>
+                <input type="text" id="prodColors" class="form-control" placeholder="Obsidian Black, Champagne Gold">
+              </div>
+
+              <div class="form-group full-width">
+                <label for="prodDesc">Product Description & Specs</label>
+                <textarea id="prodDesc" class="form-control" rows="3" placeholder="Crafted from 280GSM combed cotton with gold embroidery..."></textarea>
+              </div>
+
+              <div class="form-group full-width" style="display: flex; gap: 2rem; align-items: center;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="prodInStock" checked> In Stock
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="prodFeatured"> Mark as Featured Item
+                </label>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+              <button type="submit" class="btn-gold">
+                <i class="fa-solid fa-floppy-disk"></i> Save Product
+              </button>
+              <button type="button" class="btn-secondary" id="cancelProdEdit" style="display: none;">
+                Cancel Editing
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Product Catalog Table -->
+        <div class="admin-card">
+          <h3 class="admin-card-title">
+            <i class="fa-solid fa-list-check" style="color: var(--accent-gold);"></i> Catalog Inventory
+          </h3>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Image</th>
+                  <th>Item Name</th>
+                  <th>Collection</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminProductsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 2: COLLECTION MANAGEMENT
+           ==================================================================== -->
+      <section class="admin-panel-section" id="tabCollections">
+        <div class="admin-card">
+          <h3 class="admin-card-title">
+            <i class="fa-solid fa-folder-plus" style="color: var(--accent-gold);"></i> Create New Collection
+          </h3>
+          <form id="collectionForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="colName">Collection Name *</label>
+                <input type="text" id="colName" class="form-control" placeholder="e.g. Summer Essentials" required>
+              </div>
+
+              <div class="form-group">
+                <label for="colImage">Collection Cover Image URL</label>
+                <input type="text" id="colImage" class="form-control" placeholder="images/placeholders/apparel-1.svg">
+              </div>
+
+              <div class="form-group full-width">
+                <label for="colDesc">Collection Description</label>
+                <textarea id="colDesc" class="form-control" rows="2" placeholder="Brief summary of this collection..."></textarea>
+              </div>
+            </div>
+            
+            <div style="margin-top: 1.25rem;">
+              <button type="submit" class="btn-gold">
+                <i class="fa-solid fa-plus"></i> Add Collection
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3 class="admin-card-title">Existing Collections</h3>
+          <div id="adminCollectionsList"></div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 3: VISUAL DRAG-AND-DROP REORDERING
+           ==================================================================== -->
+      <section class="admin-panel-section" id="tabDragReorder">
+        <div class="admin-card">
+          <h3 class="admin-card-title">
+            <i class="fa-solid fa-up-down-left-right" style="color: var(--accent-gold);"></i> Drag & Drop Product Positions
+          </h3>
+
+          <div class="reorder-instructions">
+            <div>
+              <strong><i class="fa-solid fa-hand-pointer"></i> Rearrange Item Position:</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Drag any apparel card across the screen to change its display rank from 1st to last. Customers will see items in this exact sequence when sorting by "Featured / Admin Position".
+              </p>
+            </div>
+            <button id="saveOrderBtn" class="btn-gold">
+              <i class="fa-solid fa-check"></i> Save Display Order
+            </button>
+          </div>
+
+          <!-- Drag and Drop Grid Container -->
+          <div class="drag-grid" id="dragReorderGrid"></div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 4: WHATSAPP & STORE SETTINGS
+           ==================================================================== -->
+      <section class="admin-panel-section" id="tabSettings">
+        
+        <!-- WhatsApp Messaging Configuration -->
+        <div class="admin-card">
+          <h3 class="admin-card-title">
+            <i class="fa-brands fa-whatsapp" style="color: var(--accent-whatsapp);"></i> WhatsApp Business Order Settings
+          </h3>
+
+          <form id="settingsForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="settingPhone">Admin WhatsApp Phone Number *</label>
+                <input type="text" id="settingPhone" class="form-control" placeholder="2348100000000" required>
+                <small style="color: var(--text-muted);">Include country code without '+' sign (e.g. 2348100000000 for Nigeria).</small>
+              </div>
+
+              <div class="form-group">
+                <label for="settingAdminPin">Admin Portal Security PIN</label>
+                <input type="text" id="settingAdminPin" class="form-control" placeholder="1234">
+              </div>
+
+              <div class="form-group full-width">
+                <label for="settingGreeting">Custom WhatsApp Greeting Message *</label>
+                <textarea id="settingGreeting" class="form-control" rows="2" required></textarea>
+                <small style="color: var(--text-muted);">This exact greeting will open in WhatsApp when the customer taps 'Order on WhatsApp'.</small>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="settingAutoReply">Off-Hours / Unavailable Auto-Response Template *</label>
+                <textarea id="settingAutoReply" class="form-control" rows="2" required></textarea>
+                <small style="color: var(--text-muted);">Displayed on the product view modal so customers know your response timeframe.</small>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <button type="submit" class="btn-gold">
+                <i class="fa-solid fa-floppy-disk"></i> Save WhatsApp Settings
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Firebase Connection Helper -->
+        <div class="admin-card">
+          <h3 class="admin-card-title">
+            <i class="fa-solid fa-fire" style="color: #FFCA28;"></i> Firebase Integration & Sync
+          </h3>
+
+          <div id="firebaseStatusIndicator" style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: var(--bg-tertiary); border: 1px solid var(--border-subtle);"></div>
+
+          <form id="firebaseConfigForm">
+            <div class="form-group">
+              <label for="firebaseConfigJson">Firebase Config Object (JSON)</label>
+              <textarea id="firebaseConfigJson" class="form-control" rows="6" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "shada1st.firebaseapp.com",
+  "projectId": "shada1st",
+  "storageBucket": "shada1st.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}'></textarea>
+              <small style="color: var(--text-muted); margin-top: 4px;">
+                Paste your Firebase Web App configuration credentials here to sync products directly with Firestore. Leave empty to use default LocalStorage.
+              </small>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <button type="submit" class="btn-secondary">
+                <i class="fa-solid fa-plug"></i> Save & Connect Firebase
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

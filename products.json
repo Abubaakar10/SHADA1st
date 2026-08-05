@@ -1,0 +1,152 @@
+{
+  "collections": [
+    {
+      "id": "streetwear",
+      "name": "Streetwear",
+      "slug": "streetwear",
+      "description": "Bold, oversized urban cuts designed for everyday statements.",
+      "image": "images/placeholders/apparel-1.svg"
+    },
+    {
+      "id": "luxury-evening",
+      "name": "Luxury Evening",
+      "slug": "luxury-evening",
+      "description": "Elegant silk, satin, and tailored gowns for unforgettable nights.",
+      "image": "images/placeholders/apparel-3.svg"
+    },
+    {
+      "id": "urban-casual",
+      "name": "Urban Casual",
+      "slug": "urban-casual",
+      "description": "Minimalist premium everyday hoodies, joggers, and basics.",
+      "image": "images/placeholders/apparel-2.svg"
+    },
+    {
+      "id": "accessories",
+      "name": "Accessories",
+      "slug": "accessories",
+      "description": "Signature hats, tote bags, and luxury leather goods.",
+      "image": "images/placeholders/apparel-1.svg"
+    }
+  ],
+  "products": [
+    {
+      "id": "shada-001",
+      "name": "Obsidian Graphic Heavyweight Tee",
+      "price": 28500,
+      "currency": "₦",
+      "collectionId": "streetwear",
+      "collectionName": "Streetwear",
+      "images": [
+        "images/placeholders/apparel-1.svg",
+        "images/placeholders/apparel-2.svg"
+      ],
+      "description": "Crafted from 280GSM combed organic cotton with high-density gold screen-printed SHADA 01 crest.",
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "colors": ["Obsidian Black", "Champagne Gold"],
+      "dateAdded": "2026-08-01T10:00:00.000Z",
+      "inStock": true,
+      "featured": true,
+      "displayOrder": 1
+    },
+    {
+      "id": "shada-002",
+      "name": "Velvet Midnight Oversized Hoodie",
+      "price": 45000,
+      "currency": "₦",
+      "collectionId": "urban-casual",
+      "collectionName": "Urban Casual",
+      "images": [
+        "images/placeholders/apparel-2.svg",
+        "images/placeholders/apparel-1.svg"
+      ],
+      "description": "Ultra-plush fleece hoodie with metal aglet drawstrings and embroidered SHADA monogram logo.",
+      "sizes": ["M", "L", "XL"],
+      "colors": ["Midnight Navy", "Charcoal Gray"],
+      "dateAdded": "2026-08-02T14:30:00.000Z",
+      "inStock": true,
+      "featured": true,
+      "displayOrder": 2
+    },
+    {
+      "id": "shada-003",
+      "name": "Champagne Silk Gala Evening Dress",
+      "price": 89000,
+      "currency": "₦",
+      "collectionId": "luxury-evening",
+      "collectionName": "Luxury Evening",
+      "images": [
+        "images/placeholders/apparel-3.svg"
+      ],
+      "description": "Hand-stitched mulberry silk gown featuring a subtle side slit and tailored waistline.",
+      "sizes": ["XS", "S", "M", "L"],
+      "colors": ["Champagne Gold", "Emerald Green"],
+      "dateAdded": "2026-08-03T09:15:00.000Z",
+      "inStock": true,
+      "featured": true,
+      "displayOrder": 3
+    },
+    {
+      "id": "shada-004",
+      "name": "Tactical Multi-Pocket Cargo Trousers",
+      "price": 38000,
+      "currency": "₦",
+      "collectionId": "streetwear",
+      "collectionName": "Streetwear",
+      "images": [
+        "images/placeholders/apparel-1.svg"
+      ],
+      "description": "Heavy-duty ripstop cargo trousers with adjustable ankle straps and 6 utility pockets.",
+      "sizes": ["30", "32", "34", "36"],
+      "colors": ["Matte Black", "Desert Khaki"],
+      "dateAdded": "2026-07-28T16:00:00.000Z",
+      "inStock": true,
+      "featured": false,
+      "displayOrder": 4
+    },
+    {
+      "id": "shada-005",
+      "name": "Monogram Silk Bomber Jacket",
+      "price": 65000,
+      "currency": "₦",
+      "collectionId": "streetwear",
+      "collectionName": "Streetwear",
+      "images": [
+        "images/placeholders/apparel-2.svg"
+      ],
+      "description": "Reversible luxury bomber jacket with gold hardware zips and silk lining.",
+      "sizes": ["M", "L", "XL"],
+      "colors": ["Black/Gold", "Ivory/Gold"],
+      "dateAdded": "2026-07-25T11:20:00.000Z",
+      "inStock": true,
+      "featured": true,
+      "displayOrder": 5
+    },
+    {
+      "id": "shada-006",
+      "name": "SHADA Signature Canvas Tote Bag",
+      "price": 18500,
+      "currency": "₦",
+      "collectionId": "accessories",
+      "collectionName": "Accessories",
+      "images": [
+        "images/placeholders/apparel-1.svg"
+      ],
+      "description": "Durable 16oz cotton canvas tote with interior zip pocket and reinforced handles.",
+      "sizes": ["One Size"],
+      "colors": ["Natural Cream", "Obsidian Black"],
+      "dateAdded": "2026-07-20T08:00:00.000Z",
+      "inStock": true,
+      "featured": false,
+      "displayOrder": 6
+    }
+  ],
+  "settings": {
+    "storeName": "SHADA1st Apparel Shop",
+    "whatsappPhone": "2348100000000",
+    "whatsappGreeting": "Hello 👋! Thank you for reaching out to SHADA1st Apparel Shop. How may we assist you?",
+    "whatsappUnavailableMsg": "Hey 👋! We're currently unavailable at the moment. Kindly Leave a message and we'd get back to you later on. Have a great night.",
+    "currencySymbol": "₦",
+    "adminPin": "1234"
+  }
+}

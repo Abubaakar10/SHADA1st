@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191B24"/>
+      <stop offset="100%" stop-color="#0E0F14"/>
+    </linearGradient>
+    <linearGradient id="roseGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8C39E"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bgGrad2)"/>
+  <circle cx="300" cy="300" r="230" fill="none" stroke="#2B3040" stroke-width="1.5"/>
+  
+  <!-- Hoodie Silhouette -->
+  <g transform="translate(140, 110)">
+    <!-- Hood backdrop -->
+    <path d="M 100 80 Q 160 20 220 80 Q 220 130 160 140 Q 100 130 100 80 Z" fill="#222736" stroke="url(#roseGold)" stroke-width="2"/>
+    <!-- Body -->
+    <path d="M 80 120 L 30 180 L 70 240 L 95 210 L 95 360 L 225 360 L 225 210 L 250 240 L 290 180 L 240 120 Z" 
+          fill="#161923" stroke="url(#roseGold)" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Kangaroo Pocket -->
+    <path d="M 115 280 L 205 280 L 215 340 L 105 340 Z" fill="#222736" stroke="#3E465E" stroke-width="2"/>
+    <!-- Drawstrings -->
+    <path d="M 145 110 L 140 170" stroke="url(#roseGold)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 175 110 L 180 170" stroke="url(#roseGold)" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Chest Crest -->
+    <circle cx="160" cy="200" r="25" fill="none" stroke="url(#roseGold)" stroke-width="2"/>
+    <text x="160" y="205" font-family="'Syne', sans-serif" font-size="16" font-weight="800" text-anchor="middle" fill="#FFFFFF">S1</text>
+  </g>
+
+  <rect x="410" y="520" width="160" height="40" rx="8" fill="#1E2330" stroke="#33394B"/>
+  <text x="490" y="545" font-family="sans-serif" font-size="12" font-weight="700" fill="#E8C39E" text-anchor="middle">LUXURY HOODIE</text>
+</svg>

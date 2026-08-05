@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1520"/>
+      <stop offset="100%" stop-color="#0F0C14"/>
+    </linearGradient>
+    <linearGradient id="champagne" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7E7CE"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bgGrad3)"/>
+  <circle cx="300" cy="300" r="210" fill="none" stroke="#33283E" stroke-width="1.5" stroke-dasharray="4,8"/>
+
+  <!-- Evening Gown Silhouette -->
+  <g transform="translate(180, 80)">
+    <!-- Neckline / Straps -->
+    <path d="M 90 60 L 120 120 L 150 60 L 180 120 L 60 120 Z" fill="#292033" stroke="url(#champagne)" stroke-width="2"/>
+    <!-- Bodice -->
+    <path d="M 80 120 C 100 160, 140 160, 160 120 L 170 200 C 130 210, 110 210, 70 200 Z" fill="#1F1827" stroke="url(#champagne)" stroke-width="2"/>
+    <!-- Flowing Skirt -->
+    <path d="M 70 200 Q 20 320 10 440 L 230 440 Q 220 320 170 200 Z" fill="#14101A" stroke="url(#champagne)" stroke-width="3"/>
+    <!-- Waistband Accent -->
+    <rect x="70" y="195" width="100" height="15" fill="url(#champagne)" rx="4"/>
+  </g>
+
+  <rect x="30" y="520" width="170" height="40" rx="8" fill="#251E2E" stroke="#423452"/>
+  <text x="115" y="545" font-family="sans-serif" font-size="12" font-weight="700" fill="#F7E7CE" text-anchor="middle">EVENING COLLECTION</text>
+</svg>
