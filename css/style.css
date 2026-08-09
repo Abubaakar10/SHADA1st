@@ -153,6 +153,9 @@ input, select, textarea {
   font-weight: 500;
   border-radius: var(--radius-sm);
   transition: var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-search-group input:focus {
@@ -168,6 +171,7 @@ input, select, textarea {
   transform: translateY(-50%);
   color: var(--text-muted);
   font-size: 0.85rem;
+  pointer-events: none;
 }
 
 /* HOW TO ORDER Button */
@@ -195,7 +199,6 @@ input, select, textarea {
   color: #FFFFFF;
 }
 
-/* Header Tablet & Mobile Breakpoints */
 @media (max-width: 768px) {
   .nav-wrapper {
     height: 64px;
@@ -214,7 +217,10 @@ input, select, textarea {
 
 @media (max-width: 480px) {
   .header-search-group {
-    width: 110px;
+    width: 120px;
+  }
+  .header-search-group input:focus {
+    width: 155px;
   }
   .btn-how-to-order span {
     display: none;
@@ -222,7 +228,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   INSPO-MATCHING HERO SHOWCASE SECTION (RESPONSIVE FOR ALL SCREEN SIZES)
+   INSPO-MATCHING HERO SHOWCASE SECTION
    ========================================================================== */
 .hero-showcase-section {
   padding: 2rem 0 3rem 0;
@@ -467,10 +473,11 @@ input, select, textarea {
   margin-top: auto;
 }
 
+/* STATS BOX FIX */
 .hero-stat-box {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.85rem;
 }
 
 .hero-stat-num {
@@ -479,6 +486,7 @@ input, select, textarea {
   font-weight: 900;
   line-height: 1;
   color: var(--text-primary);
+  flex-shrink: 0;
 }
 
 .hero-stat-label {
@@ -487,13 +495,40 @@ input, select, textarea {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-muted);
-  max-width: 120px;
+  max-width: 130px;
+  line-height: 1.25;
 }
 
 .hero-about-text-box p {
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.65;
+}
+
+/* STORE STATUS BADGE STYLING FIX */
+.store-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.store-status-badge.open {
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.4);
+  color: #1EBE57;
+}
+
+.store-status-badge.closed {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #EF4444;
 }
 
 /* Tablet & Mobile Hero Grid Responsiveness */
@@ -517,7 +552,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   COLLECTION PILLS FILTER BAR (TOUCH SCROLLABLE ON MOBILE)
+   COLLECTION PILLS FILTER BAR
    ========================================================================== */
 .controls-section {
   padding: 0.85rem 0;
@@ -541,7 +576,6 @@ input, select, textarea {
   gap: 0.75rem;
 }
 
-/* Smooth Horizontal Touch Scrolling Filter Pills */
 .collections-pills {
   display: flex;
   align-items: center;
@@ -598,7 +632,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   PRODUCT CATALOG GRID (RESPONSIVE CARD LAYOUT)
+   PRODUCT CATALOG GRID
    ========================================================================== */
 .catalog-section {
   padding: 1.75rem 0 4rem 0;
@@ -752,7 +786,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   MOBILE-OPTIMIZED PRODUCT DETAIL MODAL
+   PRODUCT DETAIL MODAL
    ========================================================================== */
 .modal-backdrop {
   position: fixed;
@@ -1097,7 +1131,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   FULLY RESPONSIVE FOOTER (FIXED FOR MOBILE & IPAD)
+   FOOTER
    ========================================================================== */
 .site-footer {
   background: #FFFFFF;
@@ -1171,7 +1205,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   ADMIN PORTAL STYLES & MOBILE DASHBOARD
+   ADMIN PORTAL STYLES
    ========================================================================== */
 .admin-header-bar {
   background: #FFFFFF;
