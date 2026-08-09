@@ -1,5 +1,5 @@
 /**
- * SHADA1st Apparel Shop — Customer Storefront Controller (Suvene Style)
+ * SHADA1st Apparel Shop — Customer Storefront Controller
  */
 
 import { initStoreDatabase, getProducts, getCollections, getStoreSettings } from './store-db.js';
@@ -269,7 +269,7 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
-// SUVENE PRODUCT DETAIL MODAL (ENLARGED MAIN PHOTO, NO THUMBNAIL ICONS BELOW)
+// SHADA1st PRODUCT DETAIL MODAL
 window.openProductModal = (productId, event) => {
   if (event) event.stopPropagation();
 
@@ -301,7 +301,7 @@ window.openProductModal = (productId, event) => {
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
 
-  // Render Rectangular Size Boxes (Matching SUVENE Screenshot 1 & 4)
+  // Render Rectangular Size Boxes
   if (sizeBoxesContainer) {
     const defaultSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL'];
     const availableSizes = product.sizes && product.sizes.length ? product.sizes : ['S', 'M', 'L', 'XL'];

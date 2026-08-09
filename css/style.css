@@ -1,11 +1,11 @@
 /* ==========================================================================
-   SHADA1st Apparel Shop — Minimalist Luxury Fashion System (Suvene-Inspired)
+   SHADA1st Apparel Shop — Minimalist Luxury Fashion System
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap');
 
 :root {
-  /* --- SUVENE LUXURY PALETTE --- */
+  /* --- SHADA1st LUXURY PALETTE --- */
   --bg-primary: #F7F7F7;        /* Clean light canvas backdrop */
   --bg-surface: #FFFFFF;        /* Pure white card container */
   --bg-card-img: #EBEBEB;       /* Light neutral photo backdrop */
@@ -493,7 +493,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   PRODUCT DETAIL MODAL
+   SHADA1st PRODUCT DETAIL MODAL
    ========================================================================== */
 .modal-backdrop {
   position: fixed;
@@ -519,7 +519,7 @@ input, select, textarea {
   pointer-events: auto;
 }
 
-.suvene-modal-card {
+.shada-modal-card {
   background: #FFFFFF;
   max-width: 960px;
   width: 100%;
@@ -531,7 +531,7 @@ input, select, textarea {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.modal-backdrop.active .suvene-modal-card {
+.modal-backdrop.active .shada-modal-card {
   transform: translateY(0);
 }
 
@@ -592,7 +592,7 @@ input, select, textarea {
   flex-direction: column;
 }
 
-.suvene-brand-tag {
+.shada-brand-tag {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 2px;
@@ -600,7 +600,7 @@ input, select, textarea {
   text-transform: uppercase;
 }
 
-.suvene-product-title {
+.shada-product-title {
   font-family: var(--font-heading);
   font-size: 1.7rem;
   font-weight: 900;
@@ -609,7 +609,7 @@ input, select, textarea {
   margin: 0.2rem 0;
 }
 
-.suvene-sub-label {
+.shada-sub-label {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -618,14 +618,14 @@ input, select, textarea {
   margin-bottom: 0.75rem;
 }
 
-.suvene-price-row {
+.shada-price-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.suvene-price {
+.shada-price {
   font-size: 1.5rem;
   font-weight: 900;
 }
@@ -667,7 +667,7 @@ input, select, textarea {
   cursor: pointer;
 }
 
-.suvene-size-boxes {
+.shada-size-boxes {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 0.4rem;
@@ -737,7 +737,7 @@ input, select, textarea {
   font-weight: 800;
 }
 
-.btn-suvene-whatsapp {
+.btn-shada-whatsapp {
   width: 100%;
   padding: 1rem 1.5rem;
   background: var(--bg-dark);
@@ -754,11 +754,11 @@ input, select, textarea {
   margin-bottom: 1.5rem;
 }
 
-.btn-suvene-whatsapp:hover {
+.btn-shada-whatsapp:hover {
   background: var(--accent-whatsapp);
 }
 
-.suvene-accordion-group {
+.shada-accordion-group {
   border-top: 1px solid var(--border-subtle);
 }
 
