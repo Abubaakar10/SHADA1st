@@ -199,71 +199,313 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   EDITORIAL HERO BANNERS
+   INSPO-MATCHING HERO SHOWCASE SECTION (EXACT LAYOUT FROM INSPIRATION IMAGE)
    ========================================================================== */
-.hero-lookbook-section {
+.hero-showcase-section {
+  padding: 2.5rem 0 3.5rem 0;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
   position: relative;
-  width: 100%;
+}
+
+.hero-main-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .hero-main-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Left Hero Typography & Actions Column */
+.hero-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.hero-pill-badge-num {
+  background: #0F1012;
+  color: #C5A059;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.hero-title-main {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
-.lookbook-banner {
-  position: relative;
-  width: 100%;
-  height: 70vh;
-  min-height: 480px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.hero-action-row {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 4rem;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
 }
 
-.lookbook-overlay {
+.btn-hero-main {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2rem;
+  background: var(--bg-dark);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  transition: var(--transition-fast);
+  box-shadow: 0 6px 20px rgba(15, 16, 18, 0.15);
+}
+
+.btn-hero-main:hover {
+  background: var(--accent-gold);
+  color: #0F1012;
+}
+
+.hero-price-meta {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.hero-price-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Middle Floating Featured Product Card */
+.hero-middle-card-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-floating-product-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.hero-floating-product-card:hover {
+  transform: translateY(-6px);
+}
+
+.floating-card-pill-tag {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -12px;
+  right: 1.25rem;
+  background: #0F1012;
+  color: #C5A059;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.hero-featured-img-box {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-card-img);
+  margin-bottom: 1rem;
+}
+
+.hero-featured-img-box img {
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+  object-fit: cover;
 }
 
-.lookbook-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  color: #FFFFFF;
+.hero-featured-card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
 }
 
-.lookbook-title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
+.hero-featured-card-price {
+  font-size: 1.1rem;
   font-weight: 900;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  text-align: right;
 }
 
-.btn-lookbook-cta {
-  display: inline-block;
-  padding: 0.85rem 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background: rgba(0, 0, 0, 0.35);
+/* Right Tall Lifestyle Model Photo Card */
+.hero-right-model-card {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-card-img);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+}
+
+.hero-right-model-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-model-card-label {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  background: rgba(15, 16, 18, 0.85);
   backdrop-filter: blur(8px);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
   color: #FFFFFF;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  transition: var(--transition-fast);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.btn-lookbook-cta:hover {
-  background: #FFFFFF;
-  color: #0F1012;
-  border-color: #FFFFFF;
+/* Bottom Feature Grid (Matching Inspo Image Bottom Row) */
+.hero-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.5fr;
+  gap: 2rem;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 1024px) {
+  .hero-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.hero-bottom-dark-card {
+  background: var(--bg-dark);
+  color: #FFFFFF;
+  border-radius: 18px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.hero-bottom-dark-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+.hero-bottom-dark-card p {
+  font-size: 0.85rem;
+  color: #B5B9C5;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.hero-bottom-dark-card a {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #C5A059;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.hero-stat-box {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.hero-stat-num {
+  font-family: var(--font-heading);
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.hero-stat-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  max-width: 120px;
+}
+
+.hero-about-text-box p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
 .store-status-badge {
