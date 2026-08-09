@@ -301,17 +301,28 @@ window.openProductModal = (productId, event) => {
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
 
-  // Render Rectangular Size Boxes
+  // Render Rectangular Size Boxes (Reading Admin Available In-Stock Sizes)
   if (sizeBoxesContainer) {
-    const defaultSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL'];
-    const availableSizes = product.sizes && product.sizes.length ? product.sizes : ['S', 'M', 'L', 'XL'];
-    selectedSize = availableSizes[0];
+    const standardBoxes = ['XXS', 'XS', 'S', 'M', 'L', 'XL'];
+    const savedInStockSizes = (product.sizes && product.sizes.length) 
+      ? product.sizes.map(s => s.toUpperCase()) 
+      : ['M', 'L', 'XL'];
 
-    sizeBoxesContainer.innerHTML = defaultSizes.map(s => {
-      const isAvailable = availableSizes.includes(s) || availableSizes.includes('Standard') || availableSizes.includes('One Size');
-      const isSelected = isAvailable && s === selectedSize;
+    // Combine standard boxes with any custom sizes saved by admin
+    const displayBoxes = [...standardBoxes];
+    savedInStockSizes.forEach(s => {
+      if (!displayBoxes.includes(s) && s !== 'STANDARD' && s !== 'ONE SIZE') {
+        displayBoxes.push(s);
+      }
+    });
 
-      if (!isAvailable) {
+    selectedSize = savedInStockSizes[0] || 'M';
+
+    sizeBoxesContainer.innerHTML = displayBoxes.map(s => {
+      const isInStock = savedInStockSizes.includes(s) || savedInStockSizes.includes('STANDARD') || savedInStockSizes.includes('ONE SIZE');
+      const isSelected = isInStock && s === selectedSize;
+
+      if (!isInStock) {
         return `<div class="size-rect out-of-stock" title="Out of stock">${s}</div>`;
       }
 

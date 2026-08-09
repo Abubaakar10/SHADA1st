@@ -108,9 +108,26 @@
                 <select id="prodCollection" class="form-control" required></select>
               </div>
 
-              <div class="form-group">
-                <label for="prodSizes">Available Sizes (comma separated)</label>
-                <input type="text" id="prodSizes" class="form-control" placeholder="S, M, L, XL, XXL">
+              <!-- INTERACTIVE SIZE IN-STOCK TOGGLE SELECTOR -->
+              <div class="form-group full-width">
+                <label>Available Sizes In Stock (Tap boxes to toggle In Stock vs Out of Stock) *</label>
+                <div class="shada-size-boxes" id="adminSizePickerGrid" style="margin-top: 0.4rem;">
+                  <div class="size-rect selected" data-size="XXS">XXS</div>
+                  <div class="size-rect selected" data-size="XS">XS</div>
+                  <div class="size-rect selected" data-size="S">S</div>
+                  <div class="size-rect selected" data-size="M">M</div>
+                  <div class="size-rect selected" data-size="L">L</div>
+                  <div class="size-rect selected" data-size="XL">XL</div>
+                  <div class="size-rect selected" data-size="XXL">XXL</div>
+                  <div class="size-rect selected" data-size="3XL">3XL</div>
+                </div>
+                <small style="color: var(--text-muted); margin-top: 0.3rem;">
+                  <i class="fa-solid fa-circle-info"></i> Solid Black = <strong>In Stock</strong> | Struck-Through Dashed = <strong>Out of Stock</strong>
+                </small>
+                
+                <div style="margin-top: 0.6rem;">
+                  <input type="text" id="prodSizes" class="form-control" placeholder="Or type additional sizes separated by comma (e.g. S, M, L, XL)">
+                </div>
               </div>
 
               <div class="form-group full-width">
@@ -119,7 +136,7 @@
                 <div class="file-dropzone" id="fileDropzone">
                   <input type="file" id="prodFileInput" accept="image/*" multiple>
                   <i class="fa-solid fa-cloud-arrow-up file-dropzone-icon"></i>
-                  <h4 style="font-size: 1rem; color: var(--accent-gold-light); margin-bottom: 0.25rem;">Tap to Choose Photos from Phone or Computer</h4>
+                  <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">Tap to Choose Photos from Phone or Computer</h4>
                   <p style="font-size: 0.85rem; color: var(--text-secondary);">Select 1 or more images from Photo Library, Camera, or files</p>
                 </div>
 
@@ -172,6 +189,7 @@
                   <th>Item Name</th>
                   <th>Collection Name</th>
                   <th>Price (GH₵)</th>
+                  <th>Sizes In Stock</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -249,7 +267,7 @@
         </div>
       </section>
 
-      <!-- TAB 4: WHATSAPP & STORE SETTINGS (STREAMLINED) -->
+      <!-- TAB 4: WHATSAPP & STORE SETTINGS -->
       <section class="admin-panel-section" id="tabSettings">
         <div class="admin-card">
           <h3 class="admin-card-title">
@@ -330,7 +348,7 @@
   </div>
 
   <div class="modal-backdrop" id="collectionItemsModal">
-    <div class="modal-card" style="max-width: 700px; padding: 2rem;">
+    <div class="shada-modal-card" style="max-width: 700px; padding: 2rem;">
       <button class="btn-modal-close" onclick="window.closeCollectionItemsModal()">
         <i class="fa-solid fa-xmark"></i>
       </button>

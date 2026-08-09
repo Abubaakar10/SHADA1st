@@ -78,6 +78,7 @@ function setupAuthCheck() {
 
 async function initAdminDashboard() {
   setupTabs();
+  setupAdminSizePicker();
   await refreshAdminData();
   setupProductForm();
   setupImagePickers();
@@ -92,6 +93,57 @@ async function initAdminDashboard() {
       window.location.reload();
     });
   }
+}
+
+function setupAdminSizePicker() {
+  const grid = document.getElementById('adminSizePickerGrid');
+  if (!grid) return;
+
+  grid.querySelectorAll('.size-rect').forEach(rect => {
+    rect.addEventListener('click', () => {
+      rect.classList.toggle('selected');
+      rect.classList.toggle('out-of-stock', !rect.classList.contains('selected'));
+    });
+  });
+}
+
+function getSelectedAdminSizes() {
+  const grid = document.getElementById('adminSizePickerGrid');
+  const activeSizes = [];
+
+  if (grid) {
+    grid.querySelectorAll('.size-rect.selected').forEach(rect => {
+      activeSizes.push(rect.getAttribute('data-size'));
+    });
+  }
+
+  const customInput = document.getElementById('prodSizes');
+  if (customInput && customInput.value.trim()) {
+    const raw = customInput.value.trim().split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+    raw.forEach(s => {
+      if (!activeSizes.includes(s)) activeSizes.push(s);
+    });
+  }
+
+  return activeSizes.length ? activeSizes : ['M', 'L', 'XL'];
+}
+
+function setAdminSizePickerState(savedSizes = []) {
+  const grid = document.getElementById('adminSizePickerGrid');
+  if (!grid) return;
+
+  const normalized = savedSizes.map(s => s.toUpperCase());
+
+  grid.querySelectorAll('.size-rect').forEach(rect => {
+    const sizeVal = rect.getAttribute('data-size');
+    if (normalized.includes(sizeVal) || normalized.includes('STANDARD') || normalized.includes('ONE SIZE')) {
+      rect.classList.add('selected');
+      rect.classList.remove('out-of-stock');
+    } else {
+      rect.classList.remove('selected');
+      rect.classList.add('out-of-stock');
+    }
+  });
 }
 
 async function refreshAdminData() {
@@ -197,16 +249,17 @@ function renderProductsTable() {
   if (!tbody) return;
 
   if (adminProducts.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem;">No products found in catalog.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">No products found in catalog.</td></tr>`;
     return;
   }
 
   const symbol = adminSettings.currencySymbol || 'GH₵';
 
   tbody.innerHTML = adminProducts.map((p, index) => {
-    const formattedPrice = symbol + Number(p.price).toLocaleString();
+    const formattedPrice = symbol + " " + Number(p.price).toLocaleString();
     const mainImg = (p.images && p.images.length > 0) ? p.images[0] : 'images/placeholders/apparel-1.svg';
-    
+    const sizesListStr = (p.sizes && p.sizes.length) ? p.sizes.join(', ') : 'M, L, XL';
+
     return `
       <tr>
         <td><strong>#${index + 1}</strong></td>
@@ -217,9 +270,10 @@ function renderProductsTable() {
           <strong>${p.name}</strong><br>
           <small style="color: var(--text-muted);">ID: ${p.id}</small>
         </td>
-        <td><span class="badge-collection">${p.collectionName || 'General'}</span></td>
-        <td><strong style="color: var(--accent-gold-light);">${formattedPrice}</strong></td>
-        <td>${p.inStock ? '<span style="color: #25D366; font-weight:700;">In Stock</span>' : '<span style="color: #FF6B6B;">Out of Stock</span>'}</td>
+        <td><span class="card-badge-tag">${p.collectionName || 'General'}</span></td>
+        <td><strong style="color: var(--text-primary);">${formattedPrice}</strong></td>
+        <td><span style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">${sizesListStr}</span></td>
+        <td>${p.inStock ? '<span style="color: #25D366; font-weight:700;">In Stock</span>' : '<span style="color: #EF4444;">Out of Stock</span>'}</td>
         <td>
           <div style="display: flex; gap: 0.5rem;">
             <button class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="window.editAdminProduct('${p.id}')">
@@ -256,13 +310,12 @@ function setupProductForm() {
       const selectedCol = adminCollections.find(c => c.id === collectionId);
       const collectionName = selectedCol ? selectedCol.name : 'General Apparel';
       const description = document.getElementById('prodDesc').value.trim();
-      const sizesRaw = document.getElementById('prodSizes').value.trim();
       const colorsRaw = document.getElementById('prodColors').value.trim();
       const inStock = document.getElementById('prodInStock').checked;
       const featured = document.getElementById('prodFeatured').checked;
 
+      const sizes = getSelectedAdminSizes();
       const images = uploadedImageUrls.length > 0 ? uploadedImageUrls : ['images/placeholders/apparel-1.svg'];
-      const sizes = sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : ['S', 'M', 'L', 'XL'];
       const colors = colorsRaw ? colorsRaw.split(',').map(s => s.trim()).filter(Boolean) : ['Black'];
 
       const payload = {
@@ -302,10 +355,11 @@ window.editAdminProduct = (productId) => {
   document.getElementById('prodPrice').value = p.price;
   document.getElementById('prodCollection').value = p.collectionId || 'streetwear';
   document.getElementById('prodDesc').value = p.description || '';
-  document.getElementById('prodSizes').value = (p.sizes || []).join(', ');
   document.getElementById('prodColors').value = (p.colors || []).join(', ');
   document.getElementById('prodInStock').checked = p.inStock !== false;
   document.getElementById('prodFeatured').checked = Boolean(p.featured);
+
+  setAdminSizePickerState(p.sizes || ['M', 'L', 'XL']);
 
   uploadedImageUrls = p.images ? [...p.images] : ['images/placeholders/apparel-1.svg'];
   updateProductImagePreviews();
@@ -328,6 +382,7 @@ function resetProductForm() {
   if (form) form.reset();
   uploadedImageUrls = [];
   updateProductImagePreviews();
+  setAdminSizePickerState(['S', 'M', 'L', 'XL']);
   document.getElementById('prodId').value = '';
   document.getElementById('productFormTitle').textContent = "Add New Apparel Item";
   document.getElementById('cancelProdEdit').style.display = 'none';
@@ -340,11 +395,11 @@ function renderCollectionsTable() {
   container.innerHTML = adminCollections.map(col => {
     const itemCount = adminProducts.filter(p => p.collectionId === col.id).length;
     return `
-      <div style="background: var(--bg-tertiary); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+      <div style="background: var(--bg-primary); padding: 1.25rem; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 1rem;">
-          <img src="${col.image || 'images/placeholders/apparel-1.svg'}" style="width: 54px; height: 54px; border-radius: var(--radius-sm); object-fit: cover;">
+          <img src="${col.image || 'images/placeholders/apparel-1.svg'}" style="width: 54px; height: 54px; object-fit: cover; background: var(--bg-card-img);">
           <div>
-            <h4 style="font-size: 1.1rem; color: var(--accent-gold-light);">${col.name}</h4>
+            <h4 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">${col.name}</h4>
             <p style="font-size: 0.85rem; color: var(--text-secondary);">${col.description || 'No description provided.'}</p>
           </div>
         </div>
@@ -378,12 +433,12 @@ window.viewCollectionItems = (collectionId) => {
     } else {
       const symbol = adminSettings.currencySymbol || 'GH₵';
       list.innerHTML = items.map(p => `
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-bottom: 0.5rem; border: 1px solid var(--border-subtle);">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: var(--bg-primary); margin-bottom: 0.5rem; border: 1px solid var(--border-subtle);">
           <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <img src="${p.images[0] || 'images/placeholders/apparel-1.svg'}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+            <img src="${p.images[0] || 'images/placeholders/apparel-1.svg'}" style="width: 40px; height: 40px; object-fit: cover;">
             <div>
               <strong>${p.name}</strong><br>
-              <small style="color: var(--accent-gold-light);">${symbol}${Number(p.price).toLocaleString()}</small>
+              <small style="color: var(--text-secondary);">${symbol} ${Number(p.price).toLocaleString()}</small>
             </div>
           </div>
           <button class="btn-secondary" style="padding: 0.3rem 0.7rem; font-size: 0.75rem;" onclick="window.closeCollectionItemsModal(); window.editAdminProduct('${p.id}');">
@@ -450,10 +505,10 @@ function renderDragAndDropGrid() {
       <div class="drag-card" draggable="true" data-index="${index}" data-id="${p.id}">
         <span class="drag-card-order-badge">${index + 1}</span>
         <img src="${mainImg}" class="drag-card-image" alt="${p.name}">
-        <div class="drag-card-title">${p.name}</div>
-        <div class="drag-handle">
-          <span><i class="fa-solid fa-arrows-up-down-left-right"></i> Drag item</span>
-          <span style="color: var(--accent-gold-light); font-weight:700;">${symbol}${Number(p.price).toLocaleString()}</span>
+        <div class="drag-card-title" style="font-weight:800; font-size:0.9rem;">${p.name}</div>
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-secondary);">
+          <span><i class="fa-solid fa-arrows-up-down-left-right"></i> Drag</span>
+          <span style="color: var(--text-primary); font-weight:800;">${symbol} ${Number(p.price).toLocaleString()}</span>
         </div>
       </div>
     `;
@@ -612,7 +667,7 @@ function showToast(message, type = 'info') {
 
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}" style="color: var(--accent-gold);"></i> ${message}`;
+  toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}" style="color: var(--text-primary);"></i> ${message}`;
   container.appendChild(toast);
 
   setTimeout(() => {
