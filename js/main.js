@@ -257,7 +257,7 @@ function renderProductGrid(products) {
 
           <div class="card-footer">
             <span class="price-amount">${formattedPrice}</span>
-            <button class="btn-whatsapp-order" onclick="window.triggerWhatsAppOrder('${p.id}', event)">
+            <button class="btn-whatsapp-order" onclick="window.openProductModal('${p.id}', event)">
               ORDER
             </button>
           </div>
@@ -269,8 +269,10 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
-// SUVENE PRODUCT DETAIL MODAL
-window.openProductModal = (productId) => {
+// SUVENE PRODUCT DETAIL MODAL (ENLARGED MAIN PHOTO, NO THUMBNAIL ICONS BELOW)
+window.openProductModal = (productId, event) => {
+  if (event) event.stopPropagation();
+
   const product = allProducts.find(p => p.id === productId);
   if (!product) return;
 
@@ -281,12 +283,10 @@ window.openProductModal = (productId) => {
 
   const modal = document.getElementById('productModal');
   const mainImage = document.getElementById('modalMainImage');
-  const thumbsContainer = document.getElementById('modalThumbs');
   const tag = document.getElementById('modalTag');
   const title = document.getElementById('modalTitle');
   const price = document.getElementById('modalPrice');
   const desc = document.getElementById('modalDescription');
-  const colorSwatchesContainer = document.getElementById('modalColorSwatches');
   const sizeBoxesContainer = document.getElementById('modalSizeBoxes');
   const whatsappBtn = document.getElementById('modalWhatsAppBtn');
 
@@ -300,23 +300,6 @@ window.openProductModal = (productId) => {
 
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
-
-  if (thumbsContainer) {
-    thumbsContainer.innerHTML = images.map((img, idx) => `
-      <img src="${img}" class="thumb-item ${idx === 0 ? 'active' : ''}" onclick="window.switchModalImage('${img}', this)">
-    `).join('');
-  }
-
-  // Render Color Swatch Thumbnail Boxes (Matching SUVENE Screenshot 1)
-  if (colorSwatchesContainer) {
-    const colors = product.colors && product.colors.length ? product.colors : ['Default'];
-    selectedColor = colors[0];
-    colorSwatchesContainer.innerHTML = colors.map((c, idx) => `
-      <div class="swatch-box ${idx === 0 ? 'selected' : ''}" title="${c}" onclick="window.selectModalColor('${c}', this)">
-        <img src="${images[idx % images.length]}" alt="${c}">
-      </div>
-    `).join('');
-  }
 
   // Render Rectangular Size Boxes (Matching SUVENE Screenshot 1 & 4)
   if (sizeBoxesContainer) {
@@ -336,6 +319,9 @@ window.openProductModal = (productId) => {
     }).join('');
   }
 
+  // Pre-set selected color if available
+  selectedColor = (product.colors && product.colors.length) ? product.colors[0] : 'Default';
+
   if (whatsappBtn) {
     whatsappBtn.onclick = () => window.triggerWhatsAppOrder(product.id);
   }
@@ -351,21 +337,6 @@ window.selectModalSize = (size, element) => {
   const boxes = document.querySelectorAll('#modalSizeBoxes .size-rect');
   boxes.forEach(b => b.classList.remove('selected'));
   element.classList.add('selected');
-};
-
-window.selectModalColor = (color, element) => {
-  selectedColor = color;
-  const swatches = document.querySelectorAll('#modalColorSwatches .swatch-box');
-  swatches.forEach(s => s.classList.remove('selected'));
-  element.classList.add('selected');
-};
-
-window.switchModalImage = (imgSrc, element) => {
-  const mainImg = document.getElementById('modalMainImage');
-  if (mainImg) mainImg.src = imgSrc;
-  const thumbs = document.querySelectorAll('.thumb-item');
-  thumbs.forEach(t => t.classList.remove('active'));
-  element.classList.add('active');
 };
 
 function closeModal() {
@@ -404,7 +375,7 @@ function setupFooterSupportLink() {
   }
 }
 
-// WhatsApp Order Generator
+// WhatsApp Order Generator (Triggered inside Modal Panel)
 window.triggerWhatsAppOrder = (productId, event) => {
   if (event) event.stopPropagation();
 

@@ -12,19 +12,11 @@
 </head>
 <body>
 
-  <!-- SUVENE MINIMALIST HEADER -->
+  <!-- SUVENE MINIMALIST HEADER: LEFT LOGO, RIGHT SEARCH & HOW TO ORDER -->
   <header class="site-header">
     <div class="container nav-wrapper">
-      <div class="nav-left">
-        <button class="icon-btn" onclick="window.location.hash='#catalog'" title="Catalog Search">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <button class="icon-btn" onclick="document.getElementById('searchInput').focus()" title="Search">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </div>
-
-      <!-- CENTERED BRAND LOGO -->
+      
+      <!-- LEFT SIDE: SHADA1st BRAND LOGO -->
       <div class="nav-brand-logo">
         <a href="index.html" title="SHADA1st Apparel">
           <img src="images/logo.svg" alt="SHADA1st Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -32,14 +24,19 @@
         </a>
       </div>
 
-      <div class="nav-right">
-        <button class="icon-btn" onclick="window.openHowToOrderModal()" title="How to Order">
-          <i class="fa-solid fa-circle-question"></i>
-        </button>
-        <button class="icon-btn" onclick="window.openHowToOrderModal()" title="Shopping Direct">
-          <i class="fa-solid fa-bag-shopping"></i>
+      <!-- RIGHT SIDE: SEARCH BAR & HOW TO ORDER BUTTON GROUPED TOGETHER -->
+      <div class="nav-right-actions">
+        <div class="header-search-group">
+          <i class="fa-solid fa-magnifying-glass header-search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search apparel...">
+        </div>
+
+        <button class="btn-how-to-order" onclick="window.openHowToOrderModal()" title="How to Order Guide">
+          <i class="fa-solid fa-circle-question" style="font-size: 1.05rem;"></i>
+          <span>HOW TO ORDER</span>
         </button>
       </div>
+
     </div>
   </header>
 
@@ -60,19 +57,12 @@
     <div class="container controls-bar">
       <div class="collections-pills" id="collectionPills"></div>
 
-      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" placeholder="Search apparel...">
-        </div>
-
-        <select id="sortSelect" class="sort-select">
-          <option value="date-desc">NEWEST DROP</option>
-          <option value="price-asc">PRICE: LOW TO HIGH</option>
-          <option value="price-desc">PRICE: HIGH TO LOW</option>
-          <option value="name-asc">NAME: A TO Z</option>
-        </select>
-      </div>
+      <select id="sortSelect" class="sort-select">
+        <option value="date-desc">NEWEST DROP</option>
+        <option value="price-asc">PRICE: LOW TO HIGH</option>
+        <option value="price-desc">PRICE: HIGH TO LOW</option>
+        <option value="name-asc">NAME: A TO Z</option>
+      </select>
     </div>
   </section>
 
@@ -88,7 +78,7 @@
     </div>
   </main>
 
-  <!-- SUVENE PRODUCT DETAIL MODAL (MATCHING SCREENSHOT 1 & 4) -->
+  <!-- SUVENE PRODUCT DETAIL MODAL -->
   <div class="modal-backdrop" id="productModal">
     <div class="suvene-modal-card">
       <button class="btn-modal-close" id="modalClose" title="Close Modal">
@@ -96,13 +86,12 @@
       </button>
 
       <div class="modal-body-grid">
-        <!-- Left: Image Gallery -->
+        <!-- Left: Enlarged Clean Item Picture -->
         <div class="modal-gallery">
           <img id="modalMainImage" class="gallery-main-image" src="" alt="Apparel Detail">
-          <div class="gallery-thumbs" id="modalThumbs"></div>
         </div>
 
-        <!-- Right: Detail Form matching SUVENE screenshots -->
+        <!-- Right: Detail Form & Selection Panel -->
         <div class="modal-details">
           <span class="suvene-brand-tag">SHADA1st</span>
           <h2 class="suvene-product-title" id="modalTitle">HOODIE - SHADA1st</h2>
@@ -115,17 +104,13 @@
             </div>
           </div>
 
-          <!-- Color Swatch Thumbnails -->
-          <div class="section-label">CHOOSE COLOR:</div>
-          <div class="color-swatch-list" id="modalColorSwatches"></div>
-
           <!-- Fit info & Sizechart Link -->
           <div class="size-chart-row">
             <span class="fit-info-text">MODEL IS WEARING SIZE L</span>
             <span class="size-chart-link" onclick="alert('Size Chart:\nS: Chest 38-40in\nM: Chest 40-42in\nL: Chest 42-44in\nXL: Chest 44-46in')">SIZECHART</span>
           </div>
 
-          <!-- Rectangular Size Box Selector (Matching SUVENE Screenshot 1 & 4) -->
+          <!-- Rectangular Size Box Selector -->
           <div class="suvene-size-boxes" id="modalSizeBoxes"></div>
 
           <!-- Quantity Counter -->
