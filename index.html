@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHADA1st Apparel Shop — Ghana Luxury & Streetwear Apparel</title>
-  <meta name="description" content="Explore SHADA1st Apparel Shop collections in Ghana. High-end streetwear, luxury evening dresses, and urban casual apparel with direct WhatsApp ordering.">
+  <title>SHADA1st Apparel — High Fashion & Luxury Collections</title>
+  <meta name="description" content="Explore SHADA1st Apparel Shop collections in Ghana. High-end streetwear, luxury hoodies, and editorial fashion with direct WhatsApp ordering.">
   
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,90 +12,85 @@
 </head>
 <body>
 
-  <!-- SITE HEADER & NAVIGATION -->
+  <!-- SUVENE MINIMALIST HEADER -->
   <header class="site-header">
     <div class="container nav-wrapper">
-      <a href="index.html" class="brand-logo" title="SHADA1st Apparel Shop">
-        <img src="images/logo.svg" alt="SHADA1st Logo">
-      </a>
+      <div class="nav-left">
+        <button class="icon-btn" onclick="window.location.hash='#catalog'" title="Catalog Search">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <button class="icon-btn" onclick="document.getElementById('searchInput').focus()" title="Search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
 
-      <ul class="nav-links">
-        <li><a href="#catalog" class="nav-link active"><i class="fa-solid fa-store"></i> Storefront</a></li>
-        <li><a href="#collections" class="nav-link"><i class="fa-solid fa-tags"></i> Collections</a></li>
-        <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()" class="nav-link"><i class="fa-solid fa-circle-question"></i> How to Order</a></li>
-      </ul>
+      <!-- CENTERED BRAND LOGO -->
+      <div class="nav-brand-logo">
+        <a href="index.html" title="SHADA1st Apparel">
+          <img src="images/logo.svg" alt="SHADA1st Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="brand-text-fallback" style="display: none;">SHADA1st</span>
+        </a>
+      </div>
+
+      <div class="nav-right">
+        <button class="icon-btn" onclick="window.openHowToOrderModal()" title="How to Order">
+          <i class="fa-solid fa-circle-question"></i>
+        </button>
+        <button class="icon-btn" onclick="window.openHowToOrderModal()" title="Shopping Direct">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- HERO BANNER SECTION -->
-  <section class="hero-section">
-    <div class="container hero-content">
-      <div class="hero-badge">
-        <i class="fa-solid fa-sparkles"></i> 2026 Collection Drop
-      </div>
-      <h1 class="hero-title">
-        Elegance Meets <span class="gold-gradient-text">Urban Prestige</span>
-      </h1>
-      <p class="hero-subtitle">
-        Browse exclusive SHADA1st apparel, select your favorite outfit, size & quantity, and place your order directly via WhatsApp.
-      </p>
-      
-      <div id="storeStatusBadgeContainer"></div>
-
-      <div class="hero-features">
-        <div class="hero-feature-item">
-          <i class="fa-brands fa-whatsapp"></i> Direct WhatsApp Order
-        </div>
-        <div class="hero-feature-item">
-          <i class="fa-solid fa-truck-fast"></i> Fast Delivery across Ghana
-        </div>
-        <div class="hero-feature-item">
-          <i class="fa-solid fa-shield-halved"></i> Premium Fabric Quality
-        </div>
+  <!-- SUVENE EDITORIAL LOOKBOOK HERO BANNERS -->
+  <section class="hero-lookbook-section">
+    <div class="lookbook-banner" style="background-image: url('images/placeholders/apparel-2.svg');">
+      <div class="lookbook-overlay"></div>
+      <div class="lookbook-content">
+        <div id="storeStatusBadgeContainer" style="margin-bottom: 1rem;"></div>
+        <h1 class="lookbook-title">BASICS 26</h1>
+        <a href="#catalog" class="btn-lookbook-cta">SHOP NOW</a>
       </div>
     </div>
   </section>
 
-  <!-- CONTROLS BAR (SEARCH, SORT, COLLECTION PILLS) -->
+  <!-- CONTROLS & FILTER TOOLBAR -->
   <section class="controls-section" id="collections">
     <div class="container controls-bar">
-      <div class="search-and-sort">
+      <div class="collections-pills" id="collectionPills"></div>
+
+      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" placeholder="Search apparel by name, style, or details...">
+          <input type="text" id="searchInput" placeholder="Search apparel...">
         </div>
 
-        <div class="sort-box">
-          <label for="sortSelect"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
-          <select id="sortSelect" class="sort-select">
-            <option value="date-desc">Date Added: Newest First</option>
-            <option value="date-asc">Date Added: Oldest First</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="name-asc">Alphabetical: A to Z</option>
-          </select>
-        </div>
+        <select id="sortSelect" class="sort-select">
+          <option value="date-desc">NEWEST DROP</option>
+          <option value="price-asc">PRICE: LOW TO HIGH</option>
+          <option value="price-desc">PRICE: HIGH TO LOW</option>
+          <option value="name-asc">NAME: A TO Z</option>
+        </select>
       </div>
-
-      <div class="collections-pills" id="collectionPills"></div>
     </div>
   </section>
 
   <!-- PRODUCT CATALOG GRID -->
   <main class="catalog-section" id="catalog">
     <div class="container">
-      <div class="section-header">
-        <h2 style="font-family: var(--font-brand); font-size: 1.5rem;">Available Apparel Items</h2>
-        <span class="results-count" id="resultsCount">Loading products...</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+        <h2 style="font-family: var(--font-heading); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;">COLLECTIONS</h2>
+        <span id="resultsCount" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Loading...</span>
       </div>
 
       <div class="product-grid" id="productGrid"></div>
     </div>
   </main>
 
-  <!-- CLEAN PRODUCT DETAIL MODAL -->
+  <!-- SUVENE PRODUCT DETAIL MODAL (MATCHING SCREENSHOT 1 & 4) -->
   <div class="modal-backdrop" id="productModal">
-    <div class="modal-card">
+    <div class="suvene-modal-card">
       <button class="btn-modal-close" id="modalClose" title="Close Modal">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -103,46 +98,81 @@
       <div class="modal-body-grid">
         <!-- Left: Image Gallery -->
         <div class="modal-gallery">
-          <img id="modalMainImage" class="gallery-main-image" src="" alt="Apparel Image">
+          <img id="modalMainImage" class="gallery-main-image" src="" alt="Apparel Detail">
           <div class="gallery-thumbs" id="modalThumbs"></div>
         </div>
 
-        <!-- Right: Item Details & Order Button -->
+        <!-- Right: Detail Form matching SUVENE screenshots -->
         <div class="modal-details">
-          <span class="modal-category-tag" id="modalTag">Collection</span>
-          <h2 class="modal-title" id="modalTitle">Product Title</h2>
-          <div class="modal-price" id="modalPrice">GH₵0</div>
-          
-          <p class="modal-description" id="modalDescription"></p>
+          <span class="suvene-brand-tag">SHADA1st</span>
+          <h2 class="suvene-product-title" id="modalTitle">HOODIE - SHADA1st</h2>
+          <span class="suvene-sub-label" id="modalTag">PREMIUM QUALITY</span>
 
-          <!-- Size Selection -->
-          <div class="options-group">
-            <div class="options-label">Select Size (Tap to choose)</div>
-            <div class="chips-list" id="modalSizes"></div>
+          <div class="suvene-price-row">
+            <div class="suvene-price" id="modalPrice">GH₵ 550</div>
+            <div class="rating-stars-inline">
+              <span>★★★★★</span> <strong>4.9</strong>/5
+            </div>
           </div>
 
-          <!-- Color Selection -->
-          <div class="options-group">
-            <div class="options-label">Select Color (Tap to choose)</div>
-            <div class="chips-list" id="modalColors"></div>
+          <!-- Color Swatch Thumbnails -->
+          <div class="section-label">CHOOSE COLOR:</div>
+          <div class="color-swatch-list" id="modalColorSwatches"></div>
+
+          <!-- Fit info & Sizechart Link -->
+          <div class="size-chart-row">
+            <span class="fit-info-text">MODEL IS WEARING SIZE L</span>
+            <span class="size-chart-link" onclick="alert('Size Chart:\nS: Chest 38-40in\nM: Chest 40-42in\nL: Chest 42-44in\nXL: Chest 44-46in')">SIZECHART</span>
           </div>
+
+          <!-- Rectangular Size Box Selector (Matching SUVENE Screenshot 1 & 4) -->
+          <div class="suvene-size-boxes" id="modalSizeBoxes"></div>
 
           <!-- Quantity Counter -->
-          <div class="options-group">
-            <div class="options-label">Select Quantity</div>
-            <div class="quantity-control-wrapper">
+          <div class="section-label">QUANTITY:</div>
+          <div class="quantity-row">
+            <div class="qty-control-box">
               <button type="button" class="qty-btn" id="qtyMinusBtn">-</button>
-              <span class="qty-number" id="qtyDisplay">1</span>
+              <span class="qty-num" id="qtyDisplay">1</span>
               <button type="button" class="qty-btn" id="qtyPlusBtn">+</button>
             </div>
           </div>
 
-          <!-- WhatsApp Order Action -->
-          <div class="whatsapp-modal-cta">
-            <button class="btn-whatsapp-large" id="modalWhatsAppBtn">
-              <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> Order on WhatsApp
-            </button>
+          <!-- Large Solid WhatsApp CTA Button -->
+          <button class="btn-suvene-whatsapp" id="modalWhatsAppBtn">
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> ORDER ON WHATSAPP
+          </button>
+
+          <!-- Accordion Dropdowns -->
+          <div class="suvene-accordion-group">
+            <div class="accordion-item open">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>DESCRIPTION</span> <span>+</span>
+              </div>
+              <div class="accordion-body" id="modalDescription">
+                Crafted from 280GSM heavyweight combed organic cotton. Designed in Ghana for everyday statement prestige.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>SHIPPING & RETURNS</span> <span>+</span>
+              </div>
+              <div class="accordion-body">
+                Express delivery across Ghana within 24-48 hours. Orders placed directly via WhatsApp.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>WASH & CARE</span> <span>+</span>
+              </div>
+              <div class="accordion-body">
+                Machine wash cold inside out with like colors. Do not bleach. Tumble dry low or line dry.
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -150,83 +180,81 @@
 
   <!-- HOW TO ORDER MODAL -->
   <div class="modal-backdrop" id="howToOrderModal">
-    <div class="modal-card" style="max-width: 750px; padding: 2.5rem;">
-      <button class="btn-modal-close" onclick="window.closeHowToOrderModal()" title="Close Modal">
+    <div class="suvene-modal-card" style="max-width: 720px; padding: 2.5rem;">
+      <button class="btn-modal-close" onclick="window.closeHowToOrderModal()" title="Close">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div style="text-align: center; margin-bottom: 2rem;">
         <i class="fa-brands fa-whatsapp" style="font-size: 3rem; color: var(--accent-whatsapp); margin-bottom: 0.75rem;"></i>
-        <h2 style="font-family: var(--font-brand); font-size: 1.8rem; margin-bottom: 0.5rem;">How Ordering Works on SHADA1st</h2>
-        <p style="color: var(--text-secondary); max-width: 540px; margin: 0 auto;">
-          We make placing an order simple, fast, and personalized directly through WhatsApp.
+        <h2 style="font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase;">HOW TO ORDER ON SHADA1st</h2>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto; font-size: 0.9rem;">
+          Direct WhatsApp ordering tailored specifically for you.
         </p>
       </div>
 
       <div class="order-steps-grid">
         <div class="order-step-card">
           <div class="step-num">1</div>
-          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-gold-light);">Browse & Tap</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">
-            Explore our collections, find the piece you love, pick your size & quantity.
+          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">BROWSE & SELECT</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary);">
+            Pick your apparel piece, size, color, and quantity.
           </p>
         </div>
 
         <div class="order-step-card">
           <div class="step-num">2</div>
-          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-whatsapp);">Tap Order</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">
-            Click <strong>"Order on WhatsApp"</strong>. Your WhatsApp opens with item name, size, quantity, and price pre-filled.
+          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">TAP ORDER</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary);">
+            Tap "Order on WhatsApp" to open your WhatsApp with details pre-filled.
           </p>
         </div>
 
         <div class="order-step-card">
           <div class="step-num">3</div>
-          <h4 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-gold-light);">Confirm & Receive</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">
-            Chat directly with our admin to confirm your delivery location in Ghana and payment details!
+          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">CONFIRM & RECEIVE</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary);">
+            Chat directly with our admin for delivery across Ghana!
           </p>
         </div>
       </div>
 
       <div style="margin-top: 2rem; text-align: center;">
-        <button class="btn-gold" onclick="window.closeHowToOrderModal()">
-          Got It, Start Browsing
-        </button>
+        <button class="btn-gold" onclick="window.closeHowToOrderModal()">GOT IT</button>
       </div>
     </div>
   </div>
 
-  <!-- SITE FOOTER -->
+  <!-- SUVENE FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 48px;">
+          <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 38px;">
           <p>
-            SHADA1st Apparel Shop delivers premium streetwear and bespoke luxury fashion straight to your doorstep across Ghana. Order directly via WhatsApp for seamless service.
+            SHADA1st Apparel Shop delivers premium streetwear and bespoke fashion straight to your doorstep across Ghana. Order directly via WhatsApp.
           </p>
         </div>
 
         <div class="footer-col">
-          <h4>Navigation</h4>
+          <h4>NAVIGATION</h4>
           <ul>
-            <li><a href="#catalog">Catalog</a></li>
-            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">How to Order</a></li>
+            <li><a href="#catalog">CATALOG</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">HOW TO ORDER</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Customer Care</h4>
+          <h4>CUSTOMER CARE</h4>
           <ul>
-            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()"><i class="fa-solid fa-circle-info"></i> How to Order Guide</a></li>
-            <li><a href="javascript:void(0)" id="footerWhatsAppSupport"><i class="fa-brands fa-whatsapp"></i> Chat with Admin Support</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">HOW TO ORDER GUIDE</a></li>
+            <li><a href="javascript:void(0)" id="footerWhatsAppSupport">WHATSAPP SUPPORT</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="footer-bottom" style="justify-content: center;">
-        <p>&copy; 2026 SHADA1st Apparel Shop. All rights reserved.</p>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SHADA1st APPAREL SHOP. ALL RIGHTS RESERVED.</p>
       </div>
     </div>
   </footer>

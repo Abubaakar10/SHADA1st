@@ -1,5 +1,5 @@
 /**
- * SHADA1st Apparel Shop — Customer Storefront Controller
+ * SHADA1st Apparel Shop — Customer Storefront Controller (Suvene Style)
  */
 
 import { initStoreDatabase, getProducts, getCollections, getStoreSettings } from './store-db.js';
@@ -11,6 +11,7 @@ let activeCollectionFilter = 'all';
 let currentSortMode = 'date-desc';
 let currentSearchQuery = '';
 
+// Modal Selection State
 let modalProduct = null;
 let selectedSize = '';
 let selectedColor = '';
@@ -43,9 +44,9 @@ function showLoadingState() {
   const grid = document.getElementById('productGrid');
   if (grid) {
     grid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--accent-gold-light);">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-        <p font-weight="600">Curating SHADA1st Collections...</p>
+      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-muted);">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+        <p style="font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">CURATING SHADA1st LOOKBOOK...</p>
       </div>
     `;
   }
@@ -62,13 +63,13 @@ function renderStoreStatusBadge() {
   if (isOpen) {
     container.innerHTML = `
       <div class="store-status-badge open">
-        <i class="fa-solid fa-circle" style="font-size: 0.6rem;"></i> We are Currently OPEN (${openTime} - ${closeTime})
+        <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> STORE OPEN (${openTime} - ${closeTime})
       </div>
     `;
   } else {
     container.innerHTML = `
       <div class="store-status-badge closed">
-        <i class="fa-solid fa-moon"></i> Store Closed — Leave a message and we'll reply shortly!
+        <i class="fa-solid fa-moon"></i> STORE CLOSED — LEAVE A MESSAGE
       </div>
     `;
   }
@@ -96,14 +97,14 @@ function renderCollectionPills() {
 
   let html = `
     <button class="pill-btn ${activeCollectionFilter === 'all' ? 'active' : ''}" data-collection="all">
-      <i class="fa-solid fa-layer-group"></i> All Collections
+      ALL ITEMS
     </button>
   `;
 
   allCollections.forEach(col => {
     html += `
       <button class="pill-btn ${activeCollectionFilter === col.id ? 'active' : ''}" data-collection="${col.id}">
-        ${col.name}
+        ${col.name.toUpperCase()}
       </button>
     `;
   });
@@ -196,9 +197,6 @@ function applyFiltersAndSort() {
     case 'date-desc':
       filtered.sort((a, b) => new Date(b.dateAdded || 0) - new Date(a.dateAdded || 0));
       break;
-    case 'date-asc':
-      filtered.sort((a, b) => new Date(a.dateAdded || 0) - new Date(b.dateAdded || 0));
-      break;
     case 'price-asc':
       filtered.sort((a, b) => a.price - b.price);
       break;
@@ -220,17 +218,17 @@ function renderProductGrid(products) {
   const countEl = document.getElementById('resultsCount');
   
   if (countEl) {
-    countEl.textContent = `Showing ${products.length} item${products.length === 1 ? '' : 's'}`;
+    countEl.textContent = `${products.length} ITEM${products.length === 1 ? '' : 'S'}`;
   }
 
   if (!grid) return;
 
   if (products.length === 0) {
     grid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px dashed var(--border-subtle);">
-        <i class="fa-solid fa-shirt" style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 1rem; opacity: 0.5;"></i>
-        <h3 style="margin-bottom: 0.5rem;">No apparel items match your search</h3>
-        <p style="color: var(--text-secondary); font-size: 0.9rem;">Try selecting a different collection or clearing your search filters.</p>
+      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <i class="fa-solid fa-shirt" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+        <h3 style="font-family: var(--font-heading); font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase;">NO PRODUCTS FOUND</h3>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem;">Try selecting a different collection or search term.</p>
       </div>
     `;
     return;
@@ -239,26 +237,28 @@ function renderProductGrid(products) {
   const symbol = storeSettings.currencySymbol || 'GH₵';
   let html = '';
   products.forEach(p => {
-    const formattedPrice = symbol + Number(p.price).toLocaleString();
+    const formattedPrice = symbol + " " + Number(p.price).toLocaleString();
     const mainImg = (p.images && p.images.length > 0) ? p.images[0] : 'images/placeholders/apparel-1.svg';
     
     html += `
       <div class="product-card" data-id="${p.id}">
         <div class="card-image-wrapper" onclick="window.openProductModal('${p.id}')">
           <img src="${mainImg}" alt="${p.name}" class="card-image" loading="lazy">
-          <span class="badge-collection">${p.collectionName || 'Collection'}</span>
-          ${p.featured ? `<span class="badge-featured">Featured</span>` : ''}
+          ${p.featured ? `<span class="card-badge-tag">FEATURED</span>` : ''}
         </div>
         <div class="card-content">
+          <span class="card-brand-sub">SHADA1st</span>
           <h3 class="product-title" onclick="window.openProductModal('${p.id}')">${p.name}</h3>
-          <p class="product-description-snippet">${p.description || 'Exclusive piece from SHADA1st Apparel collection.'}</p>
+          
+          <div class="rating-row">
+            <span class="rating-stars">★★★★★</span>
+            <span>4.9</span>
+          </div>
+
           <div class="card-footer">
-            <div class="price-tag">
-              <span class="price-label">Price</span>
-              <span class="price-amount">${formattedPrice}</span>
-            </div>
+            <span class="price-amount">${formattedPrice}</span>
             <button class="btn-whatsapp-order" onclick="window.triggerWhatsAppOrder('${p.id}', event)">
-              <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem;"></i> Order
+              ORDER
             </button>
           </div>
         </div>
@@ -269,6 +269,7 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
+// SUVENE PRODUCT DETAIL MODAL
 window.openProductModal = (productId) => {
   const product = allProducts.find(p => p.id === productId);
   if (!product) return;
@@ -285,17 +286,17 @@ window.openProductModal = (productId) => {
   const title = document.getElementById('modalTitle');
   const price = document.getElementById('modalPrice');
   const desc = document.getElementById('modalDescription');
-  const sizesList = document.getElementById('modalSizes');
-  const colorsList = document.getElementById('modalColors');
+  const colorSwatchesContainer = document.getElementById('modalColorSwatches');
+  const sizeBoxesContainer = document.getElementById('modalSizeBoxes');
   const whatsappBtn = document.getElementById('modalWhatsAppBtn');
 
   const symbol = storeSettings.currencySymbol || 'GH₵';
-  const formattedPrice = symbol + Number(product.price).toLocaleString();
+  const formattedPrice = symbol + " " + Number(product.price).toLocaleString();
   
-  if (tag) tag.textContent = product.collectionName || 'Exclusive Item';
-  if (title) title.textContent = product.name;
+  if (tag) tag.textContent = product.collectionName ? product.collectionName.toUpperCase() : 'PREMIUM QUALITY';
+  if (title) title.textContent = product.name.toUpperCase();
   if (price) price.textContent = formattedPrice;
-  if (desc) desc.textContent = product.description || 'High-end tailored apparel designed by SHADA1st.';
+  if (desc) desc.textContent = product.description || 'Crafted from 280GSM heavyweight combed organic cotton. Designed in Ghana for everyday statement prestige.';
 
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
@@ -306,20 +307,33 @@ window.openProductModal = (productId) => {
     `).join('');
   }
 
-  if (sizesList) {
-    const sizes = product.sizes && product.sizes.length ? product.sizes : ['Standard'];
-    selectedSize = sizes[0];
-    sizesList.innerHTML = sizes.map((s, idx) => `
-      <span class="chip ${idx === 0 ? 'selected' : ''}" data-size="${s}" onclick="window.selectModalSize('${s}', this)">${s}</span>
+  // Render Color Swatch Thumbnail Boxes (Matching SUVENE Screenshot 1)
+  if (colorSwatchesContainer) {
+    const colors = product.colors && product.colors.length ? product.colors : ['Default'];
+    selectedColor = colors[0];
+    colorSwatchesContainer.innerHTML = colors.map((c, idx) => `
+      <div class="swatch-box ${idx === 0 ? 'selected' : ''}" title="${c}" onclick="window.selectModalColor('${c}', this)">
+        <img src="${images[idx % images.length]}" alt="${c}">
+      </div>
     `).join('');
   }
 
-  if (colorsList) {
-    const colors = product.colors && product.colors.length ? product.colors : ['Default'];
-    selectedColor = colors[0];
-    colorsList.innerHTML = colors.map((c, idx) => `
-      <span class="chip ${idx === 0 ? 'selected' : ''}" data-color="${c}" onclick="window.selectModalColor('${c}', this)">${c}</span>
-    `).join('');
+  // Render Rectangular Size Boxes (Matching SUVENE Screenshot 1 & 4)
+  if (sizeBoxesContainer) {
+    const defaultSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL'];
+    const availableSizes = product.sizes && product.sizes.length ? product.sizes : ['S', 'M', 'L', 'XL'];
+    selectedSize = availableSizes[0];
+
+    sizeBoxesContainer.innerHTML = defaultSizes.map(s => {
+      const isAvailable = availableSizes.includes(s) || availableSizes.includes('Standard') || availableSizes.includes('One Size');
+      const isSelected = isAvailable && s === selectedSize;
+
+      if (!isAvailable) {
+        return `<div class="size-rect out-of-stock" title="Out of stock">${s}</div>`;
+      }
+
+      return `<div class="size-rect ${isSelected ? 'selected' : ''}" onclick="window.selectModalSize('${s}', this)">${s}</div>`;
+    }).join('');
   }
 
   if (whatsappBtn) {
@@ -334,15 +348,15 @@ window.openProductModal = (productId) => {
 
 window.selectModalSize = (size, element) => {
   selectedSize = size;
-  const chips = document.querySelectorAll('#modalSizes .chip');
-  chips.forEach(c => c.classList.remove('selected'));
+  const boxes = document.querySelectorAll('#modalSizeBoxes .size-rect');
+  boxes.forEach(b => b.classList.remove('selected'));
   element.classList.add('selected');
 };
 
 window.selectModalColor = (color, element) => {
   selectedColor = color;
-  const chips = document.querySelectorAll('#modalColors .chip');
-  chips.forEach(c => c.classList.remove('selected'));
+  const swatches = document.querySelectorAll('#modalColorSwatches .swatch-box');
+  swatches.forEach(s => s.classList.remove('selected'));
   element.classList.add('selected');
 };
 
@@ -390,6 +404,7 @@ function setupFooterSupportLink() {
   }
 }
 
+// WhatsApp Order Generator
 window.triggerWhatsAppOrder = (productId, event) => {
   if (event) event.stopPropagation();
 
@@ -399,9 +414,9 @@ window.triggerWhatsAppOrder = (productId, event) => {
   const phone = storeSettings.whatsappPhone || '233200000000';
   const symbol = storeSettings.currencySymbol || 'GH₵';
   const unitPrice = Number(product.price);
-  const formattedUnitPrice = symbol + unitPrice.toLocaleString();
+  const formattedUnitPrice = symbol + " " + unitPrice.toLocaleString();
   const totalPrice = unitPrice * selectedQuantity;
-  const formattedTotalPrice = symbol + totalPrice.toLocaleString();
+  const formattedTotalPrice = symbol + " " + totalPrice.toLocaleString();
 
   const chosenSize = selectedSize || (product.sizes && product.sizes[0]) || 'Standard';
   const chosenColor = selectedColor || (product.colors && product.colors[0]) || 'Default';
