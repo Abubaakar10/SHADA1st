@@ -473,7 +473,7 @@ input, select, textarea {
   margin-top: auto;
 }
 
-/* STATS BOX FIX */
+/* STATS BOX */
 .hero-stat-box {
   display: flex;
   align-items: center;
@@ -505,7 +505,7 @@ input, select, textarea {
   line-height: 1.65;
 }
 
-/* STORE STATUS BADGE STYLING FIX */
+/* STORE STATUS BADGE STYLING */
 .store-status-badge {
   display: inline-flex;
   align-items: center;
@@ -531,7 +531,7 @@ input, select, textarea {
   color: #EF4444;
 }
 
-/* Tablet & Mobile Hero Grid Responsiveness */
+/* Tablet & Mobile Hero Grid Responsiveness (Center Stat Box & Badge on Mobile Only) */
 @media (max-width: 992px) {
   .hero-main-grid {
     grid-template-columns: 1fr;
@@ -548,6 +548,23 @@ input, select, textarea {
   .hero-bottom-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
+  }
+  /* Mobile-Only Centering */
+  .hero-stat-box {
+    justify-content: center;
+    width: 100%;
+  }
+  .hero-about-text-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  #storeStatusBadgeContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 0.75rem;
   }
 }
 
