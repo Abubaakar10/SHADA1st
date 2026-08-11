@@ -3,14 +3,14 @@
  * Module uses standard Firebase JS SDK (v10 modular CDN).
  */
 
-// Default placeholder config. Replace with your actual Firebase Project credentials in Admin Settings or edit here.
+// Active SHADA1st Firebase Project credentials
 export const defaultFirebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyChVWm3SQdw5On4TY_DFGpf6nZGDItGh0k",
+  authDomain: "shada1st-apparel.firebaseapp.com",
+  projectId: "shada1st-apparel",
+  storageBucket: "shada1st-apparel.firebasestorage.app",
+  messagingSenderId: "1099470310165",
+  appId: "1:1099470310165:web:9037d47ff94a4fe0ebb71c"
 };
 
 let db = null;
@@ -47,9 +47,9 @@ export async function initFirebase(customConfig = null) {
 export function getStoredFirebaseConfig() {
   try {
     const stored = localStorage.getItem("shada_firebase_config");
-    return stored ? JSON.parse(stored) : null;
+    return stored ? JSON.parse(stored) : defaultFirebaseConfig;
   } catch (e) {
-    return null;
+    return defaultFirebaseConfig;
   }
 }
 
