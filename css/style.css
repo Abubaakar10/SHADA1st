@@ -86,7 +86,7 @@ input, select, textarea {
 }
 
 /* ==========================================================================
-   RESPONSIVE SITE HEADER
+   RESPONSIVE SITE HEADER & LIVE AUTO-SUGGESTIONS SEARCH
    ========================================================================== */
 .site-header {
   position: sticky;
@@ -127,7 +127,7 @@ input, select, textarea {
   color: var(--text-primary);
 }
 
-/* Right Side Actions Container (Search + How to Order) */
+/* Right Side Actions Container */
 .nav-right-actions {
   display: flex;
   align-items: center;
@@ -172,6 +172,79 @@ input, select, textarea {
   color: var(--text-muted);
   font-size: 0.85rem;
   pointer-events: none;
+}
+
+/* SEARCH SUGGESTIONS DROPDOWN STYLING */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 320px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.12);
+  z-index: 1500;
+  display: none;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.search-suggestions-dropdown.active {
+  display: block;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: var(--bg-primary);
+}
+
+.suggestion-thumb {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  background: var(--bg-card-img);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.1rem;
 }
 
 /* HOW TO ORDER Button */
@@ -221,6 +294,10 @@ input, select, textarea {
   }
   .header-search-group input:focus {
     width: 155px;
+  }
+  .search-suggestions-dropdown {
+    width: 260px;
+    right: -40px;
   }
   .btn-how-to-order span {
     display: none;
@@ -531,7 +608,7 @@ input, select, textarea {
   color: #EF4444;
 }
 
-/* Tablet & Mobile Hero Grid Responsiveness (Center Stat Box & Badge on Mobile Only) */
+/* Tablet & Mobile Hero Grid Responsiveness */
 @media (max-width: 992px) {
   .hero-main-grid {
     grid-template-columns: 1fr;
@@ -549,7 +626,8 @@ input, select, textarea {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
-  /* Mobile-Only Centering */
+
+  /* MOBILE-ONLY CENTERING & REORDER BADGE TO BOTTOM OF PARAGRAPH */
   .hero-stat-box {
     justify-content: center;
     width: 100%;
@@ -560,11 +638,17 @@ input, select, textarea {
     align-items: center;
     text-align: center;
   }
+  .hero-about-text-box p {
+    order: 1;
+    margin-bottom: 0.75rem;
+  }
   #storeStatusBadgeContainer {
+    order: 2;
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
   }
 }
 

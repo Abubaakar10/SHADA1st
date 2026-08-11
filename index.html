@@ -24,11 +24,14 @@
         </a>
       </div>
 
-      <!-- RIGHT SIDE: SEARCH BAR & HOW TO ORDER BUTTON GROUPED TOGETHER -->
+      <!-- RIGHT SIDE: SEARCH BAR WITH LIVE AUTO-SUGGESTIONS DROPDOWN -->
       <div class="nav-right-actions">
         <div class="header-search-group">
           <i class="fa-solid fa-magnifying-glass header-search-icon"></i>
-          <input type="text" id="searchInput" placeholder="Search..." aria-label="Search apparel">
+          <input type="text" id="searchInput" placeholder="Search..." aria-label="Search apparel" autocomplete="off">
+          
+          <!-- LIVE AUTO-SUGGESTIONS DROPDOWN -->
+          <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown"></div>
         </div>
 
         <button class="btn-how-to-order" onclick="window.openHowToOrderModal()" title="How to Order Guide">
@@ -106,7 +109,7 @@
           <span class="hero-stat-label">Happy Customers in Ghana</span>
         </div>
 
-        <!-- ABOUT TEXT COLUMN -->
+        <!-- ABOUT TEXT COLUMN (BADGE POSITIONED BELOW PARAGRAPH ON MOBILE VIEW) -->
         <div class="hero-about-text-box">
           <div id="storeStatusBadgeContainer" style="margin-bottom: 0.75rem;"></div>
           <p>

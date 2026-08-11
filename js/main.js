@@ -124,12 +124,28 @@ function renderCollectionPills() {
 
 function setupEventListeners() {
   const searchInput = document.getElementById('searchInput');
+  const suggestionsDropdown = document.getElementById('searchSuggestionsDropdown');
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentSearchQuery = e.target.value.toLowerCase().trim();
       applyFiltersAndSort();
+      renderSearchSuggestions(currentSearchQuery);
+    });
+
+    searchInput.addEventListener('focus', () => {
+      if (currentSearchQuery) {
+        renderSearchSuggestions(currentSearchQuery);
+      }
     });
   }
+
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (searchInput && suggestionsDropdown && !searchInput.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
+      suggestionsDropdown.classList.remove('active');
+    }
+  });
 
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
@@ -152,9 +168,66 @@ function setupEventListeners() {
     if (e.key === 'Escape') {
       closeModal();
       window.closeHowToOrderModal();
+      if (suggestionsDropdown) suggestionsDropdown.classList.remove('active');
     }
   });
 }
+
+function renderSearchSuggestions(query) {
+  const dropdown = document.getElementById('searchSuggestionsDropdown');
+  if (!dropdown) return;
+
+  if (!query || query.length < 1) {
+    dropdown.classList.remove('active');
+    dropdown.innerHTML = '';
+    return;
+  }
+
+  const matches = allProducts.filter(p => 
+    p.name.toLowerCase().includes(query) ||
+    (p.collectionName && p.collectionName.toLowerCase().includes(query)) ||
+    (p.description && p.description.toLowerCase().includes(query))
+  ).slice(0, 5);
+
+  if (matches.length === 0) {
+    dropdown.innerHTML = `
+      <div style="padding: 0.85rem; font-size: 0.78rem; color: var(--text-muted); text-align: center;">
+        No apparel items found matching "${query}"
+      </div>
+    `;
+    dropdown.classList.add('active');
+    return;
+  }
+
+  const symbol = storeSettings.currencySymbol || 'GH₵';
+
+  dropdown.innerHTML = matches.map(item => {
+    const mainImg = (item.images && item.images.length > 0) ? item.images[0] : 'images/placeholders/apparel-1.svg';
+    const formattedPrice = symbol + " " + Number(item.price).toLocaleString();
+    const collectionTag = item.collectionName || 'General';
+
+    return `
+      <div class="suggestion-item" onclick="window.selectSearchSuggestion('${item.id}')">
+        <img src="${mainImg}" alt="${item.name}" class="suggestion-thumb">
+        <div class="suggestion-info">
+          <div class="suggestion-title">${item.name}</div>
+          <div class="suggestion-meta">
+            <span>${collectionTag.toUpperCase()}</span>
+            <strong style="color: var(--text-primary);">${formattedPrice}</strong>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  dropdown.classList.add('active');
+}
+
+window.selectSearchSuggestion = (productId) => {
+  const dropdown = document.getElementById('searchSuggestionsDropdown');
+  if (dropdown) dropdown.classList.remove('active');
+  window.openProductModal(productId);
+};
 
 function setupQuantityControls() {
   const minusBtn = document.getElementById('qtyMinusBtn');
@@ -301,14 +374,13 @@ window.openProductModal = (productId, event) => {
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
 
-  // Render Rectangular Size Boxes (Reading Admin Available In-Stock Sizes)
+  // Render Rectangular Size Boxes
   if (sizeBoxesContainer) {
     const standardBoxes = ['XXS', 'XS', 'S', 'M', 'L', 'XL'];
     const savedInStockSizes = (product.sizes && product.sizes.length) 
       ? product.sizes.map(s => s.toUpperCase()) 
       : ['M', 'L', 'XL'];
 
-    // Combine standard boxes with any custom sizes saved by admin
     const displayBoxes = [...standardBoxes];
     savedInStockSizes.forEach(s => {
       if (!displayBoxes.includes(s) && s !== 'STANDARD' && s !== 'ONE SIZE') {
@@ -330,7 +402,7 @@ window.openProductModal = (productId, event) => {
     }).join('');
   }
 
-  // Pre-set selected color if available
+  // Pre-set selected color
   selectedColor = (product.colors && product.colors.length) ? product.colors[0] : 'Default';
 
   if (whatsappBtn) {
@@ -386,7 +458,7 @@ function setupFooterSupportLink() {
   }
 }
 
-// WhatsApp Order Generator (Triggered inside Modal Panel)
+// WhatsApp Order Generator
 window.triggerWhatsAppOrder = (productId, event) => {
   if (event) event.stopPropagation();
 
