@@ -446,14 +446,58 @@ window.closeHowToOrderModal = () => {
   }
 };
 
+/**
+ * Universal Mobile-Native & Desktop WhatsApp Redirect Launcher
+ * Triggers native WhatsApp / WhatsApp Business app on iOS/Android via whatsapp:// protocol
+ */
+function openWhatsAppAppOrWeb(phoneNum, rawText) {
+  const cleanPhone = phoneNum.replace(/[^0-9]/g, '');
+  const encodedMsg = encodeURIComponent(rawText);
+
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // 1. Primary: Native Mobile App Deep Link Protocol
+    const appDeepLink = `whatsapp://send?phone=${cleanPhone}&text=${encodedMsg}`;
+    const webFallbackUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
+
+    let appOpened = false;
+
+    // Listen for blur/pagehide to verify if native WhatsApp app launched
+    const handleBlur = () => {
+      appOpened = true;
+      window.removeEventListener('pagehide', handleBlur);
+      window.removeEventListener('blur', handleBlur);
+    };
+
+    window.addEventListener('pagehide', handleBlur);
+    window.addEventListener('blur', handleBlur);
+
+    // Launch native app directly
+    window.location.href = appDeepLink;
+
+    // Fallback to wa.me URL if WhatsApp app is not installed
+    setTimeout(() => {
+      window.removeEventListener('pagehide', handleBlur);
+      window.removeEventListener('blur', handleBlur);
+      if (!appOpened && document.hasFocus()) {
+        window.location.href = webFallbackUrl;
+      }
+    }, 1500);
+  } else {
+    // Desktop / Laptop Web Browser Handler
+    const waUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
+    window.open(waUrl, '_blank');
+  }
+}
+
 function setupFooterSupportLink() {
   const btn = document.getElementById('footerWhatsAppSupport');
   if (btn) {
     btn.onclick = () => {
       const phone = storeSettings.whatsappPhone || '233200000000';
       const customerInquiry = "Hello 👋! I have a question about SHADA1st Apparel Shop products and would like to chat with support.";
-      const encodedMsg = encodeURIComponent(customerInquiry);
-      window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodedMsg}`, '_blank');
+      openWhatsAppAppOrWeb(phone, customerInquiry);
     };
   }
 }
@@ -483,8 +527,5 @@ window.triggerWhatsAppOrder = (productId, event) => {
 
   customerOrderInquiry += `\n\nPlease let me know how to proceed with payment and delivery.`;
 
-  const encodedMsg = encodeURIComponent(customerOrderInquiry);
-  const waUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodedMsg}`;
-  
-  window.open(waUrl, '_blank');
+  openWhatsAppAppOrWeb(phone, customerOrderInquiry);
 };
