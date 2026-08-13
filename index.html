@@ -13,12 +13,12 @@
 <body>
 
   <!-- SHADA1st MINIMALIST HEADER: LEFT LOGO, RIGHT SEARCH & HOW TO ORDER -->
-  <header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container nav-wrapper">
       
       <!-- LEFT SIDE: SHADA1st BRAND LOGO -->
       <div class="nav-brand-logo">
-        <a href="index.html" title="SHADA1st Apparel">
+        <a href="index.html" title="SHADA1st Apparel Homepage" aria-label="SHADA1st Homepage">
           <img src="images/logo.svg" alt="SHADA1st Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <span class="brand-text-fallback" style="display: none;">SHADA1st</span>
         </a>
@@ -26,16 +26,16 @@
 
       <!-- RIGHT SIDE: SEARCH BAR WITH LIVE AUTO-SUGGESTIONS DROPDOWN -->
       <div class="nav-right-actions">
-        <div class="header-search-group">
-          <i class="fa-solid fa-magnifying-glass header-search-icon"></i>
-          <input type="text" id="searchInput" placeholder="Search..." aria-label="Search apparel" autocomplete="off">
+        <div class="header-search-group" role="search">
+          <i class="fa-solid fa-magnifying-glass header-search-icon" aria-hidden="true"></i>
+          <input type="text" id="searchInput" placeholder="Search..." aria-label="Search apparel items, collections, or specs" autocomplete="off">
           
           <!-- LIVE AUTO-SUGGESTIONS DROPDOWN -->
-          <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown"></div>
+          <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown" role="listbox" aria-label="Search suggestions"></div>
         </div>
 
-        <button class="btn-how-to-order" onclick="window.openHowToOrderModal()" title="How to Order Guide">
-          <i class="fa-solid fa-circle-question" style="font-size: 1.05rem;"></i>
+        <button class="btn-how-to-order" onclick="window.openHowToOrderModal()" title="How to Order Guide" aria-label="Open How to Order Guide">
+          <i class="fa-solid fa-circle-question" style="font-size: 1.05rem;" aria-hidden="true"></i>
           <span>HOW TO ORDER</span>
         </button>
       </div>
@@ -44,7 +44,7 @@
   </header>
 
   <!-- INSPO-MATCHING HERO SHOWCASE SECTION -->
-  <section class="hero-showcase-section">
+  <section class="hero-showcase-section" aria-label="Featured Showcase">
     <div class="container">
       <div class="hero-main-grid">
         
@@ -60,60 +60,66 @@
           </h1>
 
           <div class="hero-action-row">
-            <a href="#catalog" class="btn-hero-main">SHOP COLLECTIONS</a>
+            <a href="#productGrid" class="btn-hero-main">
+              BROWSE LOOKBOOK <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+            </a>
           </div>
         </div>
 
-        <!-- MIDDLE COLUMN: FLOATING FEATURED APPAREL PRODUCT CARD -->
+        <!-- MIDDLE COLUMN: FLOATING FEATURED PRODUCT CARD -->
         <div class="hero-middle-card-wrapper">
           <div class="hero-floating-product-card">
             <div class="floating-card-pill-tag">
-              <span>Obsidian Hoodie</span> <i class="fa-solid fa-chevron-right"></i>
+              <i class="fa-solid fa-fire" aria-hidden="true"></i> HOT RELEASE
             </div>
             
             <div class="hero-featured-img-box">
-              <img src="images/placeholders/hero-featured-product.jpg" alt="Featured Apparel Product Photo" onerror="this.src='images/placeholders/hero-featured-product.png'; this.onerror=function(){ this.src='images/placeholders/hero-featured-product.svg'; };">
+              <img src="images/placeholders/hero-featured-product.jpg" alt="Featured SHADA1st Graphic Tee" loading="eager" onerror="this.src='images/placeholders/apparel-1.svg'">
             </div>
-
-            <div class="hero-featured-card-title">Obsidian Graphic Tee</div>
+            
+            <h3 class="hero-featured-card-title">OBSIDIAN GRAPHIC TEE</h3>
             <div class="hero-featured-card-price">GH₵ 350.00</div>
           </div>
         </div>
 
         <!-- RIGHT COLUMN: TALL LIFESTYLE MODEL PHOTO CARD -->
         <div class="hero-right-model-card">
-          <img src="images/placeholders/hero-main-lifestyle.jpg" alt="Tall Lifestyle Model Photo" onerror="this.src='images/placeholders/hero-main-lifestyle.png'; this.onerror=function(){ this.src='images/placeholders/hero-main-lifestyle.svg'; };">
+          <img src="images/placeholders/hero-main-lifestyle.jpg" alt="SHADA1st Fashion Editorial Model" loading="eager" onerror="this.src='images/placeholders/apparel-2.svg'">
           <div class="hero-model-card-label">
-            <span>SHADA1st LUXURY LOOKBOOK 2026</span>
-            <i class="fa-solid fa-sparkles"></i>
+            <span>EDITORIAL COLLECTION</span>
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
           </div>
         </div>
 
       </div>
 
-      <!-- BOTTOM SHOWCASE GRID -->
+      <!-- BOTTOM FEATURE GRID -->
       <div class="hero-bottom-grid">
         
-        <!-- LEFT DARK CARD -->
+        <!-- DARK CARD -->
         <div class="hero-bottom-dark-card">
-          <h3>One-click express checkout</h3>
-          <p>Store your style preferences, select your size & color, and place your order directly through WhatsApp for easy one-click ordering across Ghana.</p>
-          <a href="javascript:void(0)" onclick="window.openHowToOrderModal()">
-            ORDER NOW <i class="fa-solid fa-circle-chevron-right"></i>
-          </a>
+          <div>
+            <h3>DESIGNED IN GHANA FOR EVERYDAY PRESTIGE</h3>
+            <p>Premium 280GSM heavyweight combed organic cotton tailored for executive comfort and urban presence.</p>
+          </div>
+          <a href="#productGrid">VIEW CATALOG <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
         </div>
 
-        <!-- STATS COLUMN -->
-        <div class="hero-stat-box">
-          <span class="hero-stat-num">2.5K+</span>
-          <span class="hero-stat-label">Happy Customers in Ghana</span>
+        <!-- STATS BOX -->
+        <div class="hero-stat-box" aria-label="Customer Statistics">
+          <div class="hero-stat-num">2.5K+</div>
+          <div class="hero-stat-label">HAPPY CUSTOMERS</div>
         </div>
 
-        <!-- ABOUT TEXT COLUMN (BADGE POSITIONED BELOW PARAGRAPH ON MOBILE VIEW) -->
+        <!-- STORE STATUS & ABOUT TEXT BOX -->
         <div class="hero-about-text-box">
-          <div id="storeStatusBadgeContainer" style="margin-bottom: 0.75rem;"></div>
+          <div id="storeStatusBadgeContainer" style="margin-bottom: 0.75rem;">
+            <div class="store-status-badge open">
+              <i class="fa-solid fa-circle" style="font-size: 0.5rem;" aria-hidden="true"></i> STORE OPEN (08:00 - 20:00)
+            </div>
+          </div>
           <p>
-            <strong>SHADA1st</strong> is a reliable partner for business executives, style enthusiasts, and fashion trendsetters seeking premium luxury streetwear and tailored apparel across Ghana.
+            SHADA1st is a reliable partner for business executives, professionals, and streetwear enthusiasts seeking luxury apparel delivered straight to their doorstep across Ghana.
           </p>
         </div>
 
@@ -121,110 +127,104 @@
     </div>
   </section>
 
-  <!-- CONTROLS & FILTER TOOLBAR -->
-  <section class="controls-section" id="collections">
+  <!-- COLLECTION PILLS FILTER TOOLBAR -->
+  <section class="controls-section" aria-label="Collection Filters">
     <div class="container controls-bar">
-      <div class="collections-pills" id="collectionPills"></div>
+      <div class="collections-pills" id="collectionPills" role="tablist" aria-label="Collections filter list">
+        <!-- Collection pills populated dynamically by main.js -->
+      </div>
 
-      <select id="sortSelect" class="sort-select">
-        <option value="date-desc">NEWEST DROP</option>
+      <select id="sortSelect" class="sort-select" aria-label="Sort products by">
+        <option value="date-desc">NEWEST RELEASES</option>
         <option value="price-asc">PRICE: LOW TO HIGH</option>
         <option value="price-desc">PRICE: HIGH TO LOW</option>
-        <option value="name-asc">NAME: A TO Z</option>
+        <option value="name-asc">ALPHABETICAL</option>
       </select>
     </div>
   </section>
 
-  <!-- PRODUCT CATALOG GRID -->
-  <main class="catalog-section" id="catalog">
+  <!-- MAIN CATALOG PRODUCT GRID -->
+  <main class="catalog-section">
     <div class="container">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
-        <h2 style="font-family: var(--font-heading); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;">COLLECTIONS</h2>
-        <span id="resultsCount" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Loading...</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h2 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">
+          SHADA1st LOOKBOOK
+        </h2>
+        <span id="resultsCount" style="font-size: 0.78rem; font-weight: 800; color: var(--text-muted); letter-spacing: 1px;" aria-live="polite">
+          LOADING...
+        </span>
       </div>
 
-      <div class="product-grid" id="productGrid"></div>
+      <!-- PRODUCT CARDS GRID CONTAINER -->
+      <div class="product-grid" id="productGrid">
+        <!-- Shimmering Skeleton loaders rendered dynamically by main.js -->
+      </div>
     </div>
   </main>
 
-  <!-- SHADA1st PRODUCT DETAIL MODAL -->
-  <div class="modal-backdrop" id="productModal">
+  <!-- PRODUCT DETAIL MODAL PANEL -->
+  <div class="modal-backdrop" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="shada-modal-card">
-      <button class="btn-modal-close" id="modalClose" title="Close Modal">
-        <i class="fa-solid fa-xmark"></i>
+      <button class="btn-modal-close" id="modalClose" aria-label="Close product modal window">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
 
       <div class="modal-body-grid">
-        <!-- Left: Enlarged Clean Item Picture -->
+        <!-- LEFT: GALLERY -->
         <div class="modal-gallery">
-          <img id="modalMainImage" class="gallery-main-image" src="" alt="Apparel Detail">
+          <img id="modalMainImage" class="gallery-main-image" src="images/placeholders/apparel-1.svg" alt="Apparel Product Photo">
         </div>
 
-        <!-- Right: Detail Form & Selection Panel -->
+        <!-- RIGHT: DETAILS & WHATSAPP ORDER ACTION -->
         <div class="modal-details">
-          <span class="shada-brand-tag">SHADA1st</span>
-          <h2 class="shada-product-title" id="modalTitle">HOODIE - SHADA1st</h2>
-          <span class="shada-sub-label" id="modalTag">PREMIUM QUALITY</span>
+          <span class="shada-brand-tag" id="modalTag">HIGH FASHION</span>
+          <h2 class="shada-product-title" id="modalTitle">OBSIDIAN HOODIE</h2>
+          <div class="shada-sub-label">SHADA1st PRESTIGE APPAREL</div>
 
           <div class="shada-price-row">
-            <div class="shada-price" id="modalPrice">GH₵ 550</div>
-            <div class="rating-stars-inline">
-              <span>★★★★★</span> <strong>4.9</strong>/5
+            <div class="shada-price" id="modalPrice">GH₵ 350.00</div>
+            <div class="rating-stars-inline" aria-label="Rating 4.9 stars out of 5">
+              <span>★★★★★</span>
+              <strong>4.9</strong>
             </div>
           </div>
 
-          <!-- Fit info & Sizechart Link -->
+          <!-- SIZE PICKER -->
           <div class="size-chart-row">
-            <span class="fit-info-text">MODEL IS WEARING SIZE L</span>
-            <span class="size-chart-link" onclick="alert('Size Chart:\nS: Chest 38-40in\nM: Chest 40-42in\nL: Chest 42-44in\nXL: Chest 44-46in')">SIZECHART</span>
+            <span class="section-label">SELECT AVAILABLE SIZE:</span>
+            <span class="fit-info-text">REGULAR FIT</span>
           </div>
 
-          <!-- Rectangular Size Box Selector -->
-          <div class="shada-size-boxes" id="modalSizeBoxes"></div>
+          <div class="shada-size-boxes" id="modalSizeBoxes" role="group" aria-label="Available size options">
+            <!-- Dynamic Size Boxes rendered by main.js -->
+          </div>
 
-          <!-- Quantity Counter -->
-          <div class="section-label">QUANTITY:</div>
+          <!-- QUANTITY SELECTOR -->
+          <div class="section-label">SELECT QUANTITY:</div>
           <div class="quantity-row">
             <div class="qty-control-box">
-              <button type="button" class="qty-btn" id="qtyMinusBtn">-</button>
+              <button class="qty-btn" id="qtyMinusBtn" aria-label="Decrease quantity">-</button>
               <span class="qty-num" id="qtyDisplay">1</span>
-              <button type="button" class="qty-btn" id="qtyPlusBtn">+</button>
+              <button class="qty-btn" id="qtyPlusBtn" aria-label="Increase quantity">+</button>
             </div>
           </div>
 
-          <!-- Large Solid WhatsApp CTA Button -->
+          <!-- WHATSAPP DIRECT ORDER CTA BUTTON -->
           <button class="btn-shada-whatsapp" id="modalWhatsAppBtn">
-            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> ORDER ON WHATSAPP
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.25rem;" aria-hidden="true"></i> ORDER VIA WHATSAPP
           </button>
 
-          <!-- Accordion Dropdowns -->
+          <!-- DESCRIPTION ACCORDIONS -->
           <div class="shada-accordion-group">
             <div class="accordion-item open">
-              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
-                <span>DESCRIPTION</span> <span>+</span>
+              <div class="accordion-header">
+                <span>DETAILS & FABRIC SPECS</span>
+                <i class="fa-solid fa-minus" aria-hidden="true"></i>
               </div>
               <div class="accordion-body" id="modalDescription">
                 Crafted from 280GSM heavyweight combed organic cotton. Designed in Ghana for everyday statement prestige.
               </div>
             </div>
-
-            <div class="accordion-item">
-              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
-                <span>SHIPPING & RETURNS</span> <span>+</span>
-              </div>
-              <div class="accordion-body">
-                Express delivery across Ghana within 24-48 hours. Orders placed directly via WhatsApp.
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
-                <span>WASH & CARE</span> <span>+</span>
-              </div>
-              <div class="accordion-body">
-                Machine wash cold inside out with like colors. Do not bleach. Tumble dry low or line dry.
-              </div>
-            </div>
           </div>
 
         </div>
@@ -232,83 +232,73 @@
     </div>
   </div>
 
-  <!-- HOW TO ORDER MODAL -->
-  <div class="modal-backdrop" id="howToOrderModal">
-    <div class="shada-modal-card" style="max-width: 720px; padding: 2.5rem;">
-      <button class="btn-modal-close" onclick="window.closeHowToOrderModal()" title="Close">
-        <i class="fa-solid fa-xmark"></i>
+  <!-- HOW TO ORDER MODAL GUIDE -->
+  <div class="modal-backdrop" id="howToOrderModal" role="dialog" aria-modal="true" aria-labelledby="howToOrderTitle">
+    <div class="shada-modal-card" style="max-width: 680px; padding: 2rem;">
+      <button class="btn-modal-close" onclick="window.closeHowToOrderModal()" aria-label="Close how to order guide">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
 
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <i class="fa-brands fa-whatsapp" style="font-size: 3rem; color: var(--accent-whatsapp); margin-bottom: 0.75rem;"></i>
-        <h2 style="font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase;">HOW TO ORDER ON SHADA1st</h2>
-        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto; font-size: 0.9rem;">
-          Direct WhatsApp ordering tailored specifically for you.
-        </p>
-      </div>
+      <h2 id="howToOrderTitle" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">
+        HOW TO ORDER FROM SHADA1st
+      </h2>
+      <p style="color: var(--text-secondary); font-size: 0.88rem;">Simple 3-step WhatsApp order process with direct delivery across Ghana:</p>
 
       <div class="order-steps-grid">
         <div class="order-step-card">
           <div class="step-num">1</div>
-          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">BROWSE & SELECT</h4>
-          <p style="font-size: 0.82rem; color: var(--text-secondary);">
-            Pick your apparel piece, size, color, and quantity.
-          </p>
+          <h3 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.25rem;">SELECT ITEM & SIZE</h3>
+          <p style="font-size: 0.78rem; color: var(--text-secondary);">Choose your favorite apparel and select your preferred size box.</p>
         </div>
 
         <div class="order-step-card">
           <div class="step-num">2</div>
-          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">TAP ORDER</h4>
-          <p style="font-size: 0.82rem; color: var(--text-secondary);">
-            Tap "Order on WhatsApp" to open your WhatsApp with details pre-filled.
-          </p>
+          <h3 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.25rem;">TAP ORDER BUTTON</h3>
+          <p style="font-size: 0.78rem; color: var(--text-secondary);">Tap "ORDER VIA WHATSAPP". Your order message is formatted automatically.</p>
         </div>
 
         <div class="order-step-card">
           <div class="step-num">3</div>
-          <h4 style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">CONFIRM & RECEIVE</h4>
-          <p style="font-size: 0.82rem; color: var(--text-secondary);">
-            Chat directly with our admin for delivery across Ghana!
-          </p>
+          <h3 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.25rem;">CONFIRM & DELIVER</h3>
+          <p style="font-size: 0.78rem; color: var(--text-secondary);">Send the WhatsApp message. Our team confirms payment and dispatches your order!</p>
         </div>
-      </div>
-
-      <div style="margin-top: 2rem; text-align: center;">
-        <button class="btn-gold" onclick="window.closeHowToOrderModal()">GOT IT</button>
       </div>
     </div>
   </div>
 
-  <!-- SHADA1st FOOTER -->
-  <footer class="site-footer">
+  <!-- SITE FOOTER -->
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
+        
         <div class="footer-brand">
-          <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 38px;">
-          <p>
-            SHADA1st Apparel Shop delivers premium streetwear and bespoke fashion straight to your doorstep across Ghana. Order directly via WhatsApp.
-          </p>
+          <a href="index.html">
+            <span style="font-family: var(--font-brand); font-size: 1.5rem; font-weight: 900; letter-spacing: 2px;">SHADA1st</span>
+          </a>
+          <p>The #1 premium apparel destination in Ghana. Executive quality, street couture, and high fashion delivered with speed.</p>
         </div>
 
         <div class="footer-col">
-          <h4>NAVIGATION</h4>
+          <h4>EXPLORE</h4>
           <ul>
-            <li><a href="#catalog">CATALOG</a></li>
-            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">HOW TO ORDER</a></li>
+            <li><a href="#productGrid">Lookbook Catalog</a></li>
+            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">How To Order</a></li>
+            <li><a href="admin.html" target="_blank">Store Admin Portal</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>CUSTOMER CARE</h4>
           <ul>
-            <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">HOW TO ORDER GUIDE</a></li>
-            <li><a href="javascript:void(0)" id="footerWhatsAppSupport">WHATSAPP SUPPORT</a></li>
+            <li><a href="javascript:void(0)" id="footerWhatsAppSupport"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp Support</a></li>
+            <li><a href="javascript:void(0)">Ghana Doorstep Delivery</a></li>
           </ul>
         </div>
+
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 SHADA1st APPAREL SHOP. ALL RIGHTS RESERVED.</p>
+        &copy; 2026 SHADA1st Apparel Shop. All rights reserved. Built for Ghana & Worldwide.
       </div>
     </div>
   </footer>

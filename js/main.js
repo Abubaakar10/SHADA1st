@@ -3,6 +3,8 @@
  */
 
 import { initStoreDatabase, getProducts, getCollections, getStoreSettings } from './store-db.js';
+import { escapeHTML, sanitizeInput } from './security.js';
+import { checkRateLimit } from './rate-limiter.js';
 
 let allProducts = [];
 let allCollections = [];
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadStoreData() {
-  showLoadingState();
+  showSkeletonLoadingState();
   try {
     storeSettings = await getStoreSettings();
     allCollections = await getCollections();
@@ -40,15 +42,17 @@ async function loadStoreData() {
   }
 }
 
-function showLoadingState() {
+function showSkeletonLoadingState() {
   const grid = document.getElementById('productGrid');
   if (grid) {
-    grid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0; color: var(--text-muted);">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-        <p style="font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">CURATING SHADA1st LOOKBOOK...</p>
+    grid.innerHTML = Array(8).fill(0).map(() => `
+      <div class="skeleton-card" aria-hidden="true">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton skeleton-text" style="width: 40%;"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-btn"></div>
       </div>
-    `;
+    `).join('');
   }
 }
 
@@ -57,19 +61,19 @@ function renderStoreStatusBadge() {
   if (!container) return;
 
   const isOpen = checkIsStoreOpen();
-  const openTime = storeSettings.openingTime || '08:00';
-  const closeTime = storeSettings.closingTime || '20:00';
+  const openTime = escapeHTML(storeSettings.openingTime || '08:00');
+  const closeTime = escapeHTML(storeSettings.closingTime || '20:00');
 
   if (isOpen) {
     container.innerHTML = `
-      <div class="store-status-badge open">
-        <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> STORE OPEN (${openTime} - ${closeTime})
+      <div class="store-status-badge open" aria-label="Store Status: Open">
+        <i class="fa-solid fa-circle" style="font-size: 0.5rem;" aria-hidden="true"></i> STORE OPEN (${openTime} - ${closeTime})
       </div>
     `;
   } else {
     container.innerHTML = `
-      <div class="store-status-badge closed">
-        <i class="fa-solid fa-moon"></i> STORE CLOSED — LEAVE A MESSAGE
+      <div class="store-status-badge closed" aria-label="Store Status: Closed">
+        <i class="fa-solid fa-moon" aria-hidden="true"></i> STORE CLOSED — LEAVE A MESSAGE
       </div>
     `;
   }
@@ -96,15 +100,16 @@ function renderCollectionPills() {
   if (!container) return;
 
   let html = `
-    <button class="pill-btn ${activeCollectionFilter === 'all' ? 'active' : ''}" data-collection="all">
+    <button class="pill-btn ${activeCollectionFilter === 'all' ? 'active' : ''}" data-collection="all" aria-label="Show All Collections">
       ALL ITEMS
     </button>
   `;
 
   allCollections.forEach(col => {
+    const safeName = escapeHTML(col.name).toUpperCase();
     html += `
-      <button class="pill-btn ${activeCollectionFilter === col.id ? 'active' : ''}" data-collection="${col.id}">
-        ${col.name.toUpperCase()}
+      <button class="pill-btn ${activeCollectionFilter === col.id ? 'active' : ''}" data-collection="${escapeHTML(col.id)}" aria-label="Filter by collection ${safeName}">
+        ${safeName}
       </button>
     `;
   });
@@ -128,7 +133,7 @@ function setupEventListeners() {
 
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      currentSearchQuery = e.target.value.toLowerCase().trim();
+      currentSearchQuery = sanitizeInput(e.target.value).toLowerCase();
       applyFiltersAndSort();
       renderSearchSuggestions(currentSearchQuery);
     });
@@ -150,7 +155,7 @@ function setupEventListeners() {
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
-      currentSortMode = e.target.value;
+      currentSortMode = sanitizeInput(e.target.value);
       applyFiltersAndSort();
     });
   }
@@ -192,25 +197,26 @@ function renderSearchSuggestions(query) {
   if (matches.length === 0) {
     dropdown.innerHTML = `
       <div style="padding: 0.85rem; font-size: 0.78rem; color: var(--text-muted); text-align: center;">
-        No apparel items found matching "${query}"
+        No apparel items found matching "${escapeHTML(query)}"
       </div>
     `;
     dropdown.classList.add('active');
     return;
   }
 
-  const symbol = storeSettings.currencySymbol || 'GH₵';
+  const symbol = escapeHTML(storeSettings.currencySymbol || 'GH₵');
 
   dropdown.innerHTML = matches.map(item => {
-    const mainImg = (item.images && item.images.length > 0) ? item.images[0] : 'images/placeholders/apparel-1.svg';
+    const mainImg = (item.images && item.images.length > 0) ? escapeHTML(item.images[0]) : 'images/placeholders/apparel-1.svg';
     const formattedPrice = symbol + " " + Number(item.price).toLocaleString();
-    const collectionTag = item.collectionName || 'General';
+    const collectionTag = escapeHTML(item.collectionName || 'General');
+    const safeTitle = escapeHTML(item.name);
 
     return `
-      <div class="suggestion-item" onclick="window.selectSearchSuggestion('${item.id}')">
-        <img src="${mainImg}" alt="${item.name}" class="suggestion-thumb">
+      <div class="suggestion-item" onclick="window.selectSearchSuggestion('${escapeHTML(item.id)}')" role="button" tabindex="0">
+        <img src="${mainImg}" alt="${safeTitle}" class="suggestion-thumb">
         <div class="suggestion-info">
-          <div class="suggestion-title">${item.name}</div>
+          <div class="suggestion-title">${safeTitle}</div>
           <div class="suggestion-meta">
             <span>${collectionTag.toUpperCase()}</span>
             <strong style="color: var(--text-primary);">${formattedPrice}</strong>
@@ -299,7 +305,7 @@ function renderProductGrid(products) {
   if (products.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
-        <i class="fa-solid fa-shirt" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+        <i class="fa-solid fa-shirt" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 1rem;" aria-hidden="true"></i>
         <h3 style="font-family: var(--font-heading); font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase;">NO PRODUCTS FOUND</h3>
         <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem;">Try selecting a different collection or search term.</p>
       </div>
@@ -307,30 +313,31 @@ function renderProductGrid(products) {
     return;
   }
 
-  const symbol = storeSettings.currencySymbol || 'GH₵';
+  const symbol = escapeHTML(storeSettings.currencySymbol || 'GH₵');
   let html = '';
   products.forEach(p => {
     const formattedPrice = symbol + " " + Number(p.price).toLocaleString();
-    const mainImg = (p.images && p.images.length > 0) ? p.images[0] : 'images/placeholders/apparel-1.svg';
+    const mainImg = (p.images && p.images.length > 0) ? escapeHTML(p.images[0]) : 'images/placeholders/apparel-1.svg';
+    const safeTitle = escapeHTML(p.name);
     
     html += `
-      <div class="product-card" data-id="${p.id}">
-        <div class="card-image-wrapper" onclick="window.openProductModal('${p.id}')">
-          <img src="${mainImg}" alt="${p.name}" class="card-image" loading="lazy">
+      <div class="product-card" data-id="${escapeHTML(p.id)}">
+        <div class="card-image-wrapper" onclick="window.openProductModal('${escapeHTML(p.id)}')" role="button" tabindex="0" aria-label="View product details for ${safeTitle}">
+          <img src="${mainImg}" alt="${safeTitle}" class="card-image" loading="lazy">
           ${p.featured ? `<span class="card-badge-tag">FEATURED</span>` : ''}
         </div>
         <div class="card-content">
           <span class="card-brand-sub">SHADA1st</span>
-          <h3 class="product-title" onclick="window.openProductModal('${p.id}')">${p.name}</h3>
+          <h3 class="product-title" onclick="window.openProductModal('${escapeHTML(p.id)}')" role="button" tabindex="0">${safeTitle}</h3>
           
-          <div class="rating-row">
-            <span class="rating-stars">★★★★★</span>
+          <div class="rating-row" aria-label="Rating: 4.9 out of 5 stars">
+            <span class="rating-stars" aria-hidden="true">★★★★★</span>
             <span>4.9</span>
           </div>
 
           <div class="card-footer">
             <span class="price-amount">${formattedPrice}</span>
-            <button class="btn-whatsapp-order" onclick="window.openProductModal('${p.id}', event)">
+            <button class="btn-whatsapp-order" onclick="window.openProductModal('${escapeHTML(p.id)}', event)" aria-label="Order ${safeTitle} on WhatsApp">
               ORDER
             </button>
           </div>
@@ -363,7 +370,7 @@ window.openProductModal = (productId, event) => {
   const sizeBoxesContainer = document.getElementById('modalSizeBoxes');
   const whatsappBtn = document.getElementById('modalWhatsAppBtn');
 
-  const symbol = storeSettings.currencySymbol || 'GH₵';
+  const symbol = escapeHTML(storeSettings.currencySymbol || 'GH₵');
   const formattedPrice = symbol + " " + Number(product.price).toLocaleString();
   
   if (tag) tag.textContent = product.collectionName ? product.collectionName.toUpperCase() : 'PREMIUM QUALITY';
@@ -372,7 +379,7 @@ window.openProductModal = (productId, event) => {
   if (desc) desc.textContent = product.description || 'Crafted from 280GSM heavyweight combed organic cotton. Designed in Ghana for everyday statement prestige.';
 
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
-  if (mainImage) mainImage.src = images[0];
+  if (mainImage) mainImage.src = escapeHTML(images[0]);
 
   // Render Rectangular Size Boxes
   if (sizeBoxesContainer) {
@@ -395,10 +402,10 @@ window.openProductModal = (productId, event) => {
       const isSelected = isInStock && s === selectedSize;
 
       if (!isInStock) {
-        return `<div class="size-rect out-of-stock" title="Out of stock">${s}</div>`;
+        return `<div class="size-rect out-of-stock" title="Out of stock">${escapeHTML(s)}</div>`;
       }
 
-      return `<div class="size-rect ${isSelected ? 'selected' : ''}" onclick="window.selectModalSize('${s}', this)">${s}</div>`;
+      return `<div class="size-rect ${isSelected ? 'selected' : ''}" onclick="window.selectModalSize('${escapeHTML(s)}', this)" role="button" tabindex="0" aria-label="Select size ${escapeHTML(s)}">${escapeHTML(s)}</div>`;
     }).join('');
   }
 
@@ -451,6 +458,12 @@ window.closeHowToOrderModal = () => {
  * Triggers native WhatsApp / WhatsApp Business app on iOS/Android via whatsapp:// protocol
  */
 function openWhatsAppAppOrWeb(phoneNum, rawText) {
+  // Rate Limiter Check for Order Submissions (Max 1 per 2 seconds)
+  const rateLimit = checkRateLimit('whatsapp_action', 1, 2000);
+  if (!rateLimit.allowed) {
+    return;
+  }
+
   const cleanPhone = phoneNum.replace(/[^0-9]/g, '');
   const encodedMsg = encodeURIComponent(rawText);
 
