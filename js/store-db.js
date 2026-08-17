@@ -35,6 +35,26 @@ export async function initStoreDatabase() {
   }
 }
 
+export async function seedDefaultProducts() {
+  try {
+    const resp = await fetch('products.json');
+    if (!resp.ok) return false;
+    const seedData = await resp.json();
+    const seedProducts = seedData.products || [];
+    
+    let currentProducts = await getProducts();
+    for (const p of seedProducts) {
+      if (!currentProducts.some(existing => existing.id === p.id)) {
+        await saveProduct(p);
+      }
+    }
+    return true;
+  } catch (e) {
+    console.error("Seed default products failed:", e);
+    return false;
+  }
+}
+
 // --------------------------------------------------------------------------
 // PRODUCTS API
 // --------------------------------------------------------------------------

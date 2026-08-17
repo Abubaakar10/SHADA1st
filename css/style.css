@@ -1062,6 +1062,38 @@ input, select, textarea {
   border: 1px solid var(--border-subtle);
 }
 
+.modal-thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.modal-thumb-btn {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  padding: 0;
+  background: var(--bg-card-img);
+}
+
+.modal-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-thumb-btn:hover,
+.modal-thumb-btn.active {
+  border-color: var(--border-dark);
+}
+
 @media (max-width: 576px) {
   .gallery-main-image {
     min-height: 280px;
@@ -1072,6 +1104,42 @@ input, select, textarea {
 .modal-details {
   display: flex;
   flex-direction: column;
+}
+
+.color-section-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.shada-color-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.color-rect {
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.color-rect:hover {
+  border-color: var(--border-dark);
+}
+
+.color-rect.selected {
+  border-color: var(--border-dark);
+  background: var(--bg-dark);
+  color: #FFFFFF;
 }
 
 .shada-brand-tag {

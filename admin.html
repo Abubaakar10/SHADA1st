@@ -57,6 +57,10 @@
             <a href="index.html" target="_blank" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> View Storefront
             </a>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button id="seedCatalogBtn" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);" title="Restore default catalog placeholder items">
+              <i class="fa-solid fa-cloud-arrow-down" style="color: var(--accent-gold);"></i> Restore Demo Items
+            </button>
             <button id="adminLogoutBtn" class="btn-secondary btn-danger" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
               <i class="fa-solid fa-right-from-bracket"></i> Logout
             </button>
@@ -307,6 +311,13 @@
                   <option value="auto">Auto-Schedule (Use Opening & Closing Hours above)</option>
                   <option value="open">Force Open (Always show Open status)</option>
                   <option value="closed">Force Closed (Always show Off-Hours status)</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="settingHotRelease"><i class="fa-solid fa-fire" style="color: var(--accent-gold);"></i> Featured "Hot Look / Hot Release" Showcase Item</label>
+                <select id="settingHotRelease" class="form-control">
+                  <!-- Options rendered by admin.js -->
                 </select>
               </div>
 

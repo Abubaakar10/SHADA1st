@@ -100,7 +100,7 @@
         <div class="hero-bottom-dark-card">
           <div>
             <h3>DESIGNED IN GHANA FOR EVERYDAY PRESTIGE</h3>
-            <p>Premium 280GSM heavyweight combed organic cotton tailored for executive comfort and urban presence.</p>
+            <p>Crafted for bold distinction. Fine tailored streetwear and luxury essentials engineered for executive comfort, everyday confidence, and timeless Ghanaian flair.</p>
           </div>
           <a href="#productGrid">VIEW CATALOG <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
         </div>
@@ -173,6 +173,7 @@
         <!-- LEFT: GALLERY -->
         <div class="modal-gallery">
           <img id="modalMainImage" class="gallery-main-image" src="images/placeholders/apparel-1.svg" alt="Apparel Product Photo">
+          <div class="modal-thumbnails" id="modalThumbnails"></div>
         </div>
 
         <!-- RIGHT: DETAILS & WHATSAPP ORDER ACTION -->
@@ -186,6 +187,14 @@
             <div class="rating-stars-inline" aria-label="Rating 4.9 stars out of 5">
               <span>★★★★★</span>
               <strong>4.9</strong>
+            </div>
+          </div>
+
+          <!-- COLOR PICKER -->
+          <div class="color-section-wrapper" id="modalColorWrapper" style="display: none;">
+            <div class="section-label">SELECT AVAILABLE COLOR:</div>
+            <div class="shada-color-boxes" id="modalColorBoxes" role="group" aria-label="Available color options">
+              <!-- Dynamic Color Boxes rendered by main.js -->
             </div>
           </div>
 
@@ -283,7 +292,6 @@
           <ul>
             <li><a href="#productGrid">Lookbook Catalog</a></li>
             <li><a href="javascript:void(0)" onclick="window.openHowToOrderModal()">How To Order</a></li>
-            <li><a href="admin.html" target="_blank">Store Admin Portal</a></li>
           </ul>
         </div>
 
