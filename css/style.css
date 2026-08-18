@@ -1052,6 +1052,10 @@ input, select, textarea {
   flex-direction: column;
 }
 
+.gallery-main-container {
+  width: 100%;
+}
+
 .gallery-main-image {
   width: 100%;
   height: 100%;
@@ -1060,38 +1064,63 @@ input, select, textarea {
   object-fit: cover;
   background: var(--bg-card-img);
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
 }
 
-.modal-thumbnails {
+.gallery-thumbs-row {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.65rem;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.35rem;
 }
 
-.modal-thumb-btn {
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-  border: 2px solid var(--border-subtle);
+.gallery-thumb-item {
+  width: 62px;
+  height: 62px;
   border-radius: var(--radius-sm);
-  overflow: hidden;
+  border: 2px solid var(--border-subtle);
+  object-fit: cover;
   cursor: pointer;
+  opacity: 0.7;
   transition: var(--transition-fast);
-  padding: 0;
+  flex-shrink: 0;
   background: var(--bg-card-img);
 }
 
-.modal-thumb-btn img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.gallery-thumb-item:hover,
+.gallery-thumb-item.active {
+  opacity: 1;
+  border-color: var(--border-dark);
 }
 
-.modal-thumb-btn:hover,
-.modal-thumb-btn.active {
+.shada-color-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.color-chip {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.color-chip:hover {
   border-color: var(--border-dark);
+}
+
+.color-chip.selected {
+  border-color: var(--border-dark);
+  background: var(--bg-dark);
+  color: #FFFFFF;
 }
 
 @media (max-width: 576px) {
@@ -1104,42 +1133,6 @@ input, select, textarea {
 .modal-details {
   display: flex;
   flex-direction: column;
-}
-
-.color-section-wrapper {
-  margin-bottom: 1.25rem;
-}
-
-.shada-color-boxes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.4rem;
-}
-
-.color-rect {
-  padding: 0.55rem 0.85rem;
-  border: 1px solid var(--border-subtle);
-  background: #FFFFFF;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: var(--transition-fast);
-  border-radius: var(--radius-sm);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.color-rect:hover {
-  border-color: var(--border-dark);
-}
-
-.color-rect.selected {
-  border-color: var(--border-dark);
-  background: var(--bg-dark);
-  color: #FFFFFF;
 }
 
 .shada-brand-tag {

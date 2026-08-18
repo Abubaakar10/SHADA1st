@@ -68,23 +68,23 @@
 
         <!-- MIDDLE COLUMN: FLOATING FEATURED PRODUCT CARD -->
         <div class="hero-middle-card-wrapper">
-          <div class="hero-floating-product-card">
+          <div class="hero-floating-product-card" id="heroHotReleaseCard" style="cursor: pointer;">
             <div class="floating-card-pill-tag">
               <i class="fa-solid fa-fire" aria-hidden="true"></i> HOT RELEASE
             </div>
             
             <div class="hero-featured-img-box">
-              <img src="images/placeholders/hero-featured-product.jpg" alt="Featured SHADA1st Graphic Tee" loading="eager" onerror="this.src='images/placeholders/apparel-1.svg'">
+              <img id="heroHotImg" src="images/placeholders/hero-featured-product.jpg" alt="Featured SHADA1st Graphic Tee" loading="eager" onerror="this.src='images/placeholders/apparel-1.svg'">
             </div>
             
-            <h3 class="hero-featured-card-title">OBSIDIAN GRAPHIC TEE</h3>
-            <div class="hero-featured-card-price">GH₵ 350.00</div>
+            <h3 class="hero-featured-card-title" id="heroHotTitle">OBSIDIAN GRAPHIC TEE</h3>
+            <div class="hero-featured-card-price" id="heroHotPrice">GH₵ 350.00</div>
           </div>
         </div>
 
         <!-- RIGHT COLUMN: TALL LIFESTYLE MODEL PHOTO CARD -->
         <div class="hero-right-model-card">
-          <img src="images/placeholders/hero-main-lifestyle.jpg" alt="SHADA1st Fashion Editorial Model" loading="eager" onerror="this.src='images/placeholders/apparel-2.svg'">
+          <img id="heroEditorialImg" src="images/placeholders/hero-main-lifestyle.jpg" alt="SHADA1st Fashion Editorial Model" loading="eager" onerror="this.src='images/placeholders/apparel-2.svg'">
           <div class="hero-model-card-label">
             <span>EDITORIAL COLLECTION</span>
             <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
@@ -172,8 +172,10 @@
       <div class="modal-body-grid">
         <!-- LEFT: GALLERY -->
         <div class="modal-gallery">
-          <img id="modalMainImage" class="gallery-main-image" src="images/placeholders/apparel-1.svg" alt="Apparel Product Photo">
-          <div class="modal-thumbnails" id="modalThumbnails"></div>
+          <div class="gallery-main-container">
+            <img id="modalMainImage" class="gallery-main-image" src="images/placeholders/apparel-1.svg" alt="Apparel Product Photo">
+          </div>
+          <div class="gallery-thumbs-row" id="modalImageThumbs" role="region" aria-label="Product image gallery thumbnails"></div>
         </div>
 
         <!-- RIGHT: DETAILS & WHATSAPP ORDER ACTION -->
@@ -191,11 +193,9 @@
           </div>
 
           <!-- COLOR PICKER -->
-          <div class="color-section-wrapper" id="modalColorWrapper" style="display: none;">
-            <div class="section-label">SELECT AVAILABLE COLOR:</div>
-            <div class="shada-color-boxes" id="modalColorBoxes" role="group" aria-label="Available color options">
-              <!-- Dynamic Color Boxes rendered by main.js -->
-            </div>
+          <div id="modalColorRow">
+            <div class="section-label">SELECT COLOR:</div>
+            <div class="shada-color-boxes" id="modalColorBoxes" role="group" aria-label="Available color options"></div>
           </div>
 
           <!-- SIZE PICKER -->

@@ -35,7 +35,7 @@ async function loadStoreData() {
     
     renderStoreStatusBadge();
     renderCollectionPills();
-    renderHotReleaseSection();
+    renderHeroShowcase();
     applyFiltersAndSort();
     setupFooterSupportLink();
   } catch (error) {
@@ -74,7 +74,7 @@ function renderStoreStatusBadge() {
   } else {
     container.innerHTML = `
       <div class="store-status-badge closed" aria-label="Store Status: Closed">
-        <i class="fa-solid fa-moon" aria-hidden="true"></i> STORE CLOSED — LEAVE A MESSAGE
+        <i class="fa-solid fa-moon" aria-hidden="true"></i> STORE CLOSED
       </div>
     `;
   }
@@ -350,36 +350,6 @@ function renderProductGrid(products) {
   grid.innerHTML = html;
 }
 
-function renderHotReleaseSection() {
-  const card = document.querySelector('.hero-floating-product-card');
-  if (!card || allProducts.length === 0) return;
-
-  let hotItem = null;
-  if (storeSettings.hotReleaseProductId) {
-    hotItem = allProducts.find(p => p.id === storeSettings.hotReleaseProductId);
-  }
-  if (!hotItem) {
-    hotItem = allProducts.find(p => p.featured) || allProducts[0];
-  }
-
-  if (hotItem) {
-    const symbol = escapeHTML(storeSettings.currencySymbol || 'GH₵');
-    const formattedPrice = symbol + " " + Number(hotItem.price).toLocaleString();
-    const mainImg = (hotItem.images && hotItem.images.length > 0) ? hotItem.images[0] : 'images/placeholders/apparel-1.svg';
-
-    const imgEl = card.querySelector('.hero-featured-img-box img');
-    const titleEl = card.querySelector('.hero-featured-card-title');
-    const priceEl = card.querySelector('.hero-featured-card-price');
-
-    if (imgEl) imgEl.src = mainImg;
-    if (titleEl) titleEl.textContent = hotItem.name.toUpperCase();
-    if (priceEl) priceEl.textContent = formattedPrice;
-
-    card.style.cursor = 'pointer';
-    card.onclick = () => window.openProductModal(hotItem.id);
-  }
-}
-
 // SHADA1st PRODUCT DETAIL MODAL
 window.openProductModal = (productId, event) => {
   if (event) event.stopPropagation();
@@ -407,24 +377,42 @@ window.openProductModal = (productId, event) => {
   if (tag) tag.textContent = product.collectionName ? product.collectionName.toUpperCase() : 'PREMIUM QUALITY';
   if (title) title.textContent = product.name.toUpperCase();
   if (price) price.textContent = formattedPrice;
-  if (desc) desc.textContent = product.description || 'Crafted for bold distinction. Fine tailored streetwear and luxury essentials engineered for executive comfort, everyday confidence, and timeless Ghanaian flair.';
+  if (desc) desc.textContent = product.description || 'Crafted from 280GSM heavyweight combed organic cotton. Designed in Ghana for everyday statement prestige.';
 
   const images = (product.images && product.images.length > 0) ? product.images : ['images/placeholders/apparel-1.svg'];
   if (mainImage) mainImage.src = images[0];
 
-  // Render Image Thumbnails Gallery
-  const thumbsContainer = document.getElementById('modalThumbnails');
+  // Render Multi-Image Gallery Thumbnails
+  const thumbsContainer = document.getElementById('modalImageThumbs');
   if (thumbsContainer) {
     if (images.length > 1) {
       thumbsContainer.style.display = 'flex';
       thumbsContainer.innerHTML = images.map((imgUrl, idx) => `
-        <button class="modal-thumb-btn ${idx === 0 ? 'active' : ''}" onclick="window.selectModalGalleryImage('${escapeHTML(imgUrl)}', this)" aria-label="View photo ${idx + 1}">
-          <img src="${escapeHTML(imgUrl)}" alt="Thumbnail ${idx + 1}">
-        </button>
+        <img src="${escapeHTML(imgUrl)}" class="gallery-thumb-item ${idx === 0 ? 'active' : ''}" onclick="window.selectModalImage('${escapeHTML(imgUrl)}', this)" alt="Thumbnail ${idx + 1}">
       `).join('');
     } else {
       thumbsContainer.style.display = 'none';
       thumbsContainer.innerHTML = '';
+    }
+  }
+
+  // Render Color Selection Chips
+  const colorContainer = document.getElementById('modalColorBoxes');
+  const colorRow = document.getElementById('modalColorRow');
+  const colors = (product.colors && product.colors.length) ? product.colors : [];
+
+  if (colorContainer) {
+    if (colors.length > 0) {
+      if (colorRow) colorRow.style.display = 'block';
+      selectedColor = colors[0];
+      colorContainer.innerHTML = colors.map((col, idx) => `
+        <div class="color-chip ${idx === 0 ? 'selected' : ''}" onclick="window.selectModalColor('${escapeHTML(col)}', this)" role="button" tabindex="0">
+          ${escapeHTML(col)}
+        </div>
+      `).join('');
+    } else {
+      if (colorRow) colorRow.style.display = 'none';
+      selectedColor = 'Default';
     }
   }
 
@@ -456,26 +444,6 @@ window.openProductModal = (productId, event) => {
     }).join('');
   }
 
-  // Render Color Selector Boxes
-  const colorWrapper = document.getElementById('modalColorWrapper');
-  const colorBoxesContainer = document.getElementById('modalColorBoxes');
-  const colorsList = (product.colors && product.colors.length) ? product.colors : [];
-
-  if (colorWrapper && colorBoxesContainer) {
-    if (colorsList.length > 0) {
-      colorWrapper.style.display = 'block';
-      selectedColor = colorsList[0];
-      colorBoxesContainer.innerHTML = colorsList.map((c, idx) => `
-        <div class="color-rect ${idx === 0 ? 'selected' : ''}" onclick="window.selectModalColor('${escapeHTML(c)}', this)" role="button" tabindex="0">
-          <i class="fa-solid fa-check" style="font-size: 0.7rem; display: ${idx === 0 ? 'inline-block' : 'none'};"></i> ${escapeHTML(c)}
-        </div>
-      `).join('');
-    } else {
-      colorWrapper.style.display = 'none';
-      selectedColor = 'Default';
-    }
-  }
-
   if (whatsappBtn) {
     whatsappBtn.onclick = () => window.triggerWhatsAppOrder(product.id);
   }
@@ -486,27 +454,53 @@ window.openProductModal = (productId, event) => {
   }
 };
 
-window.selectModalGalleryImage = (imgUrl, element) => {
-  const mainImg = document.getElementById('modalMainImage');
-  if (mainImg) mainImg.src = imgUrl;
-
-  const thumbs = document.querySelectorAll('#modalThumbnails .modal-thumb-btn');
+window.selectModalImage = (imgUrl, element) => {
+  const mainImage = document.getElementById('modalMainImage');
+  if (mainImage) mainImage.src = imgUrl;
+  const thumbs = document.querySelectorAll('#modalImageThumbs .gallery-thumb-item');
   thumbs.forEach(t => t.classList.remove('active'));
-  element.classList.add('active');
+  if (element) element.classList.add('active');
 };
 
 window.selectModalColor = (color, element) => {
   selectedColor = color;
-  const boxes = document.querySelectorAll('#modalColorBoxes .color-rect');
-  boxes.forEach(b => {
-    b.classList.remove('selected');
-    const icon = b.querySelector('i');
-    if (icon) icon.style.display = 'none';
-  });
+  const chips = document.querySelectorAll('#modalColorBoxes .color-chip');
+  chips.forEach(c => c.classList.remove('selected'));
   element.classList.add('selected');
-  const activeIcon = element.querySelector('i');
-  if (activeIcon) activeIcon.style.display = 'inline-block';
 };
+
+function renderHeroShowcase() {
+  const hotCard = document.getElementById('heroHotReleaseCard');
+  const hotImg = document.getElementById('heroHotImg');
+  const hotTitle = document.getElementById('heroHotTitle');
+  const hotPrice = document.getElementById('heroHotPrice');
+  const editorialImg = document.getElementById('heroEditorialImg');
+
+  if (storeSettings.heroEditorialImage && editorialImg) {
+    editorialImg.src = storeSettings.heroEditorialImage;
+  }
+
+  let hotProduct = null;
+  if (storeSettings.hotLookProductId) {
+    hotProduct = allProducts.find(p => p.id === storeSettings.hotLookProductId);
+  }
+  if (!hotProduct) {
+    hotProduct = allProducts.find(p => p.featured) || allProducts[0];
+  }
+
+  if (hotProduct) {
+    const symbol = storeSettings.currencySymbol || 'GH₵';
+    const mainImgUrl = (hotProduct.images && hotProduct.images.length) ? hotProduct.images[0] : 'images/placeholders/hero-featured-product.jpg';
+    
+    if (hotImg) hotImg.src = mainImgUrl;
+    if (hotTitle) hotTitle.textContent = hotProduct.name.toUpperCase();
+    if (hotPrice) hotPrice.textContent = `${symbol} ${Number(hotProduct.price).toLocaleString()}`;
+    
+    if (hotCard) {
+      hotCard.onclick = () => window.openProductModal(hotProduct.id);
+    }
+  }
+}
 
 window.selectModalSize = (size, element) => {
   selectedSize = size;

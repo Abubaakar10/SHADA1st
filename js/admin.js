@@ -2,7 +2,7 @@
  * SHADA1st Apparel Shop — Admin Portal Controller
  */
 
-import { initStoreDatabase, getProducts, saveProduct, deleteProduct, updateProductsOrder, getCollections, saveCollection, deleteCollection, getStoreSettings, saveStoreSettings, seedDefaultProducts } from './store-db.js';
+import { initStoreDatabase, getProducts, saveProduct, deleteProduct, updateProductsOrder, getCollections, saveCollection, deleteCollection, getStoreSettings, saveStoreSettings } from './store-db.js';
 import { getStoredFirebaseConfig, saveStoredFirebaseConfig, isFirebaseConfigured } from './firebase-config.js';
 import { escapeHTML, sanitizeInput } from './security.js';
 import { checkRateLimit, resetRateLimit } from './rate-limiter.js';
@@ -106,22 +106,6 @@ async function initAdminDashboard() {
     logoutBtn.addEventListener('click', () => {
       sessionStorage.removeItem('shada_admin_logged');
       window.location.reload();
-    });
-  }
-
-  const seedBtn = document.getElementById('seedCatalogBtn');
-  if (seedBtn) {
-    seedBtn.addEventListener('click', async () => {
-      if (confirm("Restore default demo placeholder items into your store catalog?")) {
-        showToast("Restoring default demo items...", "info");
-        const ok = await seedDefaultProducts();
-        if (ok) {
-          showToast("Demo items restored successfully!", "success");
-          await refreshAdminData();
-        } else {
-          showToast("Failed to seed demo items.", "error");
-        }
-      }
     });
   }
 }
@@ -643,14 +627,14 @@ function populateSettingsForm() {
   document.getElementById('settingManualStatus').value = adminSettings.manualStatus || 'auto';
   document.getElementById('settingAdminPin').value = adminSettings.adminPin || '1234';
 
-  const hotSelect = document.getElementById('settingHotRelease');
-  if (hotSelect) {
-    let options = `<option value="">Auto-Select (Featured or Newest Item)</option>`;
-    adminProducts.forEach(p => {
-      const isSelected = adminSettings.hotReleaseProductId === p.id ? 'selected' : '';
-      options += `<option value="${escapeHTML(p.id)}" ${isSelected}>${escapeHTML(p.name)} (${escapeHTML(adminSettings.currencySymbol || 'GH₵')} ${p.price})</option>`;
-    });
-    hotSelect.innerHTML = options;
+  const hotLookSelect = document.getElementById('settingHotLook');
+  if (hotLookSelect) {
+    const currentHotId = adminSettings.hotLookProductId || (adminProducts[0] ? adminProducts[0].id : '');
+    hotLookSelect.innerHTML = adminProducts.map(p => `
+      <option value="${escapeHTML(p.id)}" ${p.id === currentHotId ? 'selected' : ''}>
+        ${escapeHTML(p.name)} (${adminSettings.currencySymbol || 'GH₵'} ${Number(p.price).toLocaleString()})
+      </option>
+    `).join('');
   }
 }
 
@@ -665,8 +649,8 @@ function setupSettingsForm() {
       const openingTime = document.getElementById('settingOpeningTime').value;
       const closingTime = document.getElementById('settingClosingTime').value;
       const manualStatus = document.getElementById('settingManualStatus').value;
-      const hotReleaseProductId = document.getElementById('settingHotRelease') ? document.getElementById('settingHotRelease').value : '';
       const newPin = sanitizeInput(document.getElementById('settingAdminPin').value);
+      const hotLookProductId = document.getElementById('settingHotLook') ? document.getElementById('settingHotLook').value : '';
 
       const payload = {
         whatsappPhone,
@@ -674,8 +658,8 @@ function setupSettingsForm() {
         openingTime,
         closingTime,
         manualStatus,
-        hotReleaseProductId,
-        adminPin: newPin || '1234'
+        adminPin: newPin || '1234',
+        hotLookProductId
       };
 
       showToast("Saving settings...", "info");

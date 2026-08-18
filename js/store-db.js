@@ -19,7 +19,7 @@ export async function initStoreDatabase() {
   
   // Ensure default data exists in local storage
   const existingProducts = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-  if (!existingProducts) {
+  if (!existingProducts || JSON.parse(existingProducts).length === 0) {
     try {
       const resp = await fetch('products.json');
       if (resp.ok) {
@@ -33,25 +33,23 @@ export async function initStoreDatabase() {
       console.warn("SHADA1st: Could not fetch initial products.json seed file.", e);
     }
   }
-}
 
-export async function seedDefaultProducts() {
-  try {
-    const resp = await fetch('products.json');
-    if (!resp.ok) return false;
-    const seedData = await resp.json();
-    const seedProducts = seedData.products || [];
-    
-    let currentProducts = await getProducts();
-    for (const p of seedProducts) {
-      if (!currentProducts.some(existing => existing.id === p.id)) {
-        await saveProduct(p);
+  // If Firebase is active, check if Firestore products collection is empty.
+  // If empty, seed Firestore with local products so adding 1 new item doesn't wipe existing products.
+  if (firebaseContext && firebaseContext.isFirebaseActive && firebaseContext.db) {
+    try {
+      const { collection, getDocs, doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+      const snap = await getDocs(collection(firebaseContext.db, "products"));
+      if (snap.empty) {
+        console.log("SHADA1st: Firestore products collection empty. Seeding Firestore with default catalog...");
+        const localProds = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || '[]');
+        for (const p of localProds) {
+          await setDoc(doc(firebaseContext.db, "products", p.id), p, { merge: true });
+        }
       }
+    } catch (err) {
+      console.warn("SHADA1st: Firestore initial check warning:", err);
     }
-    return true;
-  } catch (e) {
-    console.error("Seed default products failed:", e);
-    return false;
   }
 }
 
@@ -79,8 +77,19 @@ export async function getProducts() {
   }
 
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-    const items = raw ? JSON.parse(raw) : [];
+    let raw = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+    let items = raw ? JSON.parse(raw) : [];
+
+    // Fallback: If items list is empty, fetch seed file products.json
+    if (!items || items.length === 0) {
+      const resp = await fetch('products.json');
+      if (resp.ok) {
+        const seedData = await resp.json();
+        items = seedData.products || [];
+        localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(items));
+      }
+    }
+
     items.sort((a, b) => (a.displayOrder || 999) - (b.displayOrder || 999));
     return items;
   } catch (e) {
@@ -292,7 +301,9 @@ export async function getStoreSettings() {
     openingTime: "08:00",
     closingTime: "20:00",
     manualStatus: "auto", // 'auto', 'open', 'closed'
-    adminPin: "1234"
+    adminPin: "1234",
+    hotLookProductId: "shada-001",
+    heroEditorialImage: ""
   };
 
   try {
