@@ -301,10 +301,25 @@ export async function getStoreSettings() {
     openingTime: "08:00",
     closingTime: "20:00",
     manualStatus: "auto", // 'auto', 'open', 'closed'
-    adminPin: "1234",
+    adminPin: "",
     hotLookProductId: "shada-001",
     heroEditorialImage: ""
   };
+
+  if (firebaseContext && firebaseContext.isFirebaseActive && firebaseContext.db) {
+    try {
+      const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+      const docSnap = await getDoc(doc(firebaseContext.db, "settings", "general"));
+      if (docSnap.exists()) {
+        const firestoreData = docSnap.data();
+        const merged = { ...defaultSettings, ...firestoreData };
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
+        return merged;
+      }
+    } catch (e) {
+      console.warn("Firestore settings fetch warning, falling back to LocalStorage:", e);
+    }
+  }
 
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.SETTINGS);

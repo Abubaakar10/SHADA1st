@@ -81,10 +81,14 @@ function setupAuthCheck() {
       }
 
       const enteredPin = pinInput ? sanitizeInput(pinInput.value) : '';
-      const currentSettings = adminSettings && adminSettings.adminPin ? adminSettings : await getStoreSettings();
-      const correctPin = currentSettings.adminPin || '1234';
+      const currentSettings = (adminSettings && adminSettings.adminPin) ? adminSettings : await getStoreSettings();
+      const correctPin = currentSettings.adminPin;
 
-      if (enteredPin === correctPin) {
+      if (correctPin ? (enteredPin === correctPin) : (enteredPin.length >= 4)) {
+        if (!correctPin) {
+          currentSettings.adminPin = enteredPin;
+          await saveStoreSettings(currentSettings);
+        }
         resetRateLimit('admin_pin_attempts');
         sessionStorage.setItem('shada_admin_logged', 'true');
         if (loginView) loginView.style.display = 'none';
@@ -94,7 +98,7 @@ function setupAuthCheck() {
         showToast("Welcome to SHADA1st Admin Portal", "success");
       } else {
         if (authError) {
-          authError.textContent = "Invalid Admin PIN. Please try again.";
+          authError.textContent = "Invalid Admin Security PIN. Access Denied.";
           authError.style.display = 'block';
         }
       }
@@ -643,9 +647,9 @@ function populateSettingsForm() {
   if (openT) openT.value = adminSettings.openingTime || '08:00';
   if (closeT) closeT.value = adminSettings.closingTime || '20:00';
   if (status) status.value = adminSettings.manualStatus || 'auto';
-  if (pin) pin.value = adminSettings.adminPin || '1234';
+  if (pin) pin.value = adminSettings.adminPin || '';
 
-  const hotLookSelect = document.getElementById('settingHotLook');
+  const hotLookSelect = document.getElementById('settingHotRelease') || document.getElementById('settingHotLook');
   if (hotLookSelect) {
     const currentHotId = adminSettings.hotLookProductId || (adminProducts[0] ? adminProducts[0].id : '');
     hotLookSelect.innerHTML = adminProducts.map(p => `
@@ -667,8 +671,16 @@ function setupSettingsForm() {
       const openingTime = document.getElementById('settingOpeningTime').value;
       const closingTime = document.getElementById('settingClosingTime').value;
       const manualStatus = document.getElementById('settingManualStatus').value;
-      const newPin = sanitizeInput(document.getElementById('settingAdminPin').value);
-      const hotLookProductId = document.getElementById('settingHotLook') ? document.getElementById('settingHotLook').value : '';
+      
+      const enteredPinInput = document.getElementById('settingAdminPin').value;
+      const enteredPin = enteredPinInput ? sanitizeInput(enteredPinInput) : '';
+
+      const current = await getStoreSettings();
+      // Keep existing custom PIN if input was left blank during saving
+      const activePin = enteredPin ? enteredPin : (current.adminPin || '');
+
+      const hotLookSelect = document.getElementById('settingHotRelease') || document.getElementById('settingHotLook');
+      const hotLookProductId = hotLookSelect ? hotLookSelect.value : '';
 
       const payload = {
         whatsappPhone,
@@ -676,13 +688,24 @@ function setupSettingsForm() {
         openingTime,
         closingTime,
         manualStatus,
-        adminPin: newPin || '1234',
+        adminPin: activePin,
         hotLookProductId
       };
 
-      showToast("Saving settings...", "info");
-      await saveStoreSettings(payload);
-      showToast("Store settings saved!", "success");
+      showToast("Saving store settings to cloud...", "info");
+      const updated = await saveStoreSettings(payload);
+      adminSettings = updated;
+
+      const successBanner = document.getElementById('settingsSuccessMsg');
+      if (successBanner) {
+        successBanner.style.display = 'block';
+        successBanner.innerHTML = `<i class="fa-solid fa-circle-check"></i> Store Settings & Security PIN Saved Successfully!`;
+        setTimeout(() => {
+          successBanner.style.display = 'none';
+        }, 5000);
+      }
+
+      showToast("Store settings saved successfully!", "success");
       await refreshAdminData();
     });
   }

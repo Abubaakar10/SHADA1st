@@ -149,7 +149,6 @@
     "currencySymbol": "GH₵",
     "openingTime": "08:00",
     "closingTime": "20:00",
-    "manualStatus": "auto",
-    "adminPin": "1234"
+    "manualStatus": "auto"
   }
 }

@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Portal — SHADA1st Apparel Shop</title>
   <meta name="robots" content="noindex, nofollow">
-  
+
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <!-- ADMIN LOGIN VIEW WITH EYE PIN TOGGLE -->
-  <div id="adminLoginView" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 70%);">
-    <div class="admin-card" style="max-width: 420px; width: 100%; text-align: center; border-color: var(--border-color); box-shadow: var(--shadow-lg);">
+  <div id="adminLoginView"
+    style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 70%);">
+    <div class="admin-card"
+      style="max-width: 420px; width: 100%; text-align: center; border-color: var(--border-color); box-shadow: var(--shadow-lg);">
       <img src="images/logo.svg" alt="SHADA1st Logo" style="height: 54px; margin: 0 auto 1.5rem auto;">
       <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-bottom: 0.5rem;">Store Admin Access</h2>
-      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem;">Enter your Security PIN code to manage SHADA1st products & settings.</p>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem;">Enter your Security PIN code
+        to manage SHADA1st products & settings.</p>
 
       <form id="adminLoginForm">
         <div class="form-group" style="margin-bottom: 1.25rem; text-align: left;">
           <label for="adminPinInput">Admin Security PIN</label>
           <div class="pin-input-group">
-            <input type="password" id="adminPinInput" class="form-control" placeholder="••••" required style="text-align: center; font-size: 1.2rem; letter-spacing: 4px; width: 100%;">
+            <input type="password" id="adminPinInput" class="form-control" placeholder="••••" required
+              style="text-align: center; font-size: 1.2rem; letter-spacing: 4px; width: 100%;">
             <button type="button" class="pin-toggle-btn" id="togglePinVisibility" title="Show / Hide PIN">
               <i class="fa-solid fa-eye" id="pinEyeIcon"></i>
             </button>
           </div>
         </div>
-        
+
         <p id="authError" style="color: #FF6B6B; font-size: 0.85rem; display: none; margin-bottom: 1rem;"></p>
 
         <button type="submit" class="btn-gold" style="width: 100%;">
@@ -38,7 +44,8 @@
       </form>
 
       <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-        <a href="index.html" style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-arrow-left"></i> Return to Storefront</a>
+        <a href="index.html" style="font-size: 0.85rem; color: var(--text-muted);"><i
+            class="fa-solid fa-arrow-left"></i> Return to Storefront</a>
       </div>
     </div>
   </div>
@@ -54,30 +61,38 @@
           </div>
 
           <div style="display: flex; align-items: center; gap: 1rem;">
-            <a href="index.html" target="_blank" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+            <a href="index.html" target="_blank" class="btn-secondary"
+              style="padding: 0.5rem 1rem; font-size: 0.85rem;">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> View Storefront
             </a>
-            <button id="adminLogoutBtn" class="btn-secondary btn-danger" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+              <button id="seedCatalogBtn" class="btn-secondary"
+                style="padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);"
+                title="Restore default catalog placeholder items">
+                <i class="fa-solid fa-cloud-arrow-down" style="color: var(--accent-gold);"></i> Restore Demo Items
+              </button>
+              <button id="adminLogoutBtn" class="btn-secondary btn-danger"
+                style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-tabs">
+            <button class="admin-tab-btn active" data-tab="tabProducts">
+              <i class="fa-solid fa-shirt"></i> Apparel Items
+            </button>
+            <button class="admin-tab-btn" data-tab="tabCollections">
+              <i class="fa-solid fa-layer-group"></i> Collections Manager
+            </button>
+            <button class="admin-tab-btn" data-tab="tabDragReorder">
+              <i class="fa-solid fa-up-down-left-right"></i> Visual Drag Reorder
+            </button>
+            <button class="admin-tab-btn" data-tab="tabSettings">
+              <i class="fa-solid fa-gear"></i> Hours & Settings
             </button>
           </div>
         </div>
-
-        <div class="admin-tabs">
-          <button class="admin-tab-btn active" data-tab="tabProducts">
-            <i class="fa-solid fa-shirt"></i> Apparel Items
-          </button>
-          <button class="admin-tab-btn" data-tab="tabCollections">
-            <i class="fa-solid fa-layer-group"></i> Collections Manager
-          </button>
-          <button class="admin-tab-btn" data-tab="tabDragReorder">
-            <i class="fa-solid fa-up-down-left-right"></i> Visual Drag Reorder
-          </button>
-          <button class="admin-tab-btn" data-tab="tabSettings">
-            <i class="fa-solid fa-gear"></i> Hours & Settings
-          </button>
-        </div>
-      </div>
     </header>
 
     <div class="container">
@@ -95,7 +110,8 @@
             <div class="form-grid">
               <div class="form-group">
                 <label for="prodName">Item Name *</label>
-                <input type="text" id="prodName" class="form-control" placeholder="e.g. Obsidian Oversized Graphic Tee" required>
+                <input type="text" id="prodName" class="form-control" placeholder="e.g. Obsidian Oversized Graphic Tee"
+                  required>
               </div>
 
               <div class="form-group">
@@ -122,22 +138,26 @@
                   <div class="size-rect selected" data-size="3XL">3XL</div>
                 </div>
                 <small style="color: var(--text-muted); margin-top: 0.3rem;">
-                  <i class="fa-solid fa-circle-info"></i> Solid Black = <strong>In Stock</strong> | Struck-Through Dashed = <strong>Out of Stock</strong>
+                  <i class="fa-solid fa-circle-info"></i> Solid Black = <strong>In Stock</strong> | Struck-Through
+                  Dashed = <strong>Out of Stock</strong>
                 </small>
-                
+
                 <div style="margin-top: 0.6rem;">
-                  <input type="text" id="prodSizes" class="form-control" placeholder="Or type additional sizes separated by comma (e.g. S, M, L, XL)">
+                  <input type="text" id="prodSizes" class="form-control"
+                    placeholder="Or type additional sizes separated by comma (e.g. S, M, L, XL)">
                 </div>
               </div>
 
               <div class="form-group full-width">
                 <label>Apparel Item Images (Tap box below to upload from Phone Photo Library / Camera / Files) *</label>
-                
+
                 <div class="file-dropzone" id="fileDropzone">
                   <input type="file" id="prodFileInput" accept="image/*" multiple>
                   <i class="fa-solid fa-cloud-arrow-up file-dropzone-icon"></i>
-                  <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">Tap to Choose Photos from Phone or Computer</h4>
-                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Select 1 or more images from Photo Library, Camera, or files</p>
+                  <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">Tap to Choose Photos
+                    from Phone or Computer</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Select 1 or more images from Photo
+                    Library, Camera, or files</p>
                 </div>
 
                 <input type="hidden" id="prodImages">
@@ -151,7 +171,8 @@
 
               <div class="form-group full-width">
                 <label for="prodDesc">Product Description & Specs</label>
-                <textarea id="prodDesc" class="form-control" rows="3" placeholder="Crafted from 280GSM combed cotton with gold embroidery..."></textarea>
+                <textarea id="prodDesc" class="form-control" rows="3"
+                  placeholder="Crafted from 280GSM combed cotton with gold embroidery..."></textarea>
               </div>
 
               <div class="form-group full-width" style="display: flex; gap: 2rem; align-items: center;">
@@ -229,7 +250,7 @@
                 <div id="colImagePreview" style="margin-top: 0.5rem;"></div>
               </div>
             </div>
-            
+
             <div style="margin-top: 1.25rem;">
               <button type="submit" class="btn-gold">
                 <i class="fa-solid fa-plus"></i> Add Collection
@@ -248,7 +269,8 @@
       <section class="admin-panel-section" id="tabDragReorder">
         <div class="admin-card">
           <h3 class="admin-card-title">
-            <i class="fa-solid fa-up-down-left-right" style="color: var(--accent-gold);"></i> Drag & Drop Product Positions
+            <i class="fa-solid fa-up-down-left-right" style="color: var(--accent-gold);"></i> Drag & Drop Product
+            Positions
           </h3>
 
           <div class="reorder-instructions">
@@ -274,12 +296,15 @@
             <i class="fa-brands fa-whatsapp" style="color: var(--accent-whatsapp);"></i> Store & Working Hours Settings
           </h3>
 
+          <div id="settingsSuccessMsg" style="display: none; padding: 0.9rem 1.25rem; background: #0F1012; border: 1.5px solid #25D366; color: #25D366; font-size: 0.88rem; font-weight: 700; border-radius: var(--radius-sm); margin-bottom: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.15);"></div>
+
           <form id="settingsForm">
             <div class="form-grid">
               <div class="form-group">
                 <label for="settingPhone">Admin WhatsApp Phone Number *</label>
                 <input type="text" id="settingPhone" class="form-control" placeholder="233200000000" required>
-                <small style="color: var(--text-muted);">Include Ghana country code without '+' sign (e.g. 233200000000).</small>
+                <small style="color: var(--text-muted);">Include Ghana country code without '+' sign (e.g.
+                  233200000000).</small>
               </div>
 
               <div class="form-group">
@@ -311,16 +336,16 @@
               </div>
 
               <div class="form-group full-width">
-                <label for="settingAdminPin">Change Admin Security PIN</label>
-                <input type="text" id="settingAdminPin" class="form-control" placeholder="Enter new PIN">
+                <label for="settingHotRelease"><i class="fa-solid fa-fire" style="color: var(--accent-gold);"></i>
+                  Featured "Hot Look / Hot Release" Showcase Item</label>
+                <select id="settingHotRelease" class="form-control">
+                  <!-- Options rendered by admin.js -->
+                </select>
               </div>
 
-              <div class="form-group full-width" style="padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-                <label for="settingHotLook"><i class="fa-solid fa-fire" style="color: var(--accent-gold);"></i> Homepage Featured "Hot Look / Hot Release" Item</label>
-                <select id="settingHotLook" class="form-control">
-                  <option value="">-- Select Product --</option>
-                </select>
-                <small style="color: var(--text-muted); margin-top: 0.25rem; display: block;">Select which product from your catalog is highlighted in the "HOT RELEASE" hero showcase card.</small>
+              <div class="form-group full-width">
+                <label for="settingAdminPin">Change Admin Security PIN</label>
+                <input type="text" id="settingAdminPin" class="form-control" placeholder="Enter new PIN">
               </div>
             </div>
 
@@ -336,12 +361,15 @@
           <h3 class="admin-card-title">
             <i class="fa-solid fa-fire" style="color: #FFCA28;"></i> Firebase Integration & Sync
           </h3>
-          <div id="firebaseStatusIndicator" style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: var(--bg-tertiary); border: 1px solid var(--border-subtle);"></div>
+          <div id="firebaseStatusIndicator"
+            style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: var(--bg-tertiary); border: 1px solid var(--border-subtle);">
+          </div>
 
           <form id="firebaseConfigForm">
             <div class="form-group">
               <label for="firebaseConfigJson">Firebase Credentials JSON</label>
-              <textarea id="firebaseConfigJson" class="form-control" rows="5" placeholder='{"apiKey": "...", "projectId": "..."}'></textarea>
+              <textarea id="firebaseConfigJson" class="form-control" rows="5"
+                placeholder='{"apiKey": "...", "projectId": "..."}'></textarea>
             </div>
             <div style="margin-top: 1rem;">
               <button type="submit" class="btn-secondary">
@@ -368,4 +396,5 @@
 
   <script type="module" src="js/admin.js"></script>
 </body>
+
 </html>
