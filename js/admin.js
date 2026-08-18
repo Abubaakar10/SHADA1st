@@ -620,12 +620,19 @@ function setupDragEvents() {
 }
 
 function populateSettingsForm() {
-  document.getElementById('settingPhone').value = adminSettings.whatsappPhone || '233200000000';
-  document.getElementById('settingCurrency').value = adminSettings.currencySymbol || 'GH₵';
-  document.getElementById('settingOpeningTime').value = adminSettings.openingTime || '08:00';
-  document.getElementById('settingClosingTime').value = adminSettings.closingTime || '20:00';
-  document.getElementById('settingManualStatus').value = adminSettings.manualStatus || 'auto';
-  document.getElementById('settingAdminPin').value = adminSettings.adminPin || '1234';
+  const phone = document.getElementById('settingPhone');
+  const curr = document.getElementById('settingCurrency');
+  const openT = document.getElementById('settingOpeningTime');
+  const closeT = document.getElementById('settingClosingTime');
+  const status = document.getElementById('settingManualStatus');
+  const pin = document.getElementById('settingAdminPin');
+
+  if (phone) phone.value = adminSettings.whatsappPhone || '233200000000';
+  if (curr) curr.value = adminSettings.currencySymbol || 'GH₵';
+  if (openT) openT.value = adminSettings.openingTime || '08:00';
+  if (closeT) closeT.value = adminSettings.closingTime || '20:00';
+  if (status) status.value = adminSettings.manualStatus || 'auto';
+  if (pin) pin.value = adminSettings.adminPin || '1234';
 
   const hotLookSelect = document.getElementById('settingHotLook');
   if (hotLookSelect) {
