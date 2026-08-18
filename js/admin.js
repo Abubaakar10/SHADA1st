@@ -13,12 +13,22 @@ let adminSettings = {};
 let uploadedImageUrls = [];
 let draggedItemIndex = null;
 
-document.addEventListener('DOMContentLoaded', async () => {
-  await initStoreDatabase();
-  adminSettings = await getStoreSettings();
+async function initApp() {
   setupAuthCheck();
   setupPinVisibilityToggle();
-});
+  try {
+    await initStoreDatabase();
+    adminSettings = await getStoreSettings();
+  } catch (err) {
+    console.warn("Database initialization warning:", err);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 function setupPinVisibilityToggle() {
   const toggleBtn = document.getElementById('togglePinVisibility');
@@ -56,7 +66,7 @@ function setupAuthCheck() {
   }
 
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       // Rate limit check for Admin PIN brute force protection (Max 5 attempts in 3 min)
@@ -71,7 +81,8 @@ function setupAuthCheck() {
       }
 
       const enteredPin = pinInput ? sanitizeInput(pinInput.value) : '';
-      const correctPin = adminSettings.adminPin || '1234';
+      const currentSettings = adminSettings && adminSettings.adminPin ? adminSettings : await getStoreSettings();
+      const correctPin = currentSettings.adminPin || '1234';
 
       if (enteredPin === correctPin) {
         resetRateLimit('admin_pin_attempts');
@@ -79,7 +90,7 @@ function setupAuthCheck() {
         if (loginView) loginView.style.display = 'none';
         if (dashboardView) dashboardView.style.display = 'block';
         if (authError) authError.style.display = 'none';
-        initAdminDashboard();
+        await initAdminDashboard();
         showToast("Welcome to SHADA1st Admin Portal", "success");
       } else {
         if (authError) {

@@ -19,12 +19,22 @@ let selectedSize = '';
 let selectedColor = '';
 let selectedQuantity = 1;
 
-document.addEventListener('DOMContentLoaded', async () => {
-  await initStoreDatabase();
-  await loadStoreData();
+async function initApp() {
+  try {
+    await initStoreDatabase();
+    await loadStoreData();
+  } catch (err) {
+    console.error("Main app init error:", err);
+  }
   setupEventListeners();
   setupQuantityControls();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 async function loadStoreData() {
   showSkeletonLoadingState();
